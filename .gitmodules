@@ -1,5 +1,4 @@
 [submodule "cut-n-paste/smclient"]
 	path = cut-n-paste/smclient
-	url = https://github.com/mate-desktop/mate-submodules.git
-	branch = master
+	url = https://github.com/rbuj/mate-submodules.git
 	ignore = untracked
