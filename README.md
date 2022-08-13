@@ -6,7 +6,7 @@ This software is licensed under the GNU GPL. For more on the license, see COPYIN
 
 Atril Requirements
 ==================================================
-* [MATE Platform libraries](https://github.com/mate-desktop/mate-desktop/)
+* [MATE Platform libraries](https://github.com/Libre-MATE/mate-desktop/)
 
 * [Poppler](https://poppler.freedesktop.org/) for PDF viewing
 
