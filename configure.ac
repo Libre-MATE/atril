@@ -45,7 +45,7 @@ AC_INIT([atril],
         [atril],
         [https://mate-desktop.org])
 AC_PREREQ([2.60])
-
+AC_COPYRIGHT([Copyright (C) 2022 Libre MATE])
 AM_INIT_AUTOMAKE([1.10 foreign tar-ustar dist-xz no-dist-gzip check-news])
 
 AC_CONFIG_HEADERS([config.h])
