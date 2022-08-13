@@ -39,13 +39,12 @@ m4_define([ev_binary_version], [ev_document_lt_current])
 
 # *****************************************************************************
 
-AC_PREREQ([2.60])
-
 AC_INIT([atril],
         [ev_version],
         [https://github.com/mate-desktop/atril/issues],
         [atril],
         [https://mate-desktop.org])
+AC_PREREQ([2.60])
 
 AM_INIT_AUTOMAKE([1.10 foreign tar-ustar dist-xz no-dist-gzip check-news])
 
