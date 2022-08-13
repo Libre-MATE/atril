@@ -39,7 +39,7 @@ m4_define([ev_binary_version], [ev_document_lt_current])
 
 # *****************************************************************************
 
-AC_PREREQ([2.57])
+AC_PREREQ([2.60])
 
 AC_INIT([atril],
         [ev_version],
@@ -62,8 +62,8 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
-AM_PROG_LIBTOOL
 AC_PROG_SED
+LT_INIT
 
 MATE_MAINTAINER_MODE_DEFINES
 MATE_COMPILE_WARNINGS
