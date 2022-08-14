@@ -59,17 +59,10 @@ AC_INIT([atril],
         [https://mate-desktop.org])
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 2022 Libre MATE])
-AM_INIT_AUTOMAKE([1.10 foreign tar-ustar dist-xz no-dist-gzip check-news])
-
+AM_INIT_AUTOMAKE([1.11 foreign tar-ustar dist-xz no-dist-gzip silent-rules check-news])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
-
-if test -z "$enable_maintainer_mode"; then
-    enable_maintainer_mode=yes
-fi
 AM_MAINTAINER_MODE([enable])
-
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
