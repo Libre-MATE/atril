@@ -34,15 +34,8 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_TEXT               (ev_document_text_get_type ())
-#define EV_DOCUMENT_TEXT(o)                 (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_DOCUMENT_TEXT, EvDocumentText))
-#define EV_DOCUMENT_TEXT_IFACE(k)           (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_DOCUMENT_TEXT, EvDocumentTextInterface))
-#define EV_IS_DOCUMENT_TEXT(o)              (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_DOCUMENT_TEXT))
-#define EV_IS_DOCUMENT_TEXT_IFACE(k)        (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_DOCUMENT_TEXT))
-#define EV_DOCUMENT_TEXT_GET_IFACE(inst)    (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_DOCUMENT_TEXT, EvDocumentTextInterface))
-
-typedef struct _EvDocumentText          EvDocumentText;
-typedef struct _EvDocumentTextInterface EvDocumentTextInterface;
+#define EV_TYPE_DOCUMENT_TEXT (ev_document_text_get_type ())
+G_DECLARE_INTERFACE (EvDocumentText, ev_document_text, EV, DOCUMENT_TEXT, GObject);
 
 struct _EvDocumentTextInterface
 {
@@ -60,8 +53,6 @@ struct _EvDocumentTextInterface
 	PangoAttrList  *(* get_text_attrs)   (EvDocumentText   *document_text,
 					      EvPage           *page);
 };
-
-GType           ev_document_text_get_type         (void) G_GNUC_CONST;
 
 gchar          *ev_document_text_get_text         (EvDocumentText  *document_text,
 						   EvPage          *page);

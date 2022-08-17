@@ -37,15 +37,8 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_FONTS		  (ev_document_fonts_get_type ())
-#define EV_DOCUMENT_FONTS(o)		  (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_DOCUMENT_FONTS, EvDocumentFonts))
-#define EV_DOCUMENT_FONTS_IFACE(k)	  (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_DOCUMENT_FONTS, EvDocumentFontsInterface))
-#define EV_IS_DOCUMENT_FONTS(o)		  (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_DOCUMENT_FONTS))
-#define EV_IS_DOCUMENT_FONTS_IFACE(k)	  (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_DOCUMENT_FONTS))
-#define EV_DOCUMENT_FONTS_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_DOCUMENT_FONTS, EvDocumentFontsInterface))
-
-typedef struct _EvDocumentFonts	         EvDocumentFonts;
-typedef struct _EvDocumentFontsInterface EvDocumentFontsInterface;
+#define EV_TYPE_DOCUMENT_FONTS (ev_document_fonts_get_type ())
+G_DECLARE_INTERFACE (EvDocumentFonts, ev_document_fonts, EV, DOCUMENT_FONTS, GObject);
 
 enum {
 	EV_DOCUMENT_FONTS_COLUMN_NAME,
@@ -65,7 +58,6 @@ struct _EvDocumentFontsInterface
 				   GtkTreeModel    *model);
 };
 
-GType     ev_document_fonts_get_type     (void);
 gboolean  ev_document_fonts_scan         (EvDocumentFonts *document_fonts,
 				          int              n_pages);
 double	  ev_document_fonts_get_progress (EvDocumentFonts *document_fonts);

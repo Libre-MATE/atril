@@ -62,15 +62,8 @@ typedef struct {
 	gint                 pages_per_sheet;
 } EvFileExporterContext;
 
-#define EV_TYPE_FILE_EXPORTER            (ev_file_exporter_get_type ())
-#define EV_FILE_EXPORTER(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_FILE_EXPORTER, EvFileExporter))
-#define EV_FILE_EXPORTER_IFACE(k)        (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_FILE_EXPORTER, EvFileExporterInterface))
-#define EV_IS_FILE_EXPORTER(o)           (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_FILE_EXPORTER))
-#define EV_IS_FILE_EXPORTER_IFACE(k)     (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_FILE_EXPORTER))
-#define EV_FILE_EXPORTER_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_FILE_EXPORTER, EvFileExporterInterface))
-
-typedef struct _EvFileExporter          EvFileExporter;
-typedef struct _EvFileExporterInterface EvFileExporterInterface;
+#define EV_TYPE_FILE_EXPORTER (ev_file_exporter_get_type ())
+G_DECLARE_INTERFACE (EvFileExporter, ev_file_exporter, EV, FILE_EXPORTER, GObject);
 
 struct _EvFileExporterInterface {
         GTypeInterface base_iface;
@@ -86,7 +79,6 @@ struct _EvFileExporterInterface {
 	EvFileExporterCapabilities (* get_capabilities) (EvFileExporter        *exporter);
 };
 
-GType                      ev_file_exporter_get_type         (void) G_GNUC_CONST;
 void                       ev_file_exporter_begin            (EvFileExporter        *exporter,
 							      EvFileExporterContext *fc);
 void                       ev_file_exporter_begin_page       (EvFileExporter        *exporter);

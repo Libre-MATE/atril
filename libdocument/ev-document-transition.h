@@ -32,15 +32,8 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_TRANSITION	       (ev_document_transition_get_type ())
-#define EV_DOCUMENT_TRANSITION(o)	       (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_DOCUMENT_TRANSITION, EvDocumentTransition))
-#define EV_DOCUMENT_TRANSITION_IFACE(k)	       (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_DOCUMENT_TRANSITION, EvDocumentTransitionInterface))
-#define EV_IS_DOCUMENT_TRANSITION(o)	       (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_DOCUMENT_TRANSITION))
-#define EV_IS_DOCUMENT_TRANSITION_IFACE(k)     (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_DOCUMENT_TRANSITION))
-#define EV_DOCUMENT_TRANSITION_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_DOCUMENT_TRANSITION, EvDocumentTransitionInterface))
-
-typedef struct _EvDocumentTransition          EvDocumentTransition;
-typedef struct _EvDocumentTransitionInterface EvDocumentTransitionInterface;
+#define EV_TYPE_DOCUMENT_TRANSITION (ev_document_transition_get_type ())
+G_DECLARE_INTERFACE (EvDocumentTransition, ev_document_transition, EV, DOCUMENT_TRANSITION, GObject);
 
 struct _EvDocumentTransitionInterface
 {
@@ -53,7 +46,6 @@ struct _EvDocumentTransitionInterface
 						    gint                  page);
 };
 
-GType                ev_document_transition_get_type          (void) G_GNUC_CONST;
 gdouble              ev_document_transition_get_page_duration (EvDocumentTransition *document_trans,
 							       gint                  page);
 EvTransitionEffect * ev_document_transition_get_effect        (EvDocumentTransition *document_trans,

@@ -33,15 +33,8 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_LAYERS		   (ev_document_layers_get_type ())
-#define EV_DOCUMENT_LAYERS(o)		   (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_DOCUMENT_LAYERS, EvDocumentLayers))
-#define EV_DOCUMENT_LAYERS_IFACE(k)	   (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_DOCUMENT_LAYERS, EvDocumentLayersInterface))
-#define EV_IS_DOCUMENT_LAYERS(o)	   (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_DOCUMENT_LAYERS))
-#define EV_IS_DOCUMENT_LAYERS_IFACE(k)	   (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_DOCUMENT_LAYERS))
-#define EV_DOCUMENT_LAYERS_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_DOCUMENT_LAYERS, EvDocumentLayersInterface))
-
-typedef struct _EvDocumentLayers          EvDocumentLayers;
-typedef struct _EvDocumentLayersInterface EvDocumentLayersInterface;
+#define EV_TYPE_DOCUMENT_LAYERS (ev_document_layers_get_type ())
+G_DECLARE_INTERFACE (EvDocumentLayers, ev_document_layers, EV, DOCUMENT_LAYERS, GObject);
 
 enum {
 	EV_DOCUMENT_LAYERS_COLUMN_TITLE,
@@ -68,8 +61,6 @@ struct _EvDocumentLayersInterface
 	gboolean      (* layer_is_visible) (EvDocumentLayers *document_layers,
 					    EvLayer          *layer);
 };
-
-GType         ev_document_layers_get_type         (void) G_GNUC_CONST;
 
 gboolean      ev_document_layers_has_layers       (EvDocumentLayers *document_layers);
 GtkTreeModel *ev_document_layers_get_layers       (EvDocumentLayers *document_layers);

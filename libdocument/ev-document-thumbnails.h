@@ -30,15 +30,8 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_THUMBNAILS            (ev_document_thumbnails_get_type ())
-#define EV_DOCUMENT_THUMBNAILS(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), EV_TYPE_DOCUMENT_THUMBNAILS, EvDocumentThumbnails))
-#define EV_DOCUMENT_THUMBNAILS_IFACE(k)        (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_DOCUMENT_THUMBNAILS, EvDocumentThumbnailsInterface))
-#define EV_IS_DOCUMENT_THUMBNAILS(o)           (G_TYPE_CHECK_INSTANCE_TYPE ((o), EV_TYPE_DOCUMENT_THUMBNAILS))
-#define EV_IS_DOCUMENT_THUMBNAILS_IFACE(k)     (G_TYPE_CHECK_CLASS_TYPE ((k), EV_TYPE_DOCUMENT_THUMBNAILS))
-#define EV_DOCUMENT_THUMBNAILS_GET_IFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), EV_TYPE_DOCUMENT_THUMBNAILS, EvDocumentThumbnailsInterface))
-
-typedef struct _EvDocumentThumbnails          EvDocumentThumbnails;
-typedef struct _EvDocumentThumbnailsInterface EvDocumentThumbnailsInterface;
+#define EV_TYPE_DOCUMENT_THUMBNAILS (ev_document_thumbnails_get_type ())
+G_DECLARE_INTERFACE (EvDocumentThumbnails, ev_document_thumbnails, EV, DOCUMENT_THUMBNAILS, GObject);
 
 struct _EvDocumentThumbnailsInterface {
         GTypeInterface base_iface;
@@ -53,8 +46,6 @@ struct _EvDocumentThumbnailsInterface {
                                          gint                 *height);
 
 };
-
-GType      ev_document_thumbnails_get_type       (void) G_GNUC_CONST;
 
 GdkPixbuf *ev_document_thumbnails_get_thumbnail  (EvDocumentThumbnails *document,
                                                   EvRenderContext      *rc,
