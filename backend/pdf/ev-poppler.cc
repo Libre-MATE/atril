@@ -1559,8 +1559,7 @@ pdf_document_find_find_text (EvDocumentFind *document_find,
 		retval = g_list_prepend (retval, ev_rect);
 	}
 
-	g_list_foreach (matches, (GFunc)poppler_rectangle_free, NULL);
-	g_list_free (matches);
+	g_list_free_full (matches, (GDestroyNotify)poppler_rectangle_free);
 
 	return g_list_reverse (retval);
 }
