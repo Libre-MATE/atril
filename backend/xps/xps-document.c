@@ -67,20 +67,9 @@ xps_document_dispose (GObject *object)
 {
 	XPSDocument *xps = XPS_DOCUMENT (object);
 
-	if (xps->file) {
-		g_object_unref (xps->file);
-		xps->file = NULL;
-	}
-
-	if (xps->xps) {
-		g_object_unref (xps->xps);
-		xps->xps = NULL;
-	}
-
-	if (xps->doc) {
-		g_object_unref (xps->doc);
-		xps->doc = NULL;
-	}
+	g_clear_object (&xps->file);
+	g_clear_object (&xps->xps);
+	g_clear_object (&xps->doc);
 
 	G_OBJECT_CLASS (xps_document_parent_class)->dispose (object);
 }

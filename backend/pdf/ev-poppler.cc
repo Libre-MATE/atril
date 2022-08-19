@@ -82,7 +82,7 @@ typedef struct {
 	gint pages_y;
 	gdouble paper_width;
 	gdouble paper_height;
-	
+
 #ifdef HAVE_CAIRO_PRINT
 	cairo_t *cr;
 #else
@@ -183,27 +183,11 @@ pdf_document_dispose (GObject *object)
 {
 	PdfDocument *pdf_document = PDF_DOCUMENT(object);
 
-	if (pdf_document->print_ctx) {
-		pdf_print_context_free (pdf_document->print_ctx);
-		pdf_document->print_ctx = NULL;
-	}
-
-	if (pdf_document->annots) {
-		g_hash_table_destroy (pdf_document->annots);
-		pdf_document->annots = NULL;
-	}
-
-	if (pdf_document->document) {
-		g_object_unref (pdf_document->document);
-	}
-
-	if (pdf_document->font_info) { 
-		poppler_font_info_free (pdf_document->font_info);
-	}
-
-	if (pdf_document->fonts_iter) {
-		poppler_fonts_iter_free (pdf_document->fonts_iter);
-	}
+	g_clear_pointer (&pdf_document->print_ctx, pdf_print_context_free);
+	g_clear_pointer (&pdf_document->annots, g_hash_table_destroy);
+	g_clear_object (&pdf_document->document);
+	g_clear_pointer (&pdf_document->font_info, poppler_font_info_free);
+	g_clear_pointer (&pdf_document->fonts_iter, poppler_fonts_iter_free);
 
 	G_OBJECT_CLASS (pdf_document_parent_class)->dispose (object);
 }

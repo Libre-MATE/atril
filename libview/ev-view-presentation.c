@@ -1006,31 +1006,18 @@ ev_view_presentation_dispose (GObject *object)
 {
 	EvViewPresentation *pview = EV_VIEW_PRESENTATION (object);
 
-	if (pview->document) {
-		g_object_unref (pview->document);
-		pview->document = NULL;
-	}
+	g_clear_object (&pview->document);
 
 	ev_view_presentation_animation_cancel (pview);
 	ev_view_presentation_transition_stop (pview);
 	ev_view_presentation_hide_cursor_timeout_stop (pview);
         ev_view_presentation_reset_jobs (pview);
 
-	if (pview->current_surface) {
-		cairo_surface_destroy (pview->current_surface);
-		pview->current_surface = NULL;
-	}
+	g_clear_pointer (&pview->current_surface, cairo_surface_destroy);
+	g_clear_object (&pview->page_cache);
+	g_clear_pointer (&pview->goto_window, gtk_widget_destroy);
 
-	if (pview->page_cache) {
-		g_object_unref (pview->page_cache);
-		pview->page_cache = NULL;
-	}
-
-	if (pview->goto_window) {
-		gtk_widget_destroy (pview->goto_window);
-		pview->goto_window = NULL;
-		pview->goto_entry = NULL;
-	}
+	pview->goto_entry = NULL;
 
 	G_OBJECT_CLASS (ev_view_presentation_parent_class)->dispose (object);
 }

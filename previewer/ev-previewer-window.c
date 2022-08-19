@@ -427,57 +427,20 @@ ev_previewer_window_dispose (GObject *object)
 {
 	EvPreviewerWindow *window = EV_PREVIEWER_WINDOW (object);
 
-	if (window->model) {
-		g_object_unref (window->model);
-		window->model = NULL;
-	}
-
-	if (window->document) {
-		g_object_unref (window->document);
-		window->document = NULL;
-	}
-
-	if (window->action_group) {
-		g_object_unref (window->action_group);
-		window->action_group = NULL;
-	}
-
-	if (window->accels_group) {
-		g_object_unref (window->accels_group);
-		window->accels_group = NULL;
-	}
-
-	if (window->ui_manager) {
-		g_object_unref (window->ui_manager);
-		window->ui_manager = NULL;
-	}
-
-	if (window->print_settings) {
-		g_object_unref (window->print_settings);
-		window->print_settings = NULL;
-	}
-
-	if (window->print_page_setup) {
-		g_object_unref (window->print_page_setup);
-		window->print_page_setup = NULL;
-	}
+	g_clear_object (&window->model);
+	g_clear_object (&window->document);
+	g_clear_object (&window->action_group);
+	g_clear_object (&window->accels_group);
+	g_clear_object (&window->ui_manager);
+	g_clear_object (&window->print_settings);
+	g_clear_object (&window->print_page_setup);
 
 #if GTKUNIXPRINT_ENABLED
-	if (window->printer) {
-		g_object_unref (window->printer);
-		window->printer = NULL;
-	}
+	g_clear_object (&window->printer);
 #endif
 
-	if (window->print_job_title) {
-		g_free (window->print_job_title);
-		window->print_job_title = NULL;
-	}
-
-	if (window->source_file) {
-		g_free (window->source_file);
-		window->source_file = NULL;
-	}
+	g_clear_pointer (&window->print_job_title, g_free);
+	g_clear_pointer (&window->source_file, g_free);
 
 	G_OBJECT_CLASS (ev_previewer_window_parent_class)->dispose (object);
 }

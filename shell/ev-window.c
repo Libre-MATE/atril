@@ -6157,11 +6157,10 @@ ev_window_dispose (GObject *object)
 	EvWindowPrivate *priv = window->priv;
 	GObject *mpkeys = ev_application_get_media_keys (EV_APP);
 
-	if (mpkeys) {
+	if (mpkeys)
 		g_signal_handlers_disconnect_by_func (mpkeys,
 						      ev_window_media_player_key_pressed,
 						      window);
-	}
 
 #ifdef ENABLE_DBUS
 	if (priv->skeleton != NULL) {
@@ -6174,75 +6173,31 @@ ev_window_dispose (GObject *object)
 	}
 #endif /* ENABLE_DBUS */
 
-	if (priv->bookmarks) {
-		g_object_unref (priv->bookmarks);
-		priv->bookmarks = NULL;
-	}
-
-	if (priv->metadata) {
-		g_object_unref (priv->metadata);
-		priv->metadata = NULL;
-	}
+	g_clear_object (&priv->bookmarks);
+	g_clear_object (&priv->metadata);
 
 	if (priv->setup_document_idle > 0) {
 		g_source_remove (priv->setup_document_idle);
 		priv->setup_document_idle = 0;
 	}
 
-	if (priv->lockdown_settings) {
-		g_object_unref (priv->lockdown_settings);
-		priv->lockdown_settings = NULL;
-	}
-
-	if (priv->interface_settings) {
-		g_object_unref (priv->interface_settings);
-		priv->interface_settings = NULL;
-	}
+	g_clear_object (&priv->lockdown_settings);
+	g_clear_object (&priv->interface_settings);
 
 	if (priv->loading_message_timeout) {
 		g_source_remove (priv->loading_message_timeout);
 		priv->loading_message_timeout = 0;
 	}
 
-	if (priv->monitor) {
-		g_object_unref (priv->monitor);
-		priv->monitor = NULL;
-	}
+	g_clear_object (&priv->monitor);
+	g_clear_pointer (&priv->title, ev_window_title_free);
 
-	if (priv->title) {
-		ev_window_title_free (priv->title);
-		priv->title = NULL;
-	}
-
-	if (priv->ui_manager) {
-		g_object_unref (priv->ui_manager);
-		priv->ui_manager = NULL;
-	}
-
-	if (priv->action_group) {
-		g_object_unref (priv->action_group);
-		priv->action_group = NULL;
-	}
-
-	if (priv->view_popup_action_group) {
-		g_object_unref (priv->view_popup_action_group);
-		priv->view_popup_action_group = NULL;
-	}
-
-	if (priv->attachment_popup_action_group) {
-		g_object_unref (priv->attachment_popup_action_group);
-		priv->attachment_popup_action_group = NULL;
-	}
-
-	if (priv->recent_action_group) {
-		g_object_unref (priv->recent_action_group);
-		priv->recent_action_group = NULL;
-	}
-
-	if (priv->bookmarks_action_group) {
-		g_object_unref (priv->bookmarks_action_group);
-		priv->bookmarks_action_group = NULL;
-	}
+	g_clear_object (&priv->ui_manager);
+	g_clear_object (&priv->action_group);
+	g_clear_object (&priv->view_popup_action_group);
+	g_clear_object (&priv->attachment_popup_action_group);
+	g_clear_object (&priv->recent_action_group);
+	g_clear_object (&priv->bookmarks_action_group);
 
 	if (priv->recent_manager) {
 		g_signal_handlers_disconnect_by_func (priv->recent_manager,
@@ -6251,61 +6206,39 @@ ev_window_dispose (GObject *object)
 		priv->recent_manager = NULL;
 	}
 
-	if (priv->settings) {
-		g_object_unref (priv->settings);
-		priv->settings = NULL;
-	}
+	g_clear_object (&priv->settings);
 
-	if (priv->default_settings) {
+	if (priv->default_settings)
 		g_settings_apply (priv->default_settings);
-		g_object_unref (priv->default_settings);
-		priv->default_settings = NULL;
-	}
+
+	g_clear_object (&priv->default_settings);
 
 	priv->recent_ui_id = 0;
 
-	if (priv->model) {
+	if (priv->model)
 		g_signal_handlers_disconnect_by_func (priv->model,
 						      ev_window_page_changed_cb,
 						      window);
-		g_object_unref (priv->model);
-		priv->model = NULL;
-	}
 
-	if (priv->document) {
-		g_object_unref (priv->document);
-		priv->document = NULL;
-	}
+	g_clear_object (&priv->model);
+	g_clear_object (&priv->document);
+	g_clear_object (&priv->view);
+	g_clear_object (&priv->password_view);
 
-	if (priv->view) {
-		g_object_unref (priv->view);
-		priv->view = NULL;
-	}
-
-	if (priv->password_view) {
-		g_object_unref (priv->password_view);
-		priv->password_view = NULL;
-	}
-
-	if (priv->load_job) {
+	if (priv->load_job)
 		ev_window_clear_load_job (window);
-	}
 
-	if (priv->reload_job) {
+	if (priv->reload_job)
 		ev_window_clear_reload_job (window);
-	}
 
-	if (priv->save_job) {
+	if (priv->save_job)
 		ev_window_clear_save_job (window);
-	}
 
-	if (priv->thumbnail_job) {
+	if (priv->thumbnail_job)
 		ev_window_clear_thumbnail_job (window);
-	}
 
-	if (priv->find_job) {
+	if (priv->find_job)
 		ev_window_clear_find_job (window);
-	}
 
 	if (priv->local_uri) {
 		ev_window_clear_local_uri (window);
@@ -6313,27 +6246,14 @@ ev_window_dispose (GObject *object)
 	}
 
 	ev_window_clear_progress_idle (window);
-	if (priv->progress_cancellable) {
-		g_object_unref (priv->progress_cancellable);
-		priv->progress_cancellable = NULL;
-	}
+
+	g_clear_object (&priv->progress_cancellable);
 
 	ev_window_close_dialogs (window);
 
-	if (priv->link) {
-		g_object_unref (priv->link);
-		priv->link = NULL;
-	}
-
-	if (priv->image) {
-		g_object_unref (priv->image);
-		priv->image = NULL;
-	}
-
-	if (priv->annot) {
-		g_object_unref (priv->annot);
-		priv->annot = NULL;
-	}
+	g_clear_object (&priv->link);
+	g_clear_object (&priv->image);
+	g_clear_object (&priv->annot);
 
 	g_list_free_full (priv->attach_list, g_object_unref);
 	priv->attach_list = NULL;
@@ -6346,35 +6266,12 @@ ev_window_dispose (GObject *object)
 		priv->find_bar = NULL;
 	}
 
-	if (priv->uri) {
-		g_free (priv->uri);
-		priv->uri = NULL;
-	}
-
-	if (priv->search_string) {
-		g_free (priv->search_string);
-		priv->search_string = NULL;
-	}
-
-	if (priv->dest) {
-		g_object_unref (priv->dest);
-		priv->dest = NULL;
-	}
-
-	if (priv->history) {
-		g_object_unref (priv->history);
-		priv->history = NULL;
-	}
-
-	if (priv->print_queue) {
-		g_queue_free (priv->print_queue);
-		priv->print_queue = NULL;
-	}
-
-	if (priv->toolbars_model) {
-		g_object_unref (priv->toolbars_model);
-		priv->toolbars_model = NULL;
-	}
+	g_clear_pointer (&priv->uri, g_free);
+	g_clear_pointer (&priv->search_string, g_free);
+	g_clear_object (&priv->dest);
+	g_clear_object (&priv->history);
+	g_clear_pointer (&priv->print_queue, g_queue_free);
+	g_clear_object (&priv->toolbars_model);
 
 	G_OBJECT_CLASS (ev_window_parent_class)->dispose (object);
 }

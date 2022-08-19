@@ -93,10 +93,7 @@ ev_properties_view_dispose (GObject *object)
 {
 	EvPropertiesView *properties = EV_PROPERTIES_VIEW (object);
 
-	if (properties->uri) {
-		g_free (properties->uri);
-		properties->uri = NULL;
-	}
+	g_clear_pointer (&properties->uri, g_free);
 
 	G_OBJECT_CLASS (ev_properties_view_parent_class)->dispose (object);
 }

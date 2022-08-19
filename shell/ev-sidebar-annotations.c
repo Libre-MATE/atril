@@ -78,10 +78,7 @@ ev_sidebar_annotations_dispose (GObject *object)
 	EvSidebarAnnotations *sidebar_annots = EV_SIDEBAR_ANNOTATIONS (object);
 	EvSidebarAnnotationsPrivate *priv = sidebar_annots->priv;
 
-	if (priv->document) {
-		g_object_unref (priv->document);
-		priv->document = NULL;
-	}
+	g_clear_object (&priv->document);
 
 	G_OBJECT_CLASS (ev_sidebar_annotations_parent_class)->dispose (object);
 }

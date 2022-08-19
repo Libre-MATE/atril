@@ -1419,39 +1419,26 @@ egg_editable_toolbar_dispose (GObject *object)
   EggEditableToolbar *etoolbar = EGG_EDITABLE_TOOLBAR (object);
   EggEditableToolbarPrivate *priv = etoolbar->priv;
 
-  if (priv->fixed_toolbar != NULL)
-    {
-      g_object_unref (priv->fixed_toolbar);
-      priv->fixed_toolbar = NULL;
-    }
+  g_clear_object (&priv->fixed_toolbar);
 
   g_list_free_full (priv->visibility_paths, g_free);
   priv->visibility_paths = NULL;
 
-  g_free (priv->popup_path);
-  priv->popup_path = NULL;
+  g_clear_pointer (&priv->popup_path, g_free);
+  g_clear_pointer (&priv->primary_name, g_free);
 
-  g_free (priv->primary_name);
-  priv->primary_name = NULL;
-
-  if (priv->manager != NULL)
+  if (priv->manager != NULL && priv->visibility_id)
     {
-      if (priv->visibility_id)
-        {
-          gtk_ui_manager_remove_ui (priv->manager, priv->visibility_id);
-          priv->visibility_id = 0;
-        }
-
-      g_object_unref (priv->manager);
-      priv->manager = NULL;
+      gtk_ui_manager_remove_ui (priv->manager, priv->visibility_id);
+      priv->visibility_id = 0;
     }
+
+  g_clear_object (&priv->manager);
 
   if (priv->model)
-    {
-      egg_editable_toolbar_disconnect_model (etoolbar);
-      g_object_unref (priv->model);
-      priv->model = NULL;
-    }
+    egg_editable_toolbar_disconnect_model (etoolbar);
+
+  g_clear_object (&priv->model);
 
   G_OBJECT_CLASS (egg_editable_toolbar_parent_class)->dispose (object);
 }

@@ -63,15 +63,8 @@ ps_document_dispose (GObject *object)
 {
 	PSDocument *ps = PS_DOCUMENT (object);
 
-	if (ps->doc) {
-		spectre_document_free (ps->doc);
-		ps->doc = NULL;
-	}
-
-	if (ps->exporter) {
-		spectre_exporter_free (ps->exporter);
-		ps->exporter = NULL;
-	}
+	g_clear_pointer (&ps->doc, spectre_document_free);
+	g_clear_pointer (&ps->exporter, spectre_exporter_free);
 
 	G_OBJECT_CLASS (ps_document_parent_class)->dispose (object);
 }

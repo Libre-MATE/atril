@@ -70,14 +70,10 @@ ev_sidebar_layers_dispose (GObject *object)
 						      job_finished_callback,
 						      sidebar);
 		ev_job_cancel (sidebar->priv->job);
-		g_object_unref (sidebar->priv->job);
-		sidebar->priv->job = NULL;
 	}
 
-	if (sidebar->priv->document) {
-		g_object_unref (sidebar->priv->document);
-		sidebar->priv->document = NULL;
-	}
+	g_clear_object (&sidebar->priv->job);
+	g_clear_object (&sidebar->priv->document);
 
 	G_OBJECT_CLASS (ev_sidebar_layers_parent_class)->dispose (object);
 }

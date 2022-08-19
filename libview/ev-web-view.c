@@ -99,25 +99,10 @@ ev_web_view_dispose (GObject *object)
 {
 	EvWebView *webview = EV_WEB_VIEW (object);
 
-	if (webview->document) {
-		g_object_unref(webview->document);
-		webview->document = NULL ;
-	}
-
-	if (webview->model) {
-		g_object_unref(webview->model);
-		webview->model = NULL;
-	}
-
-	if (webview->hlink) {
-		g_free(webview->hlink);
-		webview->hlink = NULL;
-	}
-
-	if (webview->search) {
-		g_free(webview->search);
-		webview->search = NULL;
-	}
+	g_clear_object (&webview->document);
+	g_clear_object (&webview->model);
+	g_clear_pointer (&webview->hlink, g_free);
+	g_clear_pointer (&webview->search, g_free);
 
 	G_OBJECT_CLASS (ev_web_view_parent_class)->dispose (object);
 }

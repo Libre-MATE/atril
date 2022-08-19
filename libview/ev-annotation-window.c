@@ -192,11 +192,10 @@ ev_annotation_window_dispose (GObject *object)
 {
 	EvAnnotationWindow *window = EV_ANNOTATION_WINDOW (object);
 
-	if (window->annotation) {
+	if (window->annotation)
 		ev_annotation_window_sync_contents (window);
-		g_object_unref (window->annotation);
-		window->annotation = NULL;
-	}
+
+	g_clear_object (&window->annotation);
 
 	(* G_OBJECT_CLASS (ev_annotation_window_parent_class)->dispose) (object);
 }

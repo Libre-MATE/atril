@@ -5919,25 +5919,10 @@ ev_view_dispose (GObject *object)
 {
 	EvView *view = EV_VIEW (object);
 
-	if (view->model) {
-		g_object_unref (view->model);
-		view->model = NULL;
-	}
-
-	if (view->pixbuf_cache) {
-		g_object_unref (view->pixbuf_cache);
-		view->pixbuf_cache = NULL;
-	}
-
-	if (view->document) {
-		g_object_unref (view->document);
-		view->document = NULL;
-	}
-
-	if (view->page_cache) {
-		g_object_unref (view->page_cache);
-		view->page_cache = NULL;
-	}
+	g_clear_object (&view->model);
+	g_clear_object (&view->pixbuf_cache);
+	g_clear_object (&view->document);
+	g_clear_object (&view->page_cache);
 
 	ev_view_window_children_free (view);
 

@@ -98,20 +98,9 @@ ev_job_dispose (GObject *object)
 
 	job = EV_JOB (object);
 
-	if (job->document) {
-		g_object_unref (job->document);
-		job->document = NULL;
-	}
-
-	if (job->cancellable) {
-		g_object_unref (job->cancellable);
-		job->cancellable = NULL;
-	}
-
-	if (job->error) {
-		g_error_free (job->error);
-		job->error = NULL;
-	}
+	g_clear_object (&job->document);
+	g_clear_object (&job->cancellable);
+	g_clear_error (&job->error);
 
 	(* G_OBJECT_CLASS (ev_job_parent_class)->dispose) (object);
 }
@@ -313,10 +302,7 @@ ev_job_links_dispose (GObject *object)
 
 	job = EV_JOB_LINKS (object);
 
-	if (job->model) {
-		g_object_unref (job->model);
-		job->model = NULL;
-	}
+	g_clear_object (&job->model);
 
 	(* G_OBJECT_CLASS (ev_job_links_parent_class)->dispose) (object);
 }
@@ -552,20 +538,9 @@ ev_job_render_dispose (GObject *object)
 
 	ev_debug_message (DEBUG_JOBS, "page: %d (%p)", job->page, job);
 
-	if (job->surface) {
-		cairo_surface_destroy (job->surface);
-		job->surface = NULL;
-	}
-
-	if (job->selection) {
-		cairo_surface_destroy (job->selection);
-		job->selection = NULL;
-	}
-
-	if (job->selection_region) {
-		cairo_region_destroy (job->selection_region);
-		job->selection_region = NULL;
-	}
+	g_clear_pointer (&job->surface, cairo_surface_destroy);
+	g_clear_pointer (&job->selection, cairo_surface_destroy);
+	g_clear_pointer (&job->selection_region, cairo_region_destroy);
 
 	(* G_OBJECT_CLASS (ev_job_render_parent_class)->dispose) (object);
 }
@@ -811,10 +786,7 @@ ev_job_thumbnail_dispose (GObject *object)
 
 	ev_debug_message (DEBUG_JOBS, "%d (%p)", job->page, job);
 
-	if (job->thumbnail) {
-		g_object_unref (job->thumbnail);
-		job->thumbnail = NULL;
-	}
+	g_clear_object (&job->thumbnail);
 
 	(* G_OBJECT_CLASS (ev_job_thumbnail_parent_class)->dispose) (object);
 }
@@ -1070,15 +1042,8 @@ ev_job_load_dispose (GObject *object)
 
 	ev_debug_message (DEBUG_JOBS, "%s", job->uri);
 
-	if (job->uri) {
-		g_free (job->uri);
-		job->uri = NULL;
-	}
-
-	if (job->password) {
-		g_free (job->password);
-		job->password = NULL;
-	}
+	g_clear_pointer (&job->uri, g_free);
+	g_clear_pointer (&job->password, g_free);
 
 	(* G_OBJECT_CLASS (ev_job_load_parent_class)->dispose) (object);
 }
@@ -1188,15 +1153,8 @@ ev_job_save_dispose (GObject *object)
 
 	ev_debug_message (DEBUG_JOBS, "%s", job->uri);
 
-	if (job->uri) {
-		g_free (job->uri);
-		job->uri = NULL;
-	}
-
-	if (job->document_uri) {
-		g_free (job->document_uri);
-		job->document_uri = NULL;
-	}
+	g_clear_pointer (&job->uri, g_free);
+	g_clear_pointer (&job->document_uri, g_free);
 
 	(* G_OBJECT_CLASS (ev_job_save_parent_class)->dispose) (object);
 }
@@ -1336,23 +1294,17 @@ ev_job_find_dispose (GObject *object)
 
 	ev_debug_message (DEBUG_JOBS, NULL);
 
-	if (job->text) {
-		g_free (job->text);
-		job->text = NULL;
-	}
+	g_clear_pointer (&job->text, g_free);
 
 	if (job->pages) {
 		gint i;
 
 		for (i = 0; i < job->n_pages; i++)
 			g_list_free_full (job->pages[i], (GDestroyNotify)ev_rectangle_free);
-		g_free (job->pages);
-		job->pages = NULL;
 	}
 
-	if (job->results) {
-		g_free(job->results);
-	}
+	g_clear_pointer (&job->pages, g_free);
+	g_clear_pointer (&job->results, g_free);
 
 	(* G_OBJECT_CLASS (ev_job_find_parent_class)->dispose) (object);
 }
@@ -1529,10 +1481,7 @@ ev_job_layers_dispose (GObject *object)
 
 	job = EV_JOB_LAYERS (object);
 
-	if (job->model) {
-		g_object_unref (job->model);
-		job->model = NULL;
-	}
+	g_clear_object (&job->model);
 
 	(* G_OBJECT_CLASS (ev_job_layers_parent_class)->dispose) (object);
 }
@@ -1594,10 +1543,7 @@ ev_job_export_dispose (GObject *object)
 
 	job = EV_JOB_EXPORT (object);
 
-	if (job->rc) {
-		g_object_unref (job->rc);
-		job->rc = NULL;
-	}
+	g_clear_object (&job->rc);
 
 	(* G_OBJECT_CLASS (ev_job_export_parent_class)->dispose) (object);
 }
@@ -1683,10 +1629,7 @@ ev_job_print_dispose (GObject *object)
 
 	job = EV_JOB_PRINT (object);
 
-	if (job->cr) {
-		cairo_destroy (job->cr);
-		job->cr = NULL;
-	}
+	g_clear_pointer (&job->cr, cairo_destroy);
 
 	(* G_OBJECT_CLASS (ev_job_print_parent_class)->dispose) (object);
 }

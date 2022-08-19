@@ -72,10 +72,7 @@ ev_sidebar_dispose (GObject *object)
 		ev_sidebar->priv->menu = NULL;
 	}
 
-	if (ev_sidebar->priv->page_model) {
-		g_object_unref (ev_sidebar->priv->page_model);
-		ev_sidebar->priv->page_model = NULL;
-	}
+	g_clear_object (&ev_sidebar->priv->page_model);
 
 	(* G_OBJECT_CLASS (ev_sidebar_parent_class)->dispose) (object);
 }

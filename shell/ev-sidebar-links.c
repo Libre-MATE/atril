@@ -142,25 +142,19 @@ ev_sidebar_links_dispose (GObject *object)
 		g_signal_handlers_disconnect_by_func (sidebar->priv->job,
 						      job_finished_callback, sidebar);
 		ev_job_cancel (sidebar->priv->job);
-		g_object_unref (sidebar->priv->job);
-		sidebar->priv->job = NULL;
 	}
 
-	if (sidebar->priv->model) {
-		g_object_unref (sidebar->priv->model);
-		sidebar->priv->model = NULL;
-	}
+	g_clear_object (&sidebar->priv->job);
+	g_clear_object (&sidebar->priv->model);
 
 	if (sidebar->priv->page_link_tree) {
 		g_tree_unref (sidebar->priv->page_link_tree);
 		sidebar->priv->page_link_tree = NULL;
 	}
 
-	if (sidebar->priv->document) {
-		g_object_unref (sidebar->priv->document);
-		sidebar->priv->document = NULL;
-		sidebar->priv->doc_model = NULL;
-	}
+	g_clear_object (&sidebar->priv->document);
+
+	sidebar->priv->doc_model = NULL;
 
 	G_OBJECT_CLASS (ev_sidebar_links_parent_class)->dispose (object);
 }

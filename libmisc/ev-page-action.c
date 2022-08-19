@@ -102,10 +102,7 @@ ev_page_action_dispose (GObject *object)
 {
 	EvPageAction *page = EV_PAGE_ACTION (object);
 
-	if (page->priv->model) {
-		g_object_unref (page->priv->model);
-		page->priv->model = NULL;
-	}
+	g_clear_object (&page->priv->model);
 
 	page->priv->doc_model = NULL;
 
