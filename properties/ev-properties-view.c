@@ -303,8 +303,7 @@ ev_regular_paper_size (const EvDocumentInfo *info)
 		}
 	}
 
-	g_list_foreach (paper_sizes, (GFunc) gtk_paper_size_free, NULL);
-	g_list_free (paper_sizes);
+	g_list_free_full (paper_sizes, (GDestroyNotify) gtk_paper_size_free);
 
 	if (str != NULL) {
 		g_free (exact_size);

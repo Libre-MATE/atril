@@ -412,8 +412,7 @@ ev_job_attachments_dispose (GObject *object)
 	job = EV_JOB_ATTACHMENTS (object);
 
 	if (job->attachments) {
-		g_list_foreach (job->attachments, (GFunc)g_object_unref, NULL);
-		g_list_free (job->attachments);
+		g_list_free_full (job->attachments, g_object_unref);
 		job->attachments = NULL;
 	}
 
@@ -477,11 +476,8 @@ ev_job_annots_dispose (GObject *object)
 
 	job = EV_JOB_ANNOTS (object);
 
-	if (job->annots) {
-		g_list_foreach (job->annots, (GFunc)ev_mapping_list_unref, NULL);
-		g_list_free (job->annots);
-		job->annots = NULL;
-	}
+	g_list_free_full (job->annots, (GDestroyNotify)ev_mapping_list_unref);
+	job->annots = NULL;
 
 	G_OBJECT_CLASS (ev_job_annots_parent_class)->dispose (object);
 }
@@ -1348,11 +1344,8 @@ ev_job_find_dispose (GObject *object)
 	if (job->pages) {
 		gint i;
 
-		for (i = 0; i < job->n_pages; i++) {
-			g_list_foreach (job->pages[i], (GFunc)ev_rectangle_free, NULL);
-			g_list_free (job->pages[i]);
-		}
-
+		for (i = 0; i < job->n_pages; i++)
+			g_list_free_full (job->pages[i], (GDestroyNotify)ev_rectangle_free);
 		g_free (job->pages);
 		job->pages = NULL;
 	}

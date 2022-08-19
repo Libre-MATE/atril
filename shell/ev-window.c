@@ -3046,8 +3046,7 @@ ev_window_setup_recent (EvWindow *ev_window)
 			break;
 	}
 
-	g_list_foreach (items, (GFunc) gtk_recent_info_unref, NULL);
-	g_list_free (items);
+	g_list_free_full (items, (GDestroyNotify) gtk_recent_info_unref);
 }
 
 static gboolean
@@ -5664,9 +5663,7 @@ view_menu_annot_popup (EvWindow     *ev_window,
 		if (attachment) {
 			show_annot = TRUE;
 			if (ev_window->priv->attach_list) {
-				g_list_foreach (ev_window->priv->attach_list,
-						(GFunc) g_object_unref, NULL);
-				g_list_free (ev_window->priv->attach_list);
+				g_list_free_full (ev_window->priv->attach_list, g_object_unref);
 				ev_window->priv->attach_list = NULL;
 			}
 			ev_window->priv->attach_list =
@@ -5730,12 +5727,7 @@ attachment_bar_menu_popup_cb (EvSidebarAttachments *attachbar,
 
 	g_assert (attach_list != NULL);
 
-	if (ev_window->priv->attach_list) {
-		g_list_foreach (ev_window->priv->attach_list,
-				(GFunc) g_object_unref, NULL);
-		g_list_free (ev_window->priv->attach_list);
-	}
-
+	g_list_free_full (ev_window->priv->attach_list, g_object_unref);
 	ev_window->priv->attach_list = attach_list;
 
 	popup = ev_window->priv->attachment_popup;
@@ -6345,13 +6337,8 @@ ev_window_dispose (GObject *object)
 		priv->annot = NULL;
 	}
 
-	if (priv->attach_list) {
-		g_list_foreach (priv->attach_list,
-				(GFunc) g_object_unref,
-				NULL);
-		g_list_free (priv->attach_list);
-		priv->attach_list = NULL;
-	}
+	g_list_free_full (priv->attach_list, g_object_unref);
+	priv->attach_list = NULL;
 
 	if (priv->find_bar) {
 		g_signal_handlers_disconnect_by_func

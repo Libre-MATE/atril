@@ -48,18 +48,11 @@ ev_history_init (EvHistory *history)
 }
 
 static void
-free_links_list (GList *l)
-{
-	g_list_foreach (l, (GFunc)g_object_unref, NULL);
-	g_list_free (l);
-}
-
-static void
 ev_history_finalize (GObject *object)
 {
 	EvHistory *history = EV_HISTORY (object);
 
-	free_links_list (history->priv->links);
+	g_list_free_full (history->priv->links, g_object_unref);
 
 	G_OBJECT_CLASS (ev_history_parent_class)->finalize (object);
 }

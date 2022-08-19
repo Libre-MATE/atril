@@ -189,8 +189,7 @@ _ev_backends_manager_init (void)
 void
 _ev_backends_manager_shutdown (void)
 {
-	g_list_foreach (ev_backends_list, (GFunc)ev_backend_info_free, NULL);
-	g_list_free (ev_backends_list);
+	g_list_free_full (ev_backends_list, (GDestroyNotify)ev_backend_info_free);
 	ev_backends_list = NULL;
 
 	g_free (backendsdir);

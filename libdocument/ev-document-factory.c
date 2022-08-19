@@ -78,8 +78,7 @@ mime_type_supported_by_gdk_pixbuf (const gchar *mime_type)
 		}
 	}
 
-	g_list_foreach (mime_types, (GFunc)g_strfreev, NULL);
-	g_list_free (mime_types);
+	g_list_free_full (mime_types, (GDestroyNotify)g_strfreev);
 
 	return retval;
 }

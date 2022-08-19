@@ -257,23 +257,14 @@ ev_link_action_finalize (GObject *object)
 		priv->name = NULL;
 	}
 
-	if (priv->show_list) {
-		g_list_foreach (priv->show_list, (GFunc)g_object_unref, NULL);
-		g_list_free (priv->show_list);
-		priv->show_list = NULL;
-	}
+	g_list_free_full (priv->show_list, g_object_unref);
+	priv->show_list = NULL;
 
-	if (priv->hide_list) {
-		g_list_foreach (priv->hide_list, (GFunc)g_object_unref, NULL);
-		g_list_free (priv->hide_list);
-		priv->hide_list = NULL;
-	}
+	g_list_free_full (priv->hide_list, g_object_unref);
+	priv->hide_list = NULL;
 
-	if (priv->toggle_list) {
-		g_list_foreach (priv->toggle_list, (GFunc)g_object_unref, NULL);
-		g_list_free (priv->toggle_list);
-		priv->toggle_list = NULL;
-	}
+	g_list_free_full (priv->toggle_list, g_object_unref);
+	priv->toggle_list = NULL;
 
 	G_OBJECT_CLASS (ev_link_action_parent_class)->finalize (object);
 }
