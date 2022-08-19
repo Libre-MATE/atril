@@ -607,8 +607,7 @@ comics_document_load (EvDocument *document,
 		g_free (suffix);
 	}
 	g_strfreev (cb_files);
-	g_slist_foreach (supported_extensions, (GFunc) g_free, NULL);
-	g_slist_free (supported_extensions);
+	g_slist_free_full (supported_extensions, g_free);
 
 	if (comics_document->page_names->len == 0) {
 		g_set_error (error,

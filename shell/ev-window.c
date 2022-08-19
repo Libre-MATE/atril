@@ -2777,9 +2777,7 @@ file_open_dialog_response_cb (GtkWidget *chooser,
 					      gtk_window_get_screen (GTK_WINDOW (ev_window)),
 					      gtk_get_current_event_time ());
 
-		g_slist_foreach (uris, (GFunc)g_free, NULL);
-		g_slist_free (uris);
-
+		g_slist_free_full (uris, g_free);
 	}
 
 	gtk_widget_destroy (chooser);
