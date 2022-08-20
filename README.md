@@ -7,18 +7,15 @@ This software is licensed under the GNU GPL. For more on the license, see COPYIN
 Atril Requirements
 ==================================================
 * [MATE Platform libraries](https://github.com/Libre-MATE/mate-desktop/)
-
 * [Poppler](https://poppler.freedesktop.org/) for PDF viewing
-
 * [GhostScript](https://www.ghostscript.com/) for PostScript viewing
 
 Atril Optional Backend Libraries
 ==================================================
 * [DjVuLibre](http://djvu.sourceforge.net/) for DjVu viewing
-
 * [RAR](https://www.rarlab.com/) for viewing CBR comics
-
 * [libgxps](https://wiki.gnome.org/Projects/libgxps) for XPS documents
+* [minizip-compat](https://www.zlib.net/) for EPUB documents
 
 Atril Requirements to Run Tests
 ==================================================

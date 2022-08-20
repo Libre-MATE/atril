@@ -33,6 +33,10 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/parser.h>
 #include <libxml/xmlmemory.h>
+#include <unzip.h>
+
+/*For strcasestr(),strstr()*/
+#include <string.h>
 
 #include "ev-backends-manager.h"
 #include "ev-document-find.h"
@@ -40,10 +44,6 @@
 #include "ev-document-misc.h"
 #include "ev-document-thumbnails.h"
 #include "ev-file-helpers.h"
-#include "unzip.h"
-
-/*For strcasestr(),strstr()*/
-#include <string.h>
 
 typedef enum _xmlParseReturnType {
   XML_ATTRIBUTE,
