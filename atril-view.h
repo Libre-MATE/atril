@@ -1,5 +1,5 @@
 /*
-* Copyright © 2009 Christian Persch
+ * Copyright © 2009 Christian Persch
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -11,8 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
  * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
@@ -21,14 +21,14 @@
 
 #define __EV_ATRIL_VIEW_H_INSIDE__
 
+#include <libview/ev-document-model.h>
 #include <libview/ev-job-scheduler.h>
 #include <libview/ev-jobs.h>
-#include <libview/ev-document-model.h>
 #include <libview/ev-print-operation.h>
+#include <libview/ev-stock-icons.h>
+#include <libview/ev-view-type-builtins.h>
 #include <libview/ev-view.h>
 #include <libview/ev-web-view.h>
-#include <libview/ev-view-type-builtins.h>
-#include <libview/ev-stock-icons.h>
 
 #undef __EV_ATRIL_VIEW_H_INSIDE__
 

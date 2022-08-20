@@ -15,7 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __XPS_DOCUMENT_H__
@@ -25,18 +26,22 @@
 
 G_BEGIN_DECLS
 
-#define XPS_TYPE_DOCUMENT           (xps_document_get_type())
-#define XPS_DOCUMENT(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), XPS_TYPE_DOCUMENT, XPSDocument))
-#define XPS_DOCUMENT_CLASS(klass)   (G_TYPE_CHECK_CLASS_CAST ((klass), XPS_TYPE_DOCUMENT, XPSDocumentClass))
-#define XPS_IS_DOCUMENT(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), XPS_TYPE_DOCUMENT))
-#define XPS_DOCUMENT_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), XPS_TYPE_DOCUMENT, XPSDocumentClass))
+#define XPS_TYPE_DOCUMENT (xps_document_get_type())
+#define XPS_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), XPS_TYPE_DOCUMENT, XPSDocument))
+#define XPS_DOCUMENT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), XPS_TYPE_DOCUMENT, XPSDocumentClass))
+#define XPS_IS_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), XPS_TYPE_DOCUMENT))
+#define XPS_DOCUMENT_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), XPS_TYPE_DOCUMENT, XPSDocumentClass))
 
-typedef struct _XPSDocument      XPSDocument;
+typedef struct _XPSDocument XPSDocument;
 typedef struct _XPSDocumentClass XPSDocumentClass;
 
-GType                 xps_document_get_type   (void) G_GNUC_CONST;
+GType xps_document_get_type(void) G_GNUC_CONST;
 
-G_MODULE_EXPORT GType register_atril_backend (GTypeModule *module);
+G_MODULE_EXPORT GType register_atril_backend(GTypeModule *module);
 
 G_END_DECLS
 

@@ -17,68 +17,55 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include "ev-file-exporter.h"
 #include "ev-document.h"
 
-G_DEFINE_INTERFACE (EvFileExporter, ev_file_exporter, 0)
+G_DEFINE_INTERFACE(EvFileExporter, ev_file_exporter, 0)
 
-static void
-ev_file_exporter_default_init (EvFileExporterInterface *klass)
-{
+static void ev_file_exporter_default_init(EvFileExporterInterface *klass) {}
+
+void ev_file_exporter_begin(EvFileExporter *exporter,
+                            EvFileExporterContext *fc) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
+
+  iface->begin(exporter, fc);
 }
 
-void
-ev_file_exporter_begin (EvFileExporter        *exporter,
-                        EvFileExporterContext *fc)
-{
-        EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
+void ev_file_exporter_begin_page(EvFileExporter *exporter) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
 
-        iface->begin (exporter, fc);
+  if (iface->begin_page) iface->begin_page(exporter);
 }
 
-void
-ev_file_exporter_begin_page (EvFileExporter *exporter)
-{
-	EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
+void ev_file_exporter_do_page(EvFileExporter *exporter, EvRenderContext *rc) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
 
-	if (iface->begin_page)
-		iface->begin_page (exporter);
+  iface->do_page(exporter, rc);
 }
 
-void
-ev_file_exporter_do_page (EvFileExporter  *exporter,
-			  EvRenderContext *rc)
-{
-        EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
+void ev_file_exporter_end_page(EvFileExporter *exporter) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
 
-        iface->do_page (exporter, rc);
+  if (iface->end_page) iface->end_page(exporter);
 }
 
-void
-ev_file_exporter_end_page (EvFileExporter *exporter)
-{
-	EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
+void ev_file_exporter_end(EvFileExporter *exporter) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
 
-	if (iface->end_page)
-		iface->end_page (exporter);
+  iface->end(exporter);
 }
 
-void
-ev_file_exporter_end (EvFileExporter *exporter)
-{
-        EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
+EvFileExporterCapabilities ev_file_exporter_get_capabilities(
+    EvFileExporter *exporter) {
+  EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE(exporter);
 
-        iface->end (exporter);
-}
-
-EvFileExporterCapabilities
-ev_file_exporter_get_capabilities (EvFileExporter *exporter)
-{
-	EvFileExporterInterface *iface = EV_FILE_EXPORTER_GET_IFACE (exporter);
-
-	return iface->get_capabilities (exporter);
+  return iface->get_capabilities(exporter);
 }

@@ -38,7 +38,7 @@
 
 /* Modified by Atril Team */
 
-#if !defined (ATRIL_COMPILATION)
+#if !defined(ATRIL_COMPILATION)
 #error "This is a private header."
 #endif
 
@@ -49,25 +49,28 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_MODULE            (ev_module_get_type ())
-#define EV_MODULE(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_MODULE, EvModule))
-#define EV_MODULE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), EV_TYPE_MODULE, EvModuleClass))
-#define EV_IS_MODULE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_MODULE))
-#define EV_IS_MODULE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), EV_TYPE_MODULE))
-#define EV_MODULE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_MODULE, EvModuleClass))
+#define EV_TYPE_MODULE (ev_module_get_type())
+#define EV_MODULE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_MODULE, EvModule))
+#define EV_MODULE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_MODULE, EvModuleClass))
+#define EV_IS_MODULE(obj) (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_MODULE))
+#define EV_IS_MODULE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), EV_TYPE_MODULE))
+#define EV_MODULE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_MODULE, EvModuleClass))
 
 typedef struct _EvModule EvModule;
 
-GType        ev_module_get_type        (void) G_GNUC_CONST;
+GType ev_module_get_type(void) G_GNUC_CONST;
 
-EvModule    *ev_module_new             (const gchar *path,
-					gboolean     resident);
+EvModule *ev_module_new(const gchar *path, gboolean resident);
 
-const gchar *ev_module_get_path        (EvModule    *module);
+const gchar *ev_module_get_path(EvModule *module);
 
-GObject     *ev_module_new_object      (EvModule    *module);
+GObject *ev_module_new_object(EvModule *module);
 
-GType        ev_module_get_object_type (EvModule    *module);
+GType ev_module_get_object_type(EvModule *module);
 
 G_END_DECLS
 

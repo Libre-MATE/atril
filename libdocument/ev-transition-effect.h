@@ -15,10 +15,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -29,56 +30,62 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_TRANSITION_EFFECT		  (ev_transition_effect_get_type ())
-#define EV_TRANSITION_EFFECT(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_TRANSITION_EFFECT, EvTransitionEffect))
-#define EV_TRANSITION_EFFECT_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass),  EV_TYPE_TRANSITION_EFFECT, EvTransitionEffectClass))
-#define EV_IS_TRANSITION_EFFECT(obj)		  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_TRANSITION_EFFECT))
-#define EV_IS_TRANSITION_EFFECT_CLASS(klass)	  (G_TYPE_CHECK_CLASS_TYPE ((klass),  EV_TYPE_TRANSITION_EFFECT))
-#define EV_TRANSITION_EFFECT_GET_CLASS(obj)	  (G_TYPE_INSTANCE_GET_CLASS ((obj),  EV_TYPE_TRANSITION_EFFECT, EvTransitionEffectClass))
+#define EV_TYPE_TRANSITION_EFFECT (ev_transition_effect_get_type())
+#define EV_TRANSITION_EFFECT(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_TRANSITION_EFFECT, \
+                              EvTransitionEffect))
+#define EV_TRANSITION_EFFECT_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_TRANSITION_EFFECT, \
+                           EvTransitionEffectClass))
+#define EV_IS_TRANSITION_EFFECT(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_TRANSITION_EFFECT))
+#define EV_IS_TRANSITION_EFFECT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_TRANSITION_EFFECT))
+#define EV_TRANSITION_EFFECT_GET_CLASS(obj)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_TRANSITION_EFFECT, \
+                             EvTransitionEffectClass))
 
 typedef enum {
-	EV_TRANSITION_EFFECT_REPLACE,
-	EV_TRANSITION_EFFECT_SPLIT,
-	EV_TRANSITION_EFFECT_BLINDS,
-	EV_TRANSITION_EFFECT_BOX,
-	EV_TRANSITION_EFFECT_WIPE,
-	EV_TRANSITION_EFFECT_DISSOLVE,
-	EV_TRANSITION_EFFECT_GLITTER,
-	EV_TRANSITION_EFFECT_FLY,
-	EV_TRANSITION_EFFECT_PUSH,
-	EV_TRANSITION_EFFECT_COVER,
-	EV_TRANSITION_EFFECT_UNCOVER,
-	EV_TRANSITION_EFFECT_FADE
+  EV_TRANSITION_EFFECT_REPLACE,
+  EV_TRANSITION_EFFECT_SPLIT,
+  EV_TRANSITION_EFFECT_BLINDS,
+  EV_TRANSITION_EFFECT_BOX,
+  EV_TRANSITION_EFFECT_WIPE,
+  EV_TRANSITION_EFFECT_DISSOLVE,
+  EV_TRANSITION_EFFECT_GLITTER,
+  EV_TRANSITION_EFFECT_FLY,
+  EV_TRANSITION_EFFECT_PUSH,
+  EV_TRANSITION_EFFECT_COVER,
+  EV_TRANSITION_EFFECT_UNCOVER,
+  EV_TRANSITION_EFFECT_FADE
 } EvTransitionEffectType;
 
 typedef enum {
-	EV_TRANSITION_ALIGNMENT_HORIZONTAL,
-	EV_TRANSITION_ALIGNMENT_VERTICAL
+  EV_TRANSITION_ALIGNMENT_HORIZONTAL,
+  EV_TRANSITION_ALIGNMENT_VERTICAL
 } EvTransitionEffectAlignment;
 
 typedef enum {
-	EV_TRANSITION_DIRECTION_INWARD,
-	EV_TRANSITION_DIRECTION_OUTWARD
+  EV_TRANSITION_DIRECTION_INWARD,
+  EV_TRANSITION_DIRECTION_OUTWARD
 } EvTransitionEffectDirection;
 
-typedef struct EvTransitionEffect      EvTransitionEffect;
+typedef struct EvTransitionEffect EvTransitionEffect;
 typedef struct EvTransitionEffectClass EvTransitionEffectClass;
 
-struct EvTransitionEffect
-{
-	GObject parent_instance;
+struct EvTransitionEffect {
+  GObject parent_instance;
 };
 
-struct EvTransitionEffectClass
-{
-	GObjectClass parent_class;
+struct EvTransitionEffectClass {
+  GObjectClass parent_class;
 };
 
-GType                 ev_transition_effect_get_type           (void) G_GNUC_CONST;
+GType ev_transition_effect_get_type(void) G_GNUC_CONST;
 
-EvTransitionEffect   *ev_transition_effect_new                (EvTransitionEffectType  type,
-							       const gchar            *first_property_name,
-							       ...);
+EvTransitionEffect *ev_transition_effect_new(EvTransitionEffectType type,
+                                             const gchar *first_property_name,
+                                             ...);
 
 G_END_DECLS
 

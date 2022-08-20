@@ -18,7 +18,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __EV_SIDEBAR_ATTACHMENTS_H__
@@ -29,33 +30,41 @@
 
 G_BEGIN_DECLS
 
-typedef struct _EvSidebarAttachments        EvSidebarAttachments;
-typedef struct _EvSidebarAttachmentsClass   EvSidebarAttachmentsClass;
+typedef struct _EvSidebarAttachments EvSidebarAttachments;
+typedef struct _EvSidebarAttachmentsClass EvSidebarAttachmentsClass;
 typedef struct _EvSidebarAttachmentsPrivate EvSidebarAttachmentsPrivate;
 
-#define EV_TYPE_SIDEBAR_ATTACHMENTS              (ev_sidebar_attachments_get_type())
-#define EV_SIDEBAR_ATTACHMENTS(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_SIDEBAR_ATTACHMENTS, EvSidebarAttachments))
-#define EV_SIDEBAR_ATTACHMENTS_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_SIDEBAR_ATTACHMENTS, EvSidebarAttachmentsClass))
-#define EV_IS_SIDEBAR_ATTACHMENTS(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_SIDEBAR_ATTACHMENTS))
-#define EV_IS_SIDEBAR_ATTACHMENTS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_SIDEBAR_ATTACHMENTS))
-#define EV_SIDEBAR_ATTACHMENTS_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_SIDEBAR_ATTACHMENTS, EvSidebarAttachmentsClass))
+#define EV_TYPE_SIDEBAR_ATTACHMENTS (ev_sidebar_attachments_get_type())
+#define EV_SIDEBAR_ATTACHMENTS(object)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_SIDEBAR_ATTACHMENTS, \
+                              EvSidebarAttachments))
+#define EV_SIDEBAR_ATTACHMENTS_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_SIDEBAR_ATTACHMENTS, \
+                           EvSidebarAttachmentsClass))
+#define EV_IS_SIDEBAR_ATTACHMENTS(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_SIDEBAR_ATTACHMENTS))
+#define EV_IS_SIDEBAR_ATTACHMENTS_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_SIDEBAR_ATTACHMENTS))
+#define EV_SIDEBAR_ATTACHMENTS_GET_CLASS(object)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_SIDEBAR_ATTACHMENTS, \
+                             EvSidebarAttachmentsClass))
 
 struct _EvSidebarAttachments {
-	GtkBox base_instance;
+  GtkBox base_instance;
 
-	EvSidebarAttachmentsPrivate *priv;
+  EvSidebarAttachmentsPrivate *priv;
 };
 
 struct _EvSidebarAttachmentsClass {
-	GtkBoxClass base_class;
+  GtkBoxClass base_class;
 
-	/* Signals */
-	void (*popup_menu) (EvSidebarAttachments *ev_attachbar,
-			    EvAttachment    *attachment);
+  /* Signals */
+  void (*popup_menu)(EvSidebarAttachments *ev_attachbar,
+                     EvAttachment *attachment);
 };
 
-GType      ev_sidebar_attachments_get_type     (void) G_GNUC_CONST;
-GtkWidget *ev_sidebar_attachments_new          (void);
+GType ev_sidebar_attachments_get_type(void) G_GNUC_CONST;
+GtkWidget *ev_sidebar_attachments_new(void);
 
 G_END_DECLS
 

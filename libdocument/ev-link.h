@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -25,6 +26,7 @@
 #define EV_LINK_H
 
 #include <glib-object.h>
+
 #include "ev-document.h"
 #include "ev-link-action.h"
 
@@ -34,20 +36,22 @@ typedef struct _EvLink EvLink;
 typedef struct _EvLinkClass EvLinkClass;
 typedef struct _EvLinkPrivate EvLinkPrivate;
 
-#define EV_TYPE_LINK              (ev_link_get_type())
-#define EV_LINK(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LINK, EvLink))
-#define EV_LINK_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LINK, EvLinkClass))
-#define EV_IS_LINK(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LINK))
-#define EV_IS_LINK_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LINK))
-#define EV_LINK_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LINK, EvLinkClass))
+#define EV_TYPE_LINK (ev_link_get_type())
+#define EV_LINK(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LINK, EvLink))
+#define EV_LINK_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LINK, EvLinkClass))
+#define EV_IS_LINK(object) (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LINK))
+#define EV_IS_LINK_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LINK))
+#define EV_LINK_GET_CLASS(object) \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LINK, EvLinkClass))
 
-GType         ev_link_get_type	 (void) G_GNUC_CONST;
+GType ev_link_get_type(void) G_GNUC_CONST;
 
-EvLink	     *ev_link_new	 (const gchar  *title,
-				  EvLinkAction *action);
+EvLink *ev_link_new(const gchar *title, EvLinkAction *action);
 
-const gchar  *ev_link_get_title  (EvLink       *self);
-EvLinkAction *ev_link_get_action (EvLink       *self);
+const gchar *ev_link_get_title(EvLink *self);
+EvLinkAction *ev_link_get_action(EvLink *self);
 
 G_END_DECLS
 

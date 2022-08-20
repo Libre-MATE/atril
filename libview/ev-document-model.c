@@ -15,327 +15,271 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-document-model.h"
-#include "ev-view-type-builtins.h"
+
 #include "ev-view-marshal.h"
+#include "ev-view-type-builtins.h"
 
-struct _EvDocumentModel
-{
-	GObject base;
+struct _EvDocumentModel {
+  GObject base;
 
-	EvDocument *document;
-	gint n_pages;
+  EvDocument *document;
+  gint n_pages;
 
-	gint page;
-	gint rotation;
-	gdouble scale;
-	EvSizingMode sizing_mode;
-	EvPageLayout page_layout;
-	guint continuous : 1;
-	guint dual_page  : 1;
-	guint dual_page_odd_left : 1;
-	guint fullscreen : 1;
-	guint inverted_colors : 1;
+  gint page;
+  gint rotation;
+  gdouble scale;
+  EvSizingMode sizing_mode;
+  EvPageLayout page_layout;
+  guint continuous : 1;
+  guint dual_page : 1;
+  guint dual_page_odd_left : 1;
+  guint fullscreen : 1;
+  guint inverted_colors : 1;
 
-	gdouble max_scale;
-	gdouble min_scale;
+  gdouble max_scale;
+  gdouble min_scale;
 };
 
-struct _EvDocumentModelClass
-{
-	GObjectClass base_class;
+struct _EvDocumentModelClass {
+  GObjectClass base_class;
 
-	/* Signals  */
-	void (* page_changed) (EvDocumentModel *model,
-			       gint             old_page,
-			       gint             new_page);
+  /* Signals  */
+  void (*page_changed)(EvDocumentModel *model, gint old_page, gint new_page);
 };
 
 enum {
-	PROP_0,
-	PROP_DOCUMENT,
-	PROP_PAGE,
-	PROP_ROTATION,
-	PROP_INVERTED_COLORS,
-	PROP_SCALE,
-	PROP_SIZING_MODE,
-	PROP_CONTINUOUS,
-	PROP_DUAL_PAGE,
-	PROP_DUAL_PAGE_ODD_LEFT,
-	PROP_FULLSCREEN,
-	PROP_PAGE_LAYOUT
+  PROP_0,
+  PROP_DOCUMENT,
+  PROP_PAGE,
+  PROP_ROTATION,
+  PROP_INVERTED_COLORS,
+  PROP_SCALE,
+  PROP_SIZING_MODE,
+  PROP_CONTINUOUS,
+  PROP_DUAL_PAGE,
+  PROP_DUAL_PAGE_ODD_LEFT,
+  PROP_FULLSCREEN,
+  PROP_PAGE_LAYOUT
 };
 
-enum
-{
-	PAGE_CHANGED,
-	N_SIGNALS
-};
+enum { PAGE_CHANGED, N_SIGNALS };
 
-static guint signals[N_SIGNALS] = { 0 };
+static guint signals[N_SIGNALS] = {0};
 
-G_DEFINE_TYPE (EvDocumentModel, ev_document_model, G_TYPE_OBJECT)
+G_DEFINE_TYPE(EvDocumentModel, ev_document_model, G_TYPE_OBJECT)
 
-static void
-ev_document_model_finalize (GObject *object)
-{
-	EvDocumentModel *model = EV_DOCUMENT_MODEL (object);
+static void ev_document_model_finalize(GObject *object) {
+  EvDocumentModel *model = EV_DOCUMENT_MODEL(object);
 
-	if (model->document) {
-		g_object_unref (model->document);
-		model->document = NULL;
-	}
+  if (model->document) {
+    g_object_unref(model->document);
+    model->document = NULL;
+  }
 
-	G_OBJECT_CLASS (ev_document_model_parent_class)->finalize (object);
+  G_OBJECT_CLASS(ev_document_model_parent_class)->finalize(object);
 }
 
-static void
-ev_document_model_set_property (GObject      *object,
-				guint         prop_id,
-				const GValue *value,
-				GParamSpec   *pspec)
-{
-	EvDocumentModel *model = EV_DOCUMENT_MODEL (object);
+static void ev_document_model_set_property(GObject *object, guint prop_id,
+                                           const GValue *value,
+                                           GParamSpec *pspec) {
+  EvDocumentModel *model = EV_DOCUMENT_MODEL(object);
 
-	switch (prop_id) {
-	case PROP_DOCUMENT:
-		ev_document_model_set_document (model, (EvDocument *)g_value_get_object (value));
-		break;
-	case PROP_PAGE:
-		ev_document_model_set_page (model, g_value_get_int (value));
-		break;
-	case PROP_ROTATION:
-		ev_document_model_set_rotation (model, g_value_get_int (value));
-		break;
-	case PROP_INVERTED_COLORS:
-		ev_document_model_set_inverted_colors (model, g_value_get_boolean (value));
-		break;
-	case PROP_SCALE:
-		ev_document_model_set_scale (model, g_value_get_double (value));
-		break;
-	case PROP_SIZING_MODE:
-		ev_document_model_set_sizing_mode (model, g_value_get_enum (value));
-		break;
-	case PROP_CONTINUOUS:
-		ev_document_model_set_continuous (model, g_value_get_boolean (value));
-		break;
-	case PROP_PAGE_LAYOUT:
-		ev_document_model_set_page_layout (model, g_value_get_enum (value));
-		break;
-	case PROP_DUAL_PAGE:
-		ev_document_model_set_dual_page (model, g_value_get_boolean (value));
-		break;
-	case PROP_DUAL_PAGE_ODD_LEFT:
-		ev_document_model_set_dual_page_odd_pages_left (model, g_value_get_boolean (value));
-		break;
-	case PROP_FULLSCREEN:
-		ev_document_model_set_fullscreen (model, g_value_get_boolean (value));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-	}
+  switch (prop_id) {
+    case PROP_DOCUMENT:
+      ev_document_model_set_document(model,
+                                     (EvDocument *)g_value_get_object(value));
+      break;
+    case PROP_PAGE:
+      ev_document_model_set_page(model, g_value_get_int(value));
+      break;
+    case PROP_ROTATION:
+      ev_document_model_set_rotation(model, g_value_get_int(value));
+      break;
+    case PROP_INVERTED_COLORS:
+      ev_document_model_set_inverted_colors(model, g_value_get_boolean(value));
+      break;
+    case PROP_SCALE:
+      ev_document_model_set_scale(model, g_value_get_double(value));
+      break;
+    case PROP_SIZING_MODE:
+      ev_document_model_set_sizing_mode(model, g_value_get_enum(value));
+      break;
+    case PROP_CONTINUOUS:
+      ev_document_model_set_continuous(model, g_value_get_boolean(value));
+      break;
+    case PROP_PAGE_LAYOUT:
+      ev_document_model_set_page_layout(model, g_value_get_enum(value));
+      break;
+    case PROP_DUAL_PAGE:
+      ev_document_model_set_dual_page(model, g_value_get_boolean(value));
+      break;
+    case PROP_DUAL_PAGE_ODD_LEFT:
+      ev_document_model_set_dual_page_odd_pages_left(
+          model, g_value_get_boolean(value));
+      break;
+    case PROP_FULLSCREEN:
+      ev_document_model_set_fullscreen(model, g_value_get_boolean(value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+  }
 }
 
-static void
-ev_document_model_get_property (GObject    *object,
-				guint       prop_id,
-				GValue     *value,
-				GParamSpec *pspec)
-{
-	EvDocumentModel *model = EV_DOCUMENT_MODEL (object);
+static void ev_document_model_get_property(GObject *object, guint prop_id,
+                                           GValue *value, GParamSpec *pspec) {
+  EvDocumentModel *model = EV_DOCUMENT_MODEL(object);
 
-	switch (prop_id) {
-	case PROP_DOCUMENT:
-		g_value_set_object (value, model->document);
-		break;
-	case PROP_PAGE:
-		g_value_set_int (value, model->page);
-		break;
-	case PROP_ROTATION:
-		g_value_set_int (value, model->rotation);
-		break;
-	case PROP_INVERTED_COLORS:
-		g_value_set_boolean (value, model->inverted_colors);
-		break;
-	case PROP_SCALE:
-		g_value_set_double (value, model->scale);
-		break;
-	case PROP_SIZING_MODE:
-		g_value_set_enum (value, model->sizing_mode);
-		break;
-	case PROP_CONTINUOUS:
-		g_value_set_boolean (value, ev_document_model_get_continuous (model));
-		break;
-	case PROP_PAGE_LAYOUT:
-		g_value_set_enum (value, model->page_layout);
-		break;
-	case PROP_DUAL_PAGE:
-		g_value_set_boolean (value, ev_document_model_get_dual_page (model));
-		break;
-	case PROP_DUAL_PAGE_ODD_LEFT:
-		g_value_set_boolean (value, ev_document_model_get_dual_page_odd_pages_left (model));
-		break;
-	case PROP_FULLSCREEN:
-		g_value_set_boolean (value, ev_document_model_get_fullscreen (model));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-	}
+  switch (prop_id) {
+    case PROP_DOCUMENT:
+      g_value_set_object(value, model->document);
+      break;
+    case PROP_PAGE:
+      g_value_set_int(value, model->page);
+      break;
+    case PROP_ROTATION:
+      g_value_set_int(value, model->rotation);
+      break;
+    case PROP_INVERTED_COLORS:
+      g_value_set_boolean(value, model->inverted_colors);
+      break;
+    case PROP_SCALE:
+      g_value_set_double(value, model->scale);
+      break;
+    case PROP_SIZING_MODE:
+      g_value_set_enum(value, model->sizing_mode);
+      break;
+    case PROP_CONTINUOUS:
+      g_value_set_boolean(value, ev_document_model_get_continuous(model));
+      break;
+    case PROP_PAGE_LAYOUT:
+      g_value_set_enum(value, model->page_layout);
+      break;
+    case PROP_DUAL_PAGE:
+      g_value_set_boolean(value, ev_document_model_get_dual_page(model));
+      break;
+    case PROP_DUAL_PAGE_ODD_LEFT:
+      g_value_set_boolean(
+          value, ev_document_model_get_dual_page_odd_pages_left(model));
+      break;
+    case PROP_FULLSCREEN:
+      g_value_set_boolean(value, ev_document_model_get_fullscreen(model));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+  }
 }
 
-static void
-ev_document_model_class_init (EvDocumentModelClass *klass)
-{
-	GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
+static void ev_document_model_class_init(EvDocumentModelClass *klass) {
+  GObjectClass *g_object_class = G_OBJECT_CLASS(klass);
 
-	g_object_class->get_property = ev_document_model_get_property;
-	g_object_class->set_property = ev_document_model_set_property;
-	g_object_class->finalize = ev_document_model_finalize;
+  g_object_class->get_property = ev_document_model_get_property;
+  g_object_class->set_property = ev_document_model_set_property;
+  g_object_class->finalize = ev_document_model_finalize;
 
-	/* Properties */
-	g_object_class_install_property (g_object_class,
-					 PROP_DOCUMENT,
-					 g_param_spec_object ("document",
-							      "Document",
-							      "The current document",
-							      EV_TYPE_DOCUMENT,
-							      G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_PAGE,
-					 g_param_spec_int ("page",
-							   "Page",
-							   "Current page",
-							   -1, G_MAXINT, -1,
-							   G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_ROTATION,
-					 g_param_spec_int ("rotation",
-							   "Rotation",
-							   "Current rotation angle",
-							   0, 360, 0,
-							   G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_INVERTED_COLORS,
-					 g_param_spec_boolean ("inverted-colors",
-							       "Inverted Colors",
-							       "Whether document is displayed with inverted colors",
-							       FALSE,
-							       G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_SCALE,
-					 g_param_spec_double ("scale",
-							      "Scale",
-							      "Current scale factor",
-							      0., G_MAXDOUBLE, 1.,
-							      G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_SIZING_MODE,
-					 g_param_spec_enum ("sizing-mode",
-							    "Sizing Mode",
-							    "Current sizing mode",
-							    EV_TYPE_SIZING_MODE,
-							    EV_SIZING_FIT_WIDTH,
-							    G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_PAGE_LAYOUT,
-					 g_param_spec_enum ("page-layout",
-							    "Page Layout",
-							    "Current page layout",
-							    EV_TYPE_PAGE_LAYOUT,
-							    EV_PAGE_LAYOUT_SINGLE,
-							    G_PARAM_READWRITE |
-							    G_PARAM_STATIC_STRINGS));
-	g_object_class_install_property (g_object_class,
-					 PROP_CONTINUOUS,
-					 g_param_spec_boolean ("continuous",
-							       "Continuous",
-							       "Whether document is displayed in continuous mode",
-							       TRUE,
-							       G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_DUAL_PAGE,
-					 g_param_spec_boolean ("dual-page",
-							       "Dual Page",
-							       "Whether document is displayed in dual page mode",
-							       FALSE,
-							       G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_DUAL_PAGE_ODD_LEFT,
-					 g_param_spec_boolean ("dual-odd-left",
-							       "Odd Pages Left",
-							       "Whether odd pages are displayed on left side in dual mode",
-							       FALSE,
-							       G_PARAM_READWRITE));
-	g_object_class_install_property (g_object_class,
-					 PROP_FULLSCREEN,
-					 g_param_spec_boolean ("fullscreen",
-							       "Fullscreen",
-							       "Whether document is displayed in fullscreen mode",
-							       FALSE,
-							       G_PARAM_READWRITE));
+  /* Properties */
+  g_object_class_install_property(
+      g_object_class, PROP_DOCUMENT,
+      g_param_spec_object("document", "Document", "The current document",
+                          EV_TYPE_DOCUMENT, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_PAGE,
+      g_param_spec_int("page", "Page", "Current page", -1, G_MAXINT, -1,
+                       G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_ROTATION,
+      g_param_spec_int("rotation", "Rotation", "Current rotation angle", 0, 360,
+                       0, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_INVERTED_COLORS,
+      g_param_spec_boolean("inverted-colors", "Inverted Colors",
+                           "Whether document is displayed with inverted colors",
+                           FALSE, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_SCALE,
+      g_param_spec_double("scale", "Scale", "Current scale factor", 0.,
+                          G_MAXDOUBLE, 1., G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_SIZING_MODE,
+      g_param_spec_enum("sizing-mode", "Sizing Mode", "Current sizing mode",
+                        EV_TYPE_SIZING_MODE, EV_SIZING_FIT_WIDTH,
+                        G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_PAGE_LAYOUT,
+      g_param_spec_enum("page-layout", "Page Layout", "Current page layout",
+                        EV_TYPE_PAGE_LAYOUT, EV_PAGE_LAYOUT_SINGLE,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property(
+      g_object_class, PROP_CONTINUOUS,
+      g_param_spec_boolean("continuous", "Continuous",
+                           "Whether document is displayed in continuous mode",
+                           TRUE, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_DUAL_PAGE,
+      g_param_spec_boolean("dual-page", "Dual Page",
+                           "Whether document is displayed in dual page mode",
+                           FALSE, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_DUAL_PAGE_ODD_LEFT,
+      g_param_spec_boolean(
+          "dual-odd-left", "Odd Pages Left",
+          "Whether odd pages are displayed on left side in dual mode", FALSE,
+          G_PARAM_READWRITE));
+  g_object_class_install_property(
+      g_object_class, PROP_FULLSCREEN,
+      g_param_spec_boolean("fullscreen", "Fullscreen",
+                           "Whether document is displayed in fullscreen mode",
+                           FALSE, G_PARAM_READWRITE));
 
-	/* Signals */
-	signals [PAGE_CHANGED] =
-		g_signal_new ("page-changed",
-			      EV_TYPE_DOCUMENT_MODEL,
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (EvDocumentModelClass, page_changed),
-			      NULL, NULL,
-			      ev_view_marshal_VOID__INT_INT,
-			      G_TYPE_NONE, 2,
-			      G_TYPE_INT, G_TYPE_INT);
+  /* Signals */
+  signals[PAGE_CHANGED] = g_signal_new(
+      "page-changed", EV_TYPE_DOCUMENT_MODEL, G_SIGNAL_RUN_LAST,
+      G_STRUCT_OFFSET(EvDocumentModelClass, page_changed), NULL, NULL,
+      ev_view_marshal_VOID__INT_INT, G_TYPE_NONE, 2, G_TYPE_INT, G_TYPE_INT);
 }
 
-static void
-ev_document_model_init (EvDocumentModel *model)
-{
-	model->page = -1;
-	model->scale = 1.;
-	model->sizing_mode = EV_SIZING_FIT_WIDTH;
-	model->continuous = TRUE;
-	model->inverted_colors = FALSE;
-	model->min_scale = 0.;
-	model->max_scale = G_MAXDOUBLE;
+static void ev_document_model_init(EvDocumentModel *model) {
+  model->page = -1;
+  model->scale = 1.;
+  model->sizing_mode = EV_SIZING_FIT_WIDTH;
+  model->continuous = TRUE;
+  model->inverted_colors = FALSE;
+  model->min_scale = 0.;
+  model->max_scale = G_MAXDOUBLE;
 }
 
-EvDocumentModel *
-ev_document_model_new (void)
-{
-	return g_object_new (EV_TYPE_DOCUMENT_MODEL, NULL);
+EvDocumentModel *ev_document_model_new(void) {
+  return g_object_new(EV_TYPE_DOCUMENT_MODEL, NULL);
 }
 
-EvDocumentModel *
-ev_document_model_new_with_document (EvDocument *document)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT (document), NULL);
+EvDocumentModel *ev_document_model_new_with_document(EvDocument *document) {
+  g_return_val_if_fail(EV_IS_DOCUMENT(document), NULL);
 
-	return g_object_new (EV_TYPE_DOCUMENT_MODEL, "document", document, NULL);
+  return g_object_new(EV_TYPE_DOCUMENT_MODEL, "document", document, NULL);
 }
 
-void
-ev_document_model_set_document (EvDocumentModel *model,
-				EvDocument      *document)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
-	g_return_if_fail (EV_IS_DOCUMENT (document));
+void ev_document_model_set_document(EvDocumentModel *model,
+                                    EvDocument *document) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
+  g_return_if_fail(EV_IS_DOCUMENT(document));
 
-	if (document == model->document)
-		return;
+  if (document == model->document) return;
 
-	if (model->document)
-		g_object_unref (model->document);
-	model->document = g_object_ref (document);
+  if (model->document) g_object_unref(model->document);
+  model->document = g_object_ref(document);
 
-	model->n_pages = ev_document_get_n_pages (document);
-	ev_document_model_set_page (model, CLAMP (model->page, 0,
-						  model->n_pages - 1));
+  model->n_pages = ev_document_get_n_pages(document);
+  ev_document_model_set_page(model, CLAMP(model->page, 0, model->n_pages - 1));
 
-	g_object_notify (G_OBJECT (model), "document");
+  g_object_notify(G_OBJECT(model), "document");
 }
 
 /**
@@ -346,327 +290,257 @@ ev_document_model_set_document (EvDocumentModel *model,
  *
  * Returns: (transfer none): a #EvDocument
  */
-EvDocument *
-ev_document_model_get_document (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), NULL);
+EvDocument *ev_document_model_get_document(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), NULL);
 
-	return model->document;
+  return model->document;
 }
 
-void
-ev_document_model_set_page (EvDocumentModel *model,
-			    gint             page)
-{
-	gint old_page;
+void ev_document_model_set_page(EvDocumentModel *model, gint page) {
+  gint old_page;
 
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (model->page == page)
-		return;
-	if (page < 0 || (model->document && page >= model->n_pages))
-		return;
+  if (model->page == page) return;
+  if (page < 0 || (model->document && page >= model->n_pages)) return;
 
-	old_page = model->page;
-	model->page = page;
-	g_signal_emit (model, signals[PAGE_CHANGED], 0, old_page, page);
+  old_page = model->page;
+  model->page = page;
+  g_signal_emit(model, signals[PAGE_CHANGED], 0, old_page, page);
 
-	g_object_notify (G_OBJECT (model), "page");
+  g_object_notify(G_OBJECT(model), "page");
 }
 
-void
-ev_document_model_set_page_by_label (EvDocumentModel *model,
-				     const gchar     *page_label)
-{
-	gint page;
+void ev_document_model_set_page_by_label(EvDocumentModel *model,
+                                         const gchar *page_label) {
+  gint page;
 
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
-	g_return_if_fail (model->document != NULL);
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
+  g_return_if_fail(model->document != NULL);
 
-	if (ev_document_find_page_by_label (model->document, page_label, &page))
-		ev_document_model_set_page (model, page);
+  if (ev_document_find_page_by_label(model->document, page_label, &page))
+    ev_document_model_set_page(model, page);
 }
 
-gint
-ev_document_model_get_page (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), -1);
+gint ev_document_model_get_page(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), -1);
 
-	return model->page;
+  return model->page;
 }
 
-void
-ev_document_model_set_scale (EvDocumentModel *model,
-			     gdouble          scale)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_scale(EvDocumentModel *model, gdouble scale) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	scale = CLAMP (scale,
-		       model->sizing_mode == EV_SIZING_FREE ?
-		       model->min_scale : 0, model->max_scale);
+  scale =
+      CLAMP(scale, model->sizing_mode == EV_SIZING_FREE ? model->min_scale : 0,
+            model->max_scale);
 
-	if (scale == model->scale)
-		return;
+  if (scale == model->scale) return;
 
-	model->scale = scale;
+  model->scale = scale;
 
-	g_object_notify (G_OBJECT (model), "scale");
+  g_object_notify(G_OBJECT(model), "scale");
 }
 
-gdouble
-ev_document_model_get_scale (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), 1.0);
+gdouble ev_document_model_get_scale(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), 1.0);
 
-	return model->scale;
+  return model->scale;
 }
 
-void
-ev_document_model_set_max_scale (EvDocumentModel *model,
-				 gdouble          max_scale)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_max_scale(EvDocumentModel *model,
+                                     gdouble max_scale) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (max_scale == model->max_scale)
-		return;
+  if (max_scale == model->max_scale) return;
 
-	model->max_scale = max_scale;
+  model->max_scale = max_scale;
 
-	if (model->scale > max_scale)
-		ev_document_model_set_scale (model, max_scale);
+  if (model->scale > max_scale) ev_document_model_set_scale(model, max_scale);
 }
 
-gdouble
-ev_document_model_get_max_scale (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), 1.0);
+gdouble ev_document_model_get_max_scale(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), 1.0);
 
-	return model->max_scale;
+  return model->max_scale;
 }
 
-void
-ev_document_model_set_min_scale (EvDocumentModel *model,
-				 gdouble          min_scale)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_min_scale(EvDocumentModel *model,
+                                     gdouble min_scale) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (min_scale == model->min_scale)
-		return;
+  if (min_scale == model->min_scale) return;
 
-	model->min_scale = min_scale;
+  model->min_scale = min_scale;
 
-	if (model->scale < min_scale)
-		ev_document_model_set_scale (model, min_scale);
+  if (model->scale < min_scale) ev_document_model_set_scale(model, min_scale);
 }
 
-gdouble
-ev_document_model_get_min_scale (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), 0.);
+gdouble ev_document_model_get_min_scale(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), 0.);
 
-	return model->min_scale;
+  return model->min_scale;
 }
 
-void
-ev_document_model_set_sizing_mode (EvDocumentModel *model,
-				   EvSizingMode     mode)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_sizing_mode(EvDocumentModel *model,
+                                       EvSizingMode mode) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (mode == model->sizing_mode)
-		return;
+  if (mode == model->sizing_mode) return;
 
-	model->sizing_mode = mode;
+  model->sizing_mode = mode;
 
-	g_object_notify (G_OBJECT (model), "sizing-mode");
+  g_object_notify(G_OBJECT(model), "sizing-mode");
 }
 
-EvSizingMode
-ev_document_model_get_sizing_mode (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), EV_SIZING_FIT_WIDTH);
+EvSizingMode ev_document_model_get_sizing_mode(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), EV_SIZING_FIT_WIDTH);
 
-	return model->sizing_mode;
+  return model->sizing_mode;
 }
 
-static void
-_ev_document_model_set_dual_page_internal (EvDocumentModel *model,
-                                           gboolean         dual_page)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+static void _ev_document_model_set_dual_page_internal(EvDocumentModel *model,
+                                                      gboolean dual_page) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	dual_page = dual_page != FALSE;
+  dual_page = dual_page != FALSE;
 
-	if (dual_page == model->dual_page)
-		return;
+  if (dual_page == model->dual_page) return;
 
-	model->dual_page = (dual_page != FALSE);
+  model->dual_page = (dual_page != FALSE);
 
-	g_object_notify (G_OBJECT (model), "dual-page");
+  g_object_notify(G_OBJECT(model), "dual-page");
 }
 
-void
-ev_document_model_set_page_layout (EvDocumentModel *model,
-				   EvPageLayout	    layout)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_page_layout(EvDocumentModel *model,
+                                       EvPageLayout layout) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (layout == model->page_layout)
-		return;
+  if (layout == model->page_layout) return;
 
-	model->page_layout = layout;
+  model->page_layout = layout;
 
-	g_object_notify (G_OBJECT (model), "page-layout");
+  g_object_notify(G_OBJECT(model), "page-layout");
 
-	/* set deprecated property as well */
-	_ev_document_model_set_dual_page_internal (model, layout == EV_PAGE_LAYOUT_DUAL);
+  /* set deprecated property as well */
+  _ev_document_model_set_dual_page_internal(model,
+                                            layout == EV_PAGE_LAYOUT_DUAL);
 }
 
-EvPageLayout
-ev_document_model_get_page_layout (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), EV_PAGE_LAYOUT_SINGLE);
+EvPageLayout ev_document_model_get_page_layout(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), EV_PAGE_LAYOUT_SINGLE);
 
-	return model->page_layout;
+  return model->page_layout;
 }
 
-void
-ev_document_model_set_rotation (EvDocumentModel *model,
-				gint             rotation)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_rotation(EvDocumentModel *model, gint rotation) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (rotation >= 360)
-		rotation -= 360;
-	else if (rotation < 0)
-		rotation += 360;
+  if (rotation >= 360)
+    rotation -= 360;
+  else if (rotation < 0)
+    rotation += 360;
 
-	if (rotation == model->rotation)
-		return;
+  if (rotation == model->rotation) return;
 
-	model->rotation = rotation;
+  model->rotation = rotation;
 
-	g_object_notify (G_OBJECT (model), "rotation");
+  g_object_notify(G_OBJECT(model), "rotation");
 }
 
-gint
-ev_document_model_get_rotation (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), 0);
+gint ev_document_model_get_rotation(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), 0);
 
-	return model->rotation;
+  return model->rotation;
 }
 
-void
-ev_document_model_set_inverted_colors (EvDocumentModel *model,
-				       gboolean         inverted_colors)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_inverted_colors(EvDocumentModel *model,
+                                           gboolean inverted_colors) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	if (inverted_colors == model->inverted_colors)
-		return;
+  if (inverted_colors == model->inverted_colors) return;
 
-	model->inverted_colors = (inverted_colors != FALSE);
+  model->inverted_colors = (inverted_colors != FALSE);
 
-	g_object_notify (G_OBJECT (model), "inverted-colors");
+  g_object_notify(G_OBJECT(model), "inverted-colors");
 }
 
-gboolean
-ev_document_model_get_inverted_colors (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), FALSE);
+gboolean ev_document_model_get_inverted_colors(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), FALSE);
 
-	return model->inverted_colors;
+  return model->inverted_colors;
 }
 
-void
-ev_document_model_set_continuous (EvDocumentModel *model,
-				  gboolean         continuous)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_continuous(EvDocumentModel *model,
+                                      gboolean continuous) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	continuous = continuous != FALSE;
+  continuous = continuous != FALSE;
 
-	if (continuous == model->continuous)
-		return;
+  if (continuous == model->continuous) return;
 
-	model->continuous = (continuous != FALSE);
+  model->continuous = (continuous != FALSE);
 
-	g_object_notify (G_OBJECT (model), "continuous");
+  g_object_notify(G_OBJECT(model), "continuous");
 }
 
-gboolean
-ev_document_model_get_continuous (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), TRUE);
+gboolean ev_document_model_get_continuous(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), TRUE);
 
-	return model->continuous;
+  return model->continuous;
 }
 
-void
-ev_document_model_set_dual_page (EvDocumentModel *model,
-				 gboolean         dual_page)
-{
-	EvPageLayout layout;
+void ev_document_model_set_dual_page(EvDocumentModel *model,
+                                     gboolean dual_page) {
+  EvPageLayout layout;
 
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	layout = dual_page ? EV_PAGE_LAYOUT_DUAL : EV_PAGE_LAYOUT_SINGLE;
-	ev_document_model_set_page_layout (model, layout);
+  layout = dual_page ? EV_PAGE_LAYOUT_DUAL : EV_PAGE_LAYOUT_SINGLE;
+  ev_document_model_set_page_layout(model, layout);
 }
 
-gboolean
-ev_document_model_get_dual_page (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), FALSE);
+gboolean ev_document_model_get_dual_page(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), FALSE);
 
-	return model->dual_page;
+  return model->dual_page;
 }
 
-void
-ev_document_model_set_dual_page_odd_pages_left (EvDocumentModel *model,
-						gboolean         odd_left)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_dual_page_odd_pages_left(EvDocumentModel *model,
+                                                    gboolean odd_left) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	odd_left = odd_left != FALSE;
+  odd_left = odd_left != FALSE;
 
-	if (odd_left == model->dual_page_odd_left)
-		return;
+  if (odd_left == model->dual_page_odd_left) return;
 
-	model->dual_page_odd_left = (odd_left != FALSE);
+  model->dual_page_odd_left = (odd_left != FALSE);
 
-	g_object_notify (G_OBJECT (model), "dual-odd-left");
+  g_object_notify(G_OBJECT(model), "dual-odd-left");
 }
 
-gboolean
-ev_document_model_get_dual_page_odd_pages_left (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), FALSE);
+gboolean ev_document_model_get_dual_page_odd_pages_left(
+    EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), FALSE);
 
-	return model->dual_page_odd_left;
+  return model->dual_page_odd_left;
 }
 
-void
-ev_document_model_set_fullscreen (EvDocumentModel *model,
-				  gboolean         fullscreen)
-{
-	g_return_if_fail (EV_IS_DOCUMENT_MODEL (model));
+void ev_document_model_set_fullscreen(EvDocumentModel *model,
+                                      gboolean fullscreen) {
+  g_return_if_fail(EV_IS_DOCUMENT_MODEL(model));
 
-	fullscreen = fullscreen != FALSE;
+  fullscreen = fullscreen != FALSE;
 
-	if (fullscreen == model->fullscreen)
-		return;
+  if (fullscreen == model->fullscreen) return;
 
-	model->fullscreen = (fullscreen != FALSE);
+  model->fullscreen = (fullscreen != FALSE);
 
-	g_object_notify (G_OBJECT (model), "fullscreen");
+  g_object_notify(G_OBJECT(model), "fullscreen");
 }
 
-gboolean
-ev_document_model_get_fullscreen (EvDocumentModel *model)
-{
-	g_return_val_if_fail (EV_IS_DOCUMENT_MODEL (model), FALSE);
+gboolean ev_document_model_get_fullscreen(EvDocumentModel *model) {
+  g_return_val_if_fail(EV_IS_DOCUMENT_MODEL(model), FALSE);
 
-	return model->fullscreen;
+  return model->fullscreen;
 }

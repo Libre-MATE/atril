@@ -13,7 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 #ifndef _BITMAP_H
 #define _BITMAP_H 1
@@ -23,43 +24,41 @@
 /* Structures and functions to manipulate bitmaps */
 
 /* bitmap unit (as in X's docs) */
-typedef Uint32	BmUnit;
+typedef Uint32 BmUnit;
 
 /* size (in bytes) of a bitmap atom */
-#define BITMAP_BYTES	4
+#define BITMAP_BYTES 4
 
 /* size (in bits) of a bitmap atom */
-#define BITMAP_BITS	(BITMAP_BYTES << 3)
+#define BITMAP_BITS (BITMAP_BYTES << 3)
 
 typedef struct {
-	int	width;
-	int	height;
-	int	stride;
-	BmUnit	*data;
+  int width;
+  int height;
+  int stride;
+  BmUnit *data;
 } BITMAP;
 
-#define BM_BYTES_PER_LINE(b)	\
-	(ROUND((b)->width, BITMAP_BITS) * BITMAP_BYTES)
-#define BM_WIDTH(b)	(((BITMAP *)(b))->width)
-#define BM_HEIGHT(b)	(((BITMAP *)(b))->height)
+#define BM_BYTES_PER_LINE(b) (ROUND((b)->width, BITMAP_BITS) * BITMAP_BYTES)
+#define BM_WIDTH(b) (((BITMAP *)(b))->width)
+#define BM_HEIGHT(b) (((BITMAP *)(b))->height)
 
-#define BMBIT(n)	((BmUnit)1 << (n))
+#define BMBIT(n) ((BmUnit)1 << (n))
 
 /* Macros to manipulate individual pixels in a bitmap
  * (they are slow, don't use them)
  */
 
-#define bm_offset(b,o) (BmUnit *)((Uchar *)(b) + (o))
+#define bm_offset(b, o) (BmUnit *)((Uchar *)(b) + (o))
 
-#define __bm_unit_ptr(b,x,y) \
-	bm_offset((b)->data, (y) * (b)->stride + \
-	((x) / BITMAP_BITS) * BITMAP_BYTES)
+#define __bm_unit_ptr(b, x, y) \
+  bm_offset((b)->data, (y) * (b)->stride + ((x) / BITMAP_BITS) * BITMAP_BYTES)
 
-#define __bm_unit(b,x,y)    __bm_unit_ptr((b), (x), (y))[0]
+#define __bm_unit(b, x, y) __bm_unit_ptr((b), (x), (y))[0]
 
-#define BM_GETPIXEL(b,x,y)  __bm_unit((b), (x), (y))
-#define BM_SETPIXEL(b,x,y) (__bm_unit((b), (x), (y)) |= FIRSTMASKAT(x))
-#define BM_CLRPIXEL(b,x,y) (__bm_unit((b), (x), (y)) &= ~FIRSTMASKAT(x))
+#define BM_GETPIXEL(b, x, y) __bm_unit((b), (x), (y))
+#define BM_SETPIXEL(b, x, y) (__bm_unit((b), (x), (y)) |= FIRSTMASKAT(x))
+#define BM_CLRPIXEL(b, x, y) (__bm_unit((b), (x), (y)) &= ~FIRSTMASKAT(x))
 
 /*
  * These macros are used to access pixels in a bitmap. They are supposed
@@ -95,26 +94,26 @@ typedef struct {
 
 /* bitmaps are stored in native byte order */
 #ifdef WORD_BIG_ENDIAN
-#define FIRSTSHIFT	(BITMAP_BITS - 1)
-#define LASTSHIFT	0
-#define NEXTMASK(m)	((m) >>= 1)
-#define PREVMASK(m)	((m) <<= 1)
-#define FIRSTSHIFTAT(c)	(BITMAP_BITS - ((c) % BITMAP_BITS) - 1)
+#define FIRSTSHIFT (BITMAP_BITS - 1)
+#define LASTSHIFT 0
+#define NEXTMASK(m) ((m) >>= 1)
+#define PREVMASK(m) ((m) <<= 1)
+#define FIRSTSHIFTAT(c) (BITMAP_BITS - ((c) % BITMAP_BITS) - 1)
 #else
-#define FIRSTSHIFT	0
-#define LASTSHIFT	(BITMAP_BITS - 1)
-#define NEXTMASK(m)	((m) <<= 1)
-#define PREVMASK(m)	((m) >>= 1)
-#define FIRSTSHIFTAT(c)	((c) % BITMAP_BITS)
+#define FIRSTSHIFT 0
+#define LASTSHIFT (BITMAP_BITS - 1)
+#define NEXTMASK(m) ((m) <<= 1)
+#define PREVMASK(m) ((m) >>= 1)
+#define FIRSTSHIFTAT(c) ((c) % BITMAP_BITS)
 #endif
 
-#define FIRSTMASK	BMBIT(FIRSTSHIFT)
-#define FIRSTMASKAT(c)	BMBIT(FIRSTSHIFTAT(c))
-#define LASTMASK	BMBIT(LASTSHIFT)
+#define FIRSTMASK BMBIT(FIRSTSHIFT)
+#define FIRSTMASKAT(c) BMBIT(FIRSTSHIFTAT(c))
+#define LASTMASK BMBIT(LASTSHIFT)
 
-extern BITMAP	*bitmap_alloc __PROTO((int, int));
-extern BITMAP	*bitmap_alloc_raw __PROTO((int, int));
-extern void	bitmap_destroy __PROTO((BITMAP *));
+extern BITMAP *bitmap_alloc __PROTO((int, int));
+extern BITMAP *bitmap_alloc_raw __PROTO((int, int));
+extern void bitmap_destroy __PROTO((BITMAP *));
 
 /*
  * set_row(bm, row, col, count, state):
@@ -140,6 +139,6 @@ extern BITMAP *bitmap_convert_lsb8 __PROTO((Uchar *, int, int, int));
 extern BITMAP *bitmap_convert_msb8 __PROTO((Uchar *, int, int, int));
 
 #include <stdio.h>
-extern void	bitmap_print __PROTO((FILE *, BITMAP *));
+extern void bitmap_print __PROTO((FILE *, BITMAP *));
 
 #endif /* _BITMAP_H */

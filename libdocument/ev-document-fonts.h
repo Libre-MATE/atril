@@ -18,10 +18,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -37,32 +38,29 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_FONTS (ev_document_fonts_get_type ())
-G_DECLARE_INTERFACE (EvDocumentFonts, ev_document_fonts, EV, DOCUMENT_FONTS, GObject);
+#define EV_TYPE_DOCUMENT_FONTS (ev_document_fonts_get_type())
+G_DECLARE_INTERFACE(EvDocumentFonts, ev_document_fonts, EV, DOCUMENT_FONTS,
+                    GObject);
 
 enum {
-	EV_DOCUMENT_FONTS_COLUMN_NAME,
-	EV_DOCUMENT_FONTS_COLUMN_DETAILS,
-	EV_DOCUMENT_FONTS_COLUMN_NUM_COLUMNS
+  EV_DOCUMENT_FONTS_COLUMN_NAME,
+  EV_DOCUMENT_FONTS_COLUMN_DETAILS,
+  EV_DOCUMENT_FONTS_COLUMN_NUM_COLUMNS
 };
 
-struct _EvDocumentFontsInterface
-{
-	GTypeInterface base_iface;
+struct _EvDocumentFontsInterface {
+  GTypeInterface base_iface;
 
-	/* Methods */
-	gboolean (* scan)         (EvDocumentFonts *document_fonts,
-				   int              n_pages);
-	double   (* get_progress) (EvDocumentFonts *document_fonts);
-	void     (* fill_model)   (EvDocumentFonts *document_fonts,
-				   GtkTreeModel    *model);
+  /* Methods */
+  gboolean (*scan)(EvDocumentFonts *document_fonts, int n_pages);
+  double (*get_progress)(EvDocumentFonts *document_fonts);
+  void (*fill_model)(EvDocumentFonts *document_fonts, GtkTreeModel *model);
 };
 
-gboolean  ev_document_fonts_scan         (EvDocumentFonts *document_fonts,
-				          int              n_pages);
-double	  ev_document_fonts_get_progress (EvDocumentFonts *document_fonts);
-void      ev_document_fonts_fill_model   (EvDocumentFonts *document_fonts,
-				          GtkTreeModel    *model);
+gboolean ev_document_fonts_scan(EvDocumentFonts *document_fonts, int n_pages);
+double ev_document_fonts_get_progress(EvDocumentFonts *document_fonts);
+void ev_document_fonts_fill_model(EvDocumentFonts *document_fonts,
+                                  GtkTreeModel *model);
 
 G_END_DECLS
 

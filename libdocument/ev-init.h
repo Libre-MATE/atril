@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -28,13 +29,13 @@
 
 G_BEGIN_DECLS
 
-const gchar* ev_get_locale_dir (void);
+const gchar* ev_get_locale_dir(void);
 
-gboolean    ev_init           (void);
+gboolean ev_init(void);
 
-void        ev_shutdown       (void);
+void ev_shutdown(void);
 
-gboolean   _ev_is_initialized (void);
+gboolean _ev_is_initialized(void);
 
 G_END_DECLS
 

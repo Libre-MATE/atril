@@ -15,34 +15,33 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef EV_DOCUMENT_PRINT_H
 #define EV_DOCUMENT_PRINT_H
 
-#include <glib-object.h>
 #include <cairo.h>
+#include <glib-object.h>
 
 #include "ev-page.h"
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_PRINT (ev_document_print_get_type ())
-G_DECLARE_INTERFACE (EvDocumentPrint, ev_document_print, EV, DOCUMENT_PRINT, GObject);
-struct _EvDocumentPrintInterface
-{
-	GTypeInterface base_iface;
+#define EV_TYPE_DOCUMENT_PRINT (ev_document_print_get_type())
+G_DECLARE_INTERFACE(EvDocumentPrint, ev_document_print, EV, DOCUMENT_PRINT,
+                    GObject);
+struct _EvDocumentPrintInterface {
+  GTypeInterface base_iface;
 
-	/* Methods  */
-	void (* print_page) (EvDocumentPrint *document_print,
-			     EvPage          *page,
-			     cairo_t         *cr);
+  /* Methods  */
+  void (*print_page)(EvDocumentPrint *document_print, EvPage *page,
+                     cairo_t *cr);
 };
 
-void  ev_document_print_print_page (EvDocumentPrint *document_print,
-				    EvPage          *page,
-				    cairo_t         *cr);
+void ev_document_print_print_page(EvDocumentPrint *document_print, EvPage *page,
+                                  cairo_t *cr);
 
 G_END_DECLS
 

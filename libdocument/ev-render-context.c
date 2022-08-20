@@ -14,81 +14,68 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include "ev-render-context.h"
 
-G_DEFINE_TYPE (EvRenderContext, ev_render_context, G_TYPE_OBJECT);
+G_DEFINE_TYPE(EvRenderContext, ev_render_context, G_TYPE_OBJECT);
 
-static void ev_render_context_init (EvRenderContext *rc) { /* Do Nothing */ }
-
-static void
-ev_render_context_dispose (GObject *object)
-{
-	EvRenderContext *rc;
-
-	rc = (EvRenderContext *) object;
-
-	g_clear_object (&rc->page);
-
-	(* G_OBJECT_CLASS (ev_render_context_parent_class)->dispose) (object);
+static void ev_render_context_init(EvRenderContext *rc) { /* Do Nothing */
 }
 
-static void
-ev_render_context_class_init (EvRenderContextClass *class)
-{
-	GObjectClass *oclass;
+static void ev_render_context_dispose(GObject *object) {
+  EvRenderContext *rc;
 
-	oclass = G_OBJECT_CLASS (class);
+  rc = (EvRenderContext *)object;
 
-	oclass->dispose = ev_render_context_dispose;
+  g_clear_object(&rc->page);
+
+  (*G_OBJECT_CLASS(ev_render_context_parent_class)->dispose)(object);
 }
 
-EvRenderContext *
-ev_render_context_new (EvPage *page,
-		       gint    rotation,
-		       gdouble scale)
-{
-	EvRenderContext *rc;
+static void ev_render_context_class_init(EvRenderContextClass *class) {
+  GObjectClass *oclass;
 
-	rc = (EvRenderContext *) g_object_new (EV_TYPE_RENDER_CONTEXT, NULL);
+  oclass = G_OBJECT_CLASS(class);
 
-	rc->page = page ? g_object_ref (page) : NULL;
-	rc->rotation = rotation;
-	rc->scale = scale;
-
-	return rc;
+  oclass->dispose = ev_render_context_dispose;
 }
 
-void
-ev_render_context_set_page (EvRenderContext *rc,
-			    EvPage          *page)
-{
-	g_return_if_fail (rc != NULL);
-	g_return_if_fail (EV_IS_PAGE (page));
+EvRenderContext *ev_render_context_new(EvPage *page, gint rotation,
+                                       gdouble scale) {
+  EvRenderContext *rc;
 
-	if (rc->page)
-		g_object_unref (rc->page);
-	rc->page = g_object_ref (page);
+  rc = (EvRenderContext *)g_object_new(EV_TYPE_RENDER_CONTEXT, NULL);
+
+  rc->page = page ? g_object_ref(page) : NULL;
+  rc->rotation = rotation;
+  rc->scale = scale;
+
+  return rc;
 }
 
-void
-ev_render_context_set_rotation (EvRenderContext *rc,
-				int              rotation)
-{
-	g_return_if_fail (rc != NULL);
+void ev_render_context_set_page(EvRenderContext *rc, EvPage *page) {
+  g_return_if_fail(rc != NULL);
+  g_return_if_fail(EV_IS_PAGE(page));
 
-	rc->rotation = rotation;
+  if (rc->page) g_object_unref(rc->page);
+  rc->page = g_object_ref(page);
 }
 
-void
-ev_render_context_set_scale (EvRenderContext *rc,
-			     gdouble          scale)
-{
-	g_return_if_fail (rc != NULL);
+void ev_render_context_set_rotation(EvRenderContext *rc, int rotation) {
+  g_return_if_fail(rc != NULL);
 
-	rc->scale = scale;
+  rc->rotation = rotation;
 }
 
+void ev_render_context_set_scale(EvRenderContext *rc, gdouble scale) {
+  g_return_if_fail(rc != NULL);
+
+  rc->scale = scale;
+}

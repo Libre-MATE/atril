@@ -13,18 +13,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #include <glib.h>
 #include <stdio.h>
+
 #include "tiffio.h"
 
 typedef struct _TIFF2PSContext TIFF2PSContext;
 
-TIFF2PSContext *tiff2ps_context_new(const gchar *filename);
-void tiff2ps_process_page(TIFF2PSContext* ctx, TIFF* tif,
-			  double pagewidth, double pageheight,
-			  double leftmargin, double bottommargin,
-			  gboolean center);
+TIFF2PSContext* tiff2ps_context_new(const gchar* filename);
+void tiff2ps_process_page(TIFF2PSContext* ctx, TIFF* tif, double pagewidth,
+                          double pageheight, double leftmargin,
+                          double bottommargin, gboolean center);
 void tiff2ps_context_finalize(TIFF2PSContext* ctx);

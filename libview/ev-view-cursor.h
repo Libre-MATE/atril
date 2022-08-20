@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_VIEW_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_VIEW_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-view.h> can be included directly."
 #endif
 
@@ -29,18 +30,17 @@
 G_BEGIN_DECLS
 
 typedef enum {
-	EV_VIEW_CURSOR_NORMAL,
-	EV_VIEW_CURSOR_IBEAM,
-	EV_VIEW_CURSOR_LINK,
-	EV_VIEW_CURSOR_WAIT,
-	EV_VIEW_CURSOR_HIDDEN,
-	EV_VIEW_CURSOR_DRAG,
-	EV_VIEW_CURSOR_AUTOSCROLL,
-	EV_VIEW_CURSOR_ADD
+  EV_VIEW_CURSOR_NORMAL,
+  EV_VIEW_CURSOR_IBEAM,
+  EV_VIEW_CURSOR_LINK,
+  EV_VIEW_CURSOR_WAIT,
+  EV_VIEW_CURSOR_HIDDEN,
+  EV_VIEW_CURSOR_DRAG,
+  EV_VIEW_CURSOR_AUTOSCROLL,
+  EV_VIEW_CURSOR_ADD
 } EvViewCursor;
 
-GdkCursor *ev_view_cursor_new (GdkDisplay  *display,
-			       EvViewCursor cursor);
+GdkCursor *ev_view_cursor_new(GdkDisplay *display, EvViewCursor cursor);
 
 G_END_DECLS
 

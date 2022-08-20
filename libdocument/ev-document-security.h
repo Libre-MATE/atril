@@ -18,10 +18,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -35,22 +36,23 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_SECURITY (ev_document_security_get_type ())
-G_DECLARE_INTERFACE (EvDocumentSecurity, ev_document_security, EV, DOCUMENT_SECURITY, GObject);
+#define EV_TYPE_DOCUMENT_SECURITY (ev_document_security_get_type())
+G_DECLARE_INTERFACE(EvDocumentSecurity, ev_document_security, EV,
+                    DOCUMENT_SECURITY, GObject);
 
-struct _EvDocumentSecurityInterface
-{
-	GTypeInterface base_iface;
+struct _EvDocumentSecurityInterface {
+  GTypeInterface base_iface;
 
-	/* Methods  */
-	gboolean             (* has_document_security) (EvDocumentSecurity *document_security);
-	void                 (* set_password)          (EvDocumentSecurity *document_security,
-							const char         *password);
+  /* Methods  */
+  gboolean (*has_document_security)(EvDocumentSecurity *document_security);
+  void (*set_password)(EvDocumentSecurity *document_security,
+                       const char *password);
 };
 
-gboolean ev_document_security_has_document_security (EvDocumentSecurity *document_security);
-void     ev_document_security_set_password          (EvDocumentSecurity *document_security,
-						     const char         *password);
+gboolean ev_document_security_has_document_security(
+    EvDocumentSecurity *document_security);
+void ev_document_security_set_password(EvDocumentSecurity *document_security,
+                                       const char *password);
 
 G_END_DECLS
 

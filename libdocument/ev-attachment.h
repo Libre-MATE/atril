@@ -14,65 +14,66 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
 #ifndef __EV_ATTACHMENT_H__
 #define __EV_ATTACHMENT_H__
 
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <gdk/gdk.h>
 
 G_BEGIN_DECLS
 
-typedef struct _EvAttachment        EvAttachment;
-typedef struct _EvAttachmentClass   EvAttachmentClass;
+typedef struct _EvAttachment EvAttachment;
+typedef struct _EvAttachmentClass EvAttachmentClass;
 typedef struct _EvAttachmentPrivate EvAttachmentPrivate;
 
-#define EV_TYPE_ATTACHMENT              (ev_attachment_get_type())
-#define EV_ATTACHMENT(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_ATTACHMENT, EvAttachment))
-#define EV_ATTACHMENT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_ATTACHMENT, EvAttachmentClass))
-#define EV_IS_ATTACHMENT(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_ATTACHMENT))
-#define EV_IS_ATTACHMENT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_ATTACHMENT))
-#define EV_ATTACHMENT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_ATTACHMENT, EvAttachmentClass))
+#define EV_TYPE_ATTACHMENT (ev_attachment_get_type())
+#define EV_ATTACHMENT(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_ATTACHMENT, EvAttachment))
+#define EV_ATTACHMENT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_ATTACHMENT, EvAttachmentClass))
+#define EV_IS_ATTACHMENT(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_ATTACHMENT))
+#define EV_IS_ATTACHMENT_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_ATTACHMENT))
+#define EV_ATTACHMENT_GET_CLASS(object) \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_ATTACHMENT, EvAttachmentClass))
 
-#define EV_ATTACHMENT_ERROR (ev_attachment_error_quark ())
+#define EV_ATTACHMENT_ERROR (ev_attachment_error_quark())
 
 struct _EvAttachment {
-	GObject base_instance;
+  GObject base_instance;
 
-	EvAttachmentPrivate *priv;
+  EvAttachmentPrivate *priv;
 };
 
 struct _EvAttachmentClass {
-	GObjectClass base_class;
+  GObjectClass base_class;
 };
 
-GType         ev_attachment_get_type             (void) G_GNUC_CONST;
-GQuark        ev_attachment_error_quark          (void) G_GNUC_CONST;
-EvAttachment *ev_attachment_new                  (const gchar  *name,
-						  const gchar  *description,
-						  gint64        mtime,
-						  gint64        ctime,
-						  gsize         size,
-						  gpointer      data);
+GType ev_attachment_get_type(void) G_GNUC_CONST;
+GQuark ev_attachment_error_quark(void) G_GNUC_CONST;
+EvAttachment *ev_attachment_new(const gchar *name, const gchar *description,
+                                gint64 mtime, gint64 ctime, gsize size,
+                                gpointer data);
 
-const gchar *ev_attachment_get_name              (EvAttachment *attachment);
-const gchar *ev_attachment_get_description       (EvAttachment *attachment);
-gint64       ev_attachment_get_modification_date (EvAttachment *attachment);
-gint64       ev_attachment_get_creation_date     (EvAttachment *attachment);
-const gchar *ev_attachment_get_mime_type         (EvAttachment *attachment);
-gboolean     ev_attachment_save                  (EvAttachment *attachment,
-						  GFile        *file,
-						  GError      **error);
-gboolean     ev_attachment_open                  (EvAttachment *attachment,
-						  GdkScreen    *screen,
-						  guint32       timestamp,
-						  GError      **error);
+const gchar *ev_attachment_get_name(EvAttachment *attachment);
+const gchar *ev_attachment_get_description(EvAttachment *attachment);
+gint64 ev_attachment_get_modification_date(EvAttachment *attachment);
+gint64 ev_attachment_get_creation_date(EvAttachment *attachment);
+const gchar *ev_attachment_get_mime_type(EvAttachment *attachment);
+gboolean ev_attachment_save(EvAttachment *attachment, GFile *file,
+                            GError **error);
+gboolean ev_attachment_open(EvAttachment *attachment, GdkScreen *screen,
+                            guint32 timestamp, GError **error);
 
 G_END_DECLS
 

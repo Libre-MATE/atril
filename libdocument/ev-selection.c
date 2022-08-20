@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /*
  *  Copyright (C) 2005 Red Hat, Inc.
  *
@@ -14,64 +15,49 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-selection.h"
 
-G_DEFINE_INTERFACE (EvSelection, ev_selection, 0)
+G_DEFINE_INTERFACE(EvSelection, ev_selection, 0)
 
-static void
-ev_selection_default_init (EvSelectionInterface *klass)
-{
+static void ev_selection_default_init(EvSelectionInterface *klass) {}
+
+void ev_selection_render_selection(EvSelection *selection, EvRenderContext *rc,
+                                   cairo_surface_t **surface,
+                                   EvRectangle *points, EvRectangle *old_points,
+                                   EvSelectionStyle style, GdkColor *text,
+                                   GdkColor *base) {
+  EvSelectionInterface *iface = EV_SELECTION_GET_IFACE(selection);
+
+  if (!iface->render_selection) return;
+
+  iface->render_selection(selection, rc, surface, points, old_points, style,
+                          text, base);
 }
 
-void
-ev_selection_render_selection (EvSelection      *selection,
-			       EvRenderContext  *rc,
-			       cairo_surface_t **surface,
-			       EvRectangle      *points,
-			       EvRectangle      *old_points,
-			       EvSelectionStyle  style,
-			       GdkColor         *text,
-			       GdkColor         *base)
-{
-	EvSelectionInterface *iface = EV_SELECTION_GET_IFACE (selection);
+gchar *ev_selection_get_selected_text(EvSelection *selection, EvPage *page,
+                                      EvSelectionStyle style,
+                                      EvRectangle *points) {
+  EvSelectionInterface *iface = EV_SELECTION_GET_IFACE(selection);
 
-	if (!iface->render_selection)
-		return;
-
-	iface->render_selection (selection, rc,
-				 surface,
-				 points, old_points,
-				 style,
-				 text, base);
+  return iface->get_selected_text(selection, page, style, points);
 }
 
-gchar *
-ev_selection_get_selected_text (EvSelection      *selection,
-				EvPage           *page,
-				EvSelectionStyle  style,
-				EvRectangle      *points)
-{
-	EvSelectionInterface *iface = EV_SELECTION_GET_IFACE (selection);
+cairo_region_t *ev_selection_get_selection_region(EvSelection *selection,
+                                                  EvRenderContext *rc,
+                                                  EvSelectionStyle style,
+                                                  EvRectangle *points) {
+  EvSelectionInterface *iface = EV_SELECTION_GET_IFACE(selection);
 
-	return iface->get_selected_text (selection, page, style, points);
-}
+  if (!iface->get_selection_region) return NULL;
 
-cairo_region_t *
-ev_selection_get_selection_region (EvSelection     *selection,
-				   EvRenderContext *rc,
-				   EvSelectionStyle style,
-				   EvRectangle     *points)
-{
-	EvSelectionInterface *iface = EV_SELECTION_GET_IFACE (selection);
-
-	if (!iface->get_selection_region)
-		return NULL;
-
-	return iface->get_selection_region (selection, rc, style, points);
+  return iface->get_selection_region(selection, rc, style, points);
 }

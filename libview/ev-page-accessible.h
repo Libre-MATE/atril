@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /* this file is part of evince, a mate document viewer
  *
  * Copyright (C) 2014 Igalia S.L.
@@ -15,7 +16,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  * Author: Alejandro Piñeiro Iglesias <apinheiro@igalia.com>
  */
@@ -24,33 +26,36 @@
 #define __EV_PAGE_ACCESSIBLE_H__
 
 #include <gtk/gtk-a11y.h>
+
 #include "ev-view-accessible.h"
 #include "ev-view.h"
 
-#define EV_TYPE_PAGE_ACCESSIBLE      (ev_page_accessible_get_type ())
-#define EV_PAGE_ACCESSIBLE(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_PAGE_ACCESSIBLE, EvPageAccessible))
-#define EV_IS_PAGE_ACCESSIBLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_PAGE_ACCESSIBLE))
+#define EV_TYPE_PAGE_ACCESSIBLE (ev_page_accessible_get_type())
+#define EV_PAGE_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_PAGE_ACCESSIBLE, EvPageAccessible))
+#define EV_IS_PAGE_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_PAGE_ACCESSIBLE))
 
-typedef struct _EvPageAccessible        EvPageAccessible;
-typedef struct _EvPageAccessibleClass   EvPageAccessibleClass;
+typedef struct _EvPageAccessible EvPageAccessible;
+typedef struct _EvPageAccessibleClass EvPageAccessibleClass;
 typedef struct _EvPageAccessiblePrivate EvPageAccessiblePrivate;
 
 struct _EvPageAccessible {
-        AtkObject parent;
+  AtkObject parent;
 
-        EvPageAccessiblePrivate *priv;
+  EvPageAccessiblePrivate *priv;
 };
 
 struct _EvPageAccessibleClass {
-        AtkObjectClass parent_class;
+  AtkObjectClass parent_class;
 };
 
-GType             ev_page_accessible_get_type            (void) G_GNUC_CONST;
-EvPageAccessible *ev_page_accessible_new                 (EvViewAccessible *view_accessible,
-							  gint              page);
-gint              ev_page_accessible_get_page            (EvPageAccessible *page_accessible);
-EvViewAccessible *ev_page_accessible_get_view_accessible (EvPageAccessible *page_accessible);
-EvView           *ev_page_accessible_get_view            (EvPageAccessible *page_accessible);
+GType ev_page_accessible_get_type(void) G_GNUC_CONST;
+EvPageAccessible *ev_page_accessible_new(EvViewAccessible *view_accessible,
+                                         gint page);
+gint ev_page_accessible_get_page(EvPageAccessible *page_accessible);
+EvViewAccessible *ev_page_accessible_get_view_accessible(
+    EvPageAccessible *page_accessible);
+EvView *ev_page_accessible_get_view(EvPageAccessible *page_accessible);
 
-#endif  /* __EV_PAGE_ACCESSIBLE_H__ */
-
+#endif /* __EV_PAGE_ACCESSIBLE_H__ */

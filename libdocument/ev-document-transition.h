@@ -15,10 +15,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -32,24 +33,23 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_TRANSITION (ev_document_transition_get_type ())
-G_DECLARE_INTERFACE (EvDocumentTransition, ev_document_transition, EV, DOCUMENT_TRANSITION, GObject);
+#define EV_TYPE_DOCUMENT_TRANSITION (ev_document_transition_get_type())
+G_DECLARE_INTERFACE(EvDocumentTransition, ev_document_transition, EV,
+                    DOCUMENT_TRANSITION, GObject);
 
-struct _EvDocumentTransitionInterface
-{
-	GTypeInterface base_iface;
+struct _EvDocumentTransitionInterface {
+  GTypeInterface base_iface;
 
-	/* Methods  */
-	gdouble              (* get_page_duration) (EvDocumentTransition *document_trans,
-						    gint                  page);
-	EvTransitionEffect * (* get_effect)        (EvDocumentTransition *document_trans,
-						    gint                  page);
+  /* Methods  */
+  gdouble (*get_page_duration)(EvDocumentTransition *document_trans, gint page);
+  EvTransitionEffect *(*get_effect)(EvDocumentTransition *document_trans,
+                                    gint page);
 };
 
-gdouble              ev_document_transition_get_page_duration (EvDocumentTransition *document_trans,
-							       gint                  page);
-EvTransitionEffect * ev_document_transition_get_effect        (EvDocumentTransition *document_trans,
-							       gint                  page);
+gdouble ev_document_transition_get_page_duration(
+    EvDocumentTransition *document_trans, gint page);
+EvTransitionEffect *ev_document_transition_get_effect(
+    EvDocumentTransition *document_trans, gint page);
 
 G_END_DECLS
 

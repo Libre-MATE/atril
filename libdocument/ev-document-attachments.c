@@ -15,40 +15,41 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-document-attachments.h"
 #include "ev-document.h"
 
-G_DEFINE_INTERFACE (EvDocumentAttachments, ev_document_attachments, 0)
+G_DEFINE_INTERFACE(EvDocumentAttachments, ev_document_attachments, 0)
 
-static void
-ev_document_attachments_default_init (EvDocumentAttachmentsInterface *klass)
-{
-}
+static void ev_document_attachments_default_init(
+    EvDocumentAttachmentsInterface *klass) {}
 
-gboolean
-ev_document_attachments_has_attachments (EvDocumentAttachments *document_attachments)
-{
-	EvDocumentAttachmentsInterface *iface = EV_DOCUMENT_ATTACHMENTS_GET_IFACE (document_attachments);
+gboolean ev_document_attachments_has_attachments(
+    EvDocumentAttachments *document_attachments) {
+  EvDocumentAttachmentsInterface *iface =
+      EV_DOCUMENT_ATTACHMENTS_GET_IFACE(document_attachments);
 
-	return iface->has_attachments (document_attachments);
+  return iface->has_attachments(document_attachments);
 }
 
 /**
  * ev_document_attachments_get_attachments:
  * @document_attachments: an #EvDocumentAttachments
  *
- * Returns: (transfer full) (element-type EvAttachment): a list of #EvAttachment objects
+ * Returns: (transfer full) (element-type EvAttachment): a list of #EvAttachment
+ * objects
  */
-GList *
-ev_document_attachments_get_attachments (EvDocumentAttachments *document_attachments)
-{
-	EvDocumentAttachmentsInterface *iface = EV_DOCUMENT_ATTACHMENTS_GET_IFACE (document_attachments);
+GList *ev_document_attachments_get_attachments(
+    EvDocumentAttachments *document_attachments) {
+  EvDocumentAttachmentsInterface *iface =
+      EV_DOCUMENT_ATTACHMENTS_GET_IFACE(document_attachments);
 
-	return iface->get_attachments (document_attachments);
+  return iface->get_attachments(document_attachments);
 }
-

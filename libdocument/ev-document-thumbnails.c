@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /*
  *  Copyright (C) 2004 Anders Carlsson <andersca@gnome.org>
  *
@@ -14,49 +15,46 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include "ev-document-thumbnails.h"
 #include "ev-document.h"
 
-G_DEFINE_INTERFACE (EvDocumentThumbnails, ev_document_thumbnails, 0)
+G_DEFINE_INTERFACE(EvDocumentThumbnails, ev_document_thumbnails, 0)
 
-static void
-ev_document_thumbnails_default_init (EvDocumentThumbnailsInterface *klass)
-{
+static void ev_document_thumbnails_default_init(
+    EvDocumentThumbnailsInterface *klass) {}
+
+GdkPixbuf *ev_document_thumbnails_get_thumbnail(EvDocumentThumbnails *document,
+                                                EvRenderContext *rc,
+                                                gboolean border) {
+  EvDocumentThumbnailsInterface *iface;
+
+  g_return_val_if_fail(EV_IS_DOCUMENT_THUMBNAILS(document), NULL);
+  g_return_val_if_fail(EV_IS_RENDER_CONTEXT(rc), NULL);
+
+  iface = EV_DOCUMENT_THUMBNAILS_GET_IFACE(document);
+
+  return iface->get_thumbnail(document, rc, border);
 }
 
-GdkPixbuf *
-ev_document_thumbnails_get_thumbnail (EvDocumentThumbnails *document,
-				      EvRenderContext      *rc,
-				      gboolean              border)
-{
-	EvDocumentThumbnailsInterface *iface;
+void ev_document_thumbnails_get_dimensions(EvDocumentThumbnails *document,
+                                           EvRenderContext *rc, gint *width,
+                                           gint *height) {
+  EvDocumentThumbnailsInterface *iface;
 
-	g_return_val_if_fail (EV_IS_DOCUMENT_THUMBNAILS (document), NULL);
-	g_return_val_if_fail (EV_IS_RENDER_CONTEXT (rc), NULL);
+  g_return_if_fail(EV_IS_DOCUMENT_THUMBNAILS(document));
+  g_return_if_fail(EV_IS_RENDER_CONTEXT(rc));
+  g_return_if_fail(width != NULL);
+  g_return_if_fail(height != NULL);
 
-	iface = EV_DOCUMENT_THUMBNAILS_GET_IFACE (document);
-
-	return iface->get_thumbnail (document, rc, border);
-}
-
-void
-ev_document_thumbnails_get_dimensions (EvDocumentThumbnails *document,
-				       EvRenderContext      *rc,
-				       gint                 *width,
-				       gint                 *height)
-{
-	EvDocumentThumbnailsInterface *iface;
-
-	g_return_if_fail (EV_IS_DOCUMENT_THUMBNAILS (document));
-	g_return_if_fail (EV_IS_RENDER_CONTEXT (rc));
-	g_return_if_fail (width != NULL);
-	g_return_if_fail (height != NULL);
-
-	iface = EV_DOCUMENT_THUMBNAILS_GET_IFACE (document);
-	iface->get_dimensions (document, rc, width, height);
+  iface = EV_DOCUMENT_THUMBNAILS_GET_IFACE(document);
+  iface->get_dimensions(document, rc, width, height);
 }

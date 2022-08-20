@@ -19,7 +19,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#if !defined (ATRIL_COMPILATION)
+#if !defined(ATRIL_COMPILATION)
 #error "This is a private header."
 #endif
 
@@ -27,44 +27,52 @@
 #define __EV_TRANSITION_ANIMATION_H__
 
 #include <atril-document.h>
+
 #include "ev-timeline.h"
 #include "ev-transition-effect.h"
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_TRANSITION_ANIMATION                 (ev_transition_animation_get_type ())
-#define EV_TRANSITION_ANIMATION(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_TRANSITION_ANIMATION, EvTransitionAnimation))
-#define EV_TRANSITION_ANIMATION_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass),  EV_TYPE_TRANSITION_ANIMATION, EvTransitionAnimationClass))
-#define EV_IS_TRANSITION_ANIMATION(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_TRANSITION_ANIMATION))
-#define EV_IS_TRANSITION_ANIMATION_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass),  EV_TYPE_TRANSITION_ANIMATION))
-#define EV_TRANSITION_ANIMATION_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj),  EV_TYPE_TRANSITION_ANIMATION, EvTransitionAnimationClass))
+#define EV_TYPE_TRANSITION_ANIMATION (ev_transition_animation_get_type())
+#define EV_TRANSITION_ANIMATION(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_TRANSITION_ANIMATION, \
+                              EvTransitionAnimation))
+#define EV_TRANSITION_ANIMATION_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_TRANSITION_ANIMATION, \
+                           EvTransitionAnimationClass))
+#define EV_IS_TRANSITION_ANIMATION(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_TRANSITION_ANIMATION))
+#define EV_IS_TRANSITION_ANIMATION_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_TRANSITION_ANIMATION))
+#define EV_TRANSITION_ANIMATION_GET_CLASS(obj)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_TRANSITION_ANIMATION, \
+                             EvTransitionAnimationClass))
 
-typedef struct EvTransitionAnimation      EvTransitionAnimation;
+typedef struct EvTransitionAnimation EvTransitionAnimation;
 typedef struct EvTransitionAnimationClass EvTransitionAnimationClass;
 
 struct EvTransitionAnimation {
-	EvTimeline parent_instance;
+  EvTimeline parent_instance;
 };
 
 struct EvTransitionAnimationClass {
-	EvTimelineClass parent_class;
+  EvTimelineClass parent_class;
 };
 
-GType                   ev_transition_animation_get_type           (void) G_GNUC_CONST;
+GType ev_transition_animation_get_type(void) G_GNUC_CONST;
 
-EvTransitionAnimation * ev_transition_animation_new                (EvTransitionEffect    *effect);
+EvTransitionAnimation *ev_transition_animation_new(EvTransitionEffect *effect);
 
-void                    ev_transition_animation_set_origin_surface (EvTransitionAnimation *animation,
-								    cairo_surface_t       *origin_surface);
-void                    ev_transition_animation_set_dest_surface   (EvTransitionAnimation *animation,
-								    cairo_surface_t       *origin_surface);
-gint                    ev_transition_animation_get_page_from      (EvTransitionAnimation *animation);
-gint                    ev_transition_animation_get_page_to        (EvTransitionAnimation *animation);
+void ev_transition_animation_set_origin_surface(
+    EvTransitionAnimation *animation, cairo_surface_t *origin_surface);
+void ev_transition_animation_set_dest_surface(EvTransitionAnimation *animation,
+                                              cairo_surface_t *origin_surface);
+gint ev_transition_animation_get_page_from(EvTransitionAnimation *animation);
+gint ev_transition_animation_get_page_to(EvTransitionAnimation *animation);
 
-void                    ev_transition_animation_paint              (EvTransitionAnimation *animation,
-								    cairo_t               *cr,
-								    GdkRectangle           page_area);
-gboolean                ev_transition_animation_ready              (EvTransitionAnimation *animation);
+void ev_transition_animation_paint(EvTransitionAnimation *animation,
+                                   cairo_t *cr, GdkRectangle page_area);
+gboolean ev_transition_animation_ready(EvTransitionAnimation *animation);
 
 G_END_DECLS
 

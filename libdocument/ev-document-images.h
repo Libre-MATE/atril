@@ -15,10 +15,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -34,23 +35,23 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_IMAGES (ev_document_images_get_type ())
-G_DECLARE_INTERFACE (EvDocumentImages, ev_document_images, EV, DOCUMENT_IMAGES, GObject);
+#define EV_TYPE_DOCUMENT_IMAGES (ev_document_images_get_type())
+G_DECLARE_INTERFACE(EvDocumentImages, ev_document_images, EV, DOCUMENT_IMAGES,
+                    GObject);
 
 struct _EvDocumentImagesInterface {
-        GTypeInterface base_iface;
+  GTypeInterface base_iface;
 
-        /* Methods  */
-        EvMappingList *(* get_image_mapping) (EvDocumentImages *document_images,
-					      EvPage           *page);
-	GdkPixbuf     *(* get_image)         (EvDocumentImages *document_images,
-					      EvImage          *image);
+  /* Methods  */
+  EvMappingList *(*get_image_mapping)(EvDocumentImages *document_images,
+                                      EvPage *page);
+  GdkPixbuf *(*get_image)(EvDocumentImages *document_images, EvImage *image);
 };
 
-EvMappingList *ev_document_images_get_image_mapping (EvDocumentImages *document_images,
-						     EvPage           *page);
-GdkPixbuf     *ev_document_images_get_image         (EvDocumentImages *document_images,
-						     EvImage          *image);
+EvMappingList *ev_document_images_get_image_mapping(
+    EvDocumentImages *document_images, EvPage *page);
+GdkPixbuf *ev_document_images_get_image(EvDocumentImages *document_images,
+                                        EvImage *image);
 
 G_END_DECLS
 

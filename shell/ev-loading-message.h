@@ -15,7 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef EV_LOADING_MESSAGE_H
@@ -25,21 +26,28 @@
 
 G_BEGIN_DECLS
 
-typedef struct _EvLoadingMessage      EvLoadingMessage;
+typedef struct _EvLoadingMessage EvLoadingMessage;
 typedef struct _EvLoadingMessageClass EvLoadingMessageClass;
 
-#define EV_TYPE_LOADING_MESSAGE              (ev_loading_message_get_type())
-#define EV_LOADING_MESSAGE(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LOADING_MESSAGE, EvLoadingMessage))
-#define EV_IS_LOADING_MESSAGE(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LOADING_MESSAGE))
-#define EV_LOADING_MESSAGE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LOADING_MESSAGE, EvLoadingMessageClass))
-#define EV_IS_LOADING_MESSAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LOADING_MESSAGE))
-#define EV_LOADING_MESSAGE_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LOADING_MESSAGE, EvLoadingMessageClass))
+#define EV_TYPE_LOADING_MESSAGE (ev_loading_message_get_type())
+#define EV_LOADING_MESSAGE(object)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LOADING_MESSAGE, \
+                              EvLoadingMessage))
+#define EV_IS_LOADING_MESSAGE(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LOADING_MESSAGE))
+#define EV_LOADING_MESSAGE_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LOADING_MESSAGE, \
+                           EvLoadingMessageClass))
+#define EV_IS_LOADING_MESSAGE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LOADING_MESSAGE))
+#define EV_LOADING_MESSAGE_GET_CLASS(object)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LOADING_MESSAGE, \
+                             EvLoadingMessageClass))
 
-GType      ev_loading_message_get_type (void) G_GNUC_CONST;
+GType ev_loading_message_get_type(void) G_GNUC_CONST;
 
-GtkWidget *ev_loading_message_new      (void);
+GtkWidget *ev_loading_message_new(void);
 
 G_END_DECLS
 
 #endif /* EV_LOADING_MESSAGE_H */
-

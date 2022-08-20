@@ -13,7 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __COMICS_DOCUMENT_H__
@@ -23,15 +24,17 @@
 
 G_BEGIN_DECLS
 
-#define COMICS_TYPE_DOCUMENT    (comics_document_get_type ())
-#define COMICS_DOCUMENT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), COMICS_TYPE_DOCUMENT, ComicsDocument))
-#define COMICS_IS_DOCUMENT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), COMICS_TYPE_DOCUMENT))
+#define COMICS_TYPE_DOCUMENT (comics_document_get_type())
+#define COMICS_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), COMICS_TYPE_DOCUMENT, ComicsDocument))
+#define COMICS_IS_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), COMICS_TYPE_DOCUMENT))
 
 typedef struct _ComicsDocument ComicsDocument;
 
-GType                 comics_document_get_type (void) G_GNUC_CONST;
+GType comics_document_get_type(void) G_GNUC_CONST;
 
-G_MODULE_EXPORT GType register_atril_backend  (GTypeModule *module);
+G_MODULE_EXPORT GType register_atril_backend(GTypeModule *module);
 
 G_END_DECLS
 

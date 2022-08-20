@@ -13,25 +13,25 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __DJVU_LINK_H__
 #define __DJVU_LINK_H__
 
-#include "ev-document-links.h"
-#include "djvu-document.h"
-
 #include <glib.h>
 
-GtkTreeModel  *djvu_links_get_links_model    (EvDocumentLinks *document_links);
-EvMappingList *djvu_links_get_links          (EvDocumentLinks *document_links,
-					      gint             page,
-					      double           scale_factor);
-EvLinkDest    *djvu_links_find_link_dest     (EvDocumentLinks *document_links,
-					      const gchar     *link_name);
-gint           djvu_links_find_link_page     (EvDocumentLinks *document_links,
-					      const gchar     *link_name);
-gboolean       djvu_links_has_document_links (EvDocumentLinks *document_links);
+#include "djvu-document.h"
+#include "ev-document-links.h"
+
+GtkTreeModel *djvu_links_get_links_model(EvDocumentLinks *document_links);
+EvMappingList *djvu_links_get_links(EvDocumentLinks *document_links, gint page,
+                                    double scale_factor);
+EvLinkDest *djvu_links_find_link_dest(EvDocumentLinks *document_links,
+                                      const gchar *link_name);
+gint djvu_links_find_link_page(EvDocumentLinks *document_links,
+                               const gchar *link_name);
+gboolean djvu_links_has_document_links(EvDocumentLinks *document_links);
 
 #endif /* __DJVU_LINK_H__ */

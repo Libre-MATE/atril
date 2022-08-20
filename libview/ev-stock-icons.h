@@ -18,10 +18,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_VIEW_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_VIEW_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-view.h> can be included directly."
 #endif
 
@@ -33,24 +34,24 @@
 G_BEGIN_DECLS
 
 /* Atril stock icons */
-#define EV_STOCK_ZOOM	                "zoom"
-#define EV_STOCK_ZOOM_PAGE              "zoom-fit-height"
-#define EV_STOCK_ZOOM_WIDTH             "zoom-fit-width"
-#define EV_STOCK_VIEW_DUAL       	"view-page-facing"
-#define EV_STOCK_VIEW_CONTINUOUS        "view-page-continuous"
-#define EV_STOCK_ROTATE_LEFT            "object-rotate-left"
-#define EV_STOCK_ROTATE_RIGHT           "object-rotate-right"
-#define EV_STOCK_RUN_PRESENTATION       "x-office-presentation"
-#define EV_STOCK_VISIBLE                "eye"
-#define EV_STOCK_RESIZE_SE              "resize-se"
-#define EV_STOCK_RESIZE_SW              "resize-sw"
-#define EV_STOCK_CLOSE                  "close"
-#define EV_STOCK_INVERTED_COLORS        "stock_filters-invert"
-#define EV_STOCK_ATTACHMENT             "mail-attachment"
-#define EV_STOCK_SEND_TO                "document-send"
+#define EV_STOCK_ZOOM "zoom"
+#define EV_STOCK_ZOOM_PAGE "zoom-fit-height"
+#define EV_STOCK_ZOOM_WIDTH "zoom-fit-width"
+#define EV_STOCK_VIEW_DUAL "view-page-facing"
+#define EV_STOCK_VIEW_CONTINUOUS "view-page-continuous"
+#define EV_STOCK_ROTATE_LEFT "object-rotate-left"
+#define EV_STOCK_ROTATE_RIGHT "object-rotate-right"
+#define EV_STOCK_RUN_PRESENTATION "x-office-presentation"
+#define EV_STOCK_VISIBLE "eye"
+#define EV_STOCK_RESIZE_SE "resize-se"
+#define EV_STOCK_RESIZE_SW "resize-sw"
+#define EV_STOCK_CLOSE "close"
+#define EV_STOCK_INVERTED_COLORS "stock_filters-invert"
+#define EV_STOCK_ATTACHMENT "mail-attachment"
+#define EV_STOCK_SEND_TO "document-send"
 
-void ev_stock_icons_init       (void);
-void ev_stock_icons_set_screen (GdkScreen *screen);
+void ev_stock_icons_init(void);
+void ev_stock_icons_set_screen(GdkScreen *screen);
 
 G_END_DECLS
 

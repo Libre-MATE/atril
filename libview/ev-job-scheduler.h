@@ -15,10 +15,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_VIEW_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_VIEW_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-view.h> can be included directly."
 #endif
 
@@ -26,23 +27,22 @@
 #define EV_JOB_SCHEDULER_H
 
 #include <glib.h>
+
 #include "ev-jobs.h"
 
 G_BEGIN_DECLS
 
 typedef enum {
-	EV_JOB_PRIORITY_URGENT, /* Rendering current page range */
-	EV_JOB_PRIORITY_HIGH,   /* Rendering current thumbnail range */
-	EV_JOB_PRIORITY_LOW,    /* Rendering pages not in current range */
-	EV_JOB_PRIORITY_NONE,   /* Any other job: load, save, print, ... */
-	EV_JOB_N_PRIORITIES
+  EV_JOB_PRIORITY_URGENT, /* Rendering current page range */
+  EV_JOB_PRIORITY_HIGH,   /* Rendering current thumbnail range */
+  EV_JOB_PRIORITY_LOW,    /* Rendering pages not in current range */
+  EV_JOB_PRIORITY_NONE,   /* Any other job: load, save, print, ... */
+  EV_JOB_N_PRIORITIES
 } EvJobPriority;
 
-void   ev_job_scheduler_push_job               (EvJob        *job,
-                                                EvJobPriority priority);
-void   ev_job_scheduler_update_job             (EvJob        *job,
-                                                EvJobPriority priority);
-EvJob *ev_job_scheduler_get_running_thread_job (void);
+void ev_job_scheduler_push_job(EvJob *job, EvJobPriority priority);
+void ev_job_scheduler_update_job(EvJob *job, EvJobPriority priority);
+EvJob *ev_job_scheduler_get_running_thread_job(void);
 
 G_END_DECLS
 

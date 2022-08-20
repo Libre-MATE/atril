@@ -15,57 +15,52 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef EV_METADATA_H
 #define EV_METADATA_H
 
-#include <glib-object.h>
 #include <gio/gio.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_METADATA         (ev_metadata_get_type())
-#define EV_METADATA(object)      (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_METADATA, EvMetadata))
-#define EV_METADATA_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_METADATA, EvMetadataClass))
-#define EV_IS_METADATA(object)   (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_METADATA))
+#define EV_TYPE_METADATA (ev_metadata_get_type())
+#define EV_METADATA(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_METADATA, EvMetadata))
+#define EV_METADATA_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_METADATA, EvMetadataClass))
+#define EV_IS_METADATA(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_METADATA))
 
-typedef struct _EvMetadata      EvMetadata;
+typedef struct _EvMetadata EvMetadata;
 typedef struct _EvMetadataClass EvMetadataClass;
 
-GType       ev_metadata_get_type              (void) G_GNUC_CONST;
-EvMetadata *ev_metadata_new                   (GFile       *file);
-gboolean    ev_metadata_is_empty              (EvMetadata  *metadata);
+GType ev_metadata_get_type(void) G_GNUC_CONST;
+EvMetadata *ev_metadata_new(GFile *file);
+gboolean ev_metadata_is_empty(EvMetadata *metadata);
 
-gboolean    ev_metadata_get_string            (EvMetadata  *metadata,
-					       const gchar *key,
-					       gchar     **value);
-gboolean    ev_metadata_set_string            (EvMetadata  *metadata,
-					       const gchar *key,
-					       const gchar *value);
-gboolean    ev_metadata_get_int               (EvMetadata  *metadata,
-					       const gchar *key,
-					       gint        *value);
-gboolean    ev_metadata_set_int               (EvMetadata  *metadata,
-					       const gchar *key,
-					       gint         value);
-gboolean    ev_metadata_get_double            (EvMetadata  *metadata,
-					       const gchar *key,
-					       gdouble     *value);
-gboolean    ev_metadata_set_double            (EvMetadata  *metadata,
-					       const gchar *key,
-					       gdouble      value);
-gboolean    ev_metadata_get_boolean           (EvMetadata  *metadata,
-					       const gchar *key,
-					       gboolean    *value);
-gboolean    ev_metadata_set_boolean           (EvMetadata  *metadata,
-					       const gchar *key,
-					       gboolean     value);
-gboolean    ev_metadata_has_key               (EvMetadata  *metadata,
-                                               const gchar *key);
+gboolean ev_metadata_get_string(EvMetadata *metadata, const gchar *key,
+                                gchar **value);
+gboolean ev_metadata_set_string(EvMetadata *metadata, const gchar *key,
+                                const gchar *value);
+gboolean ev_metadata_get_int(EvMetadata *metadata, const gchar *key,
+                             gint *value);
+gboolean ev_metadata_set_int(EvMetadata *metadata, const gchar *key,
+                             gint value);
+gboolean ev_metadata_get_double(EvMetadata *metadata, const gchar *key,
+                                gdouble *value);
+gboolean ev_metadata_set_double(EvMetadata *metadata, const gchar *key,
+                                gdouble value);
+gboolean ev_metadata_get_boolean(EvMetadata *metadata, const gchar *key,
+                                 gboolean *value);
+gboolean ev_metadata_set_boolean(EvMetadata *metadata, const gchar *key,
+                                 gboolean value);
+gboolean ev_metadata_has_key(EvMetadata *metadata, const gchar *key);
 
-gboolean    ev_is_metadata_supported_for_file (GFile       *file);
+gboolean ev_is_metadata_supported_for_file(GFile *file);
 
 G_END_DECLS
 

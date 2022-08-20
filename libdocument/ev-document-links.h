@@ -18,10 +18,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -38,49 +39,49 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_LINKS (ev_document_links_get_type ())
-G_DECLARE_INTERFACE (EvDocumentLinks, ev_document_links, EV, DOCUMENT_LINKS, GObject);
+#define EV_TYPE_DOCUMENT_LINKS (ev_document_links_get_type())
+G_DECLARE_INTERFACE(EvDocumentLinks, ev_document_links, EV, DOCUMENT_LINKS,
+                    GObject);
 
 enum {
-	EV_DOCUMENT_LINKS_COLUMN_MARKUP,
-	EV_DOCUMENT_LINKS_COLUMN_LINK,
-	EV_DOCUMENT_LINKS_COLUMN_EXPAND,
-	EV_DOCUMENT_LINKS_COLUMN_PAGE_LABEL,
-	EV_DOCUMENT_LINKS_COLUMN_NUM_COLUMNS
+  EV_DOCUMENT_LINKS_COLUMN_MARKUP,
+  EV_DOCUMENT_LINKS_COLUMN_LINK,
+  EV_DOCUMENT_LINKS_COLUMN_EXPAND,
+  EV_DOCUMENT_LINKS_COLUMN_PAGE_LABEL,
+  EV_DOCUMENT_LINKS_COLUMN_NUM_COLUMNS
 };
 
-struct _EvDocumentLinksInterface
-{
-	GTypeInterface base_iface;
+struct _EvDocumentLinksInterface {
+  GTypeInterface base_iface;
 
-	/* Methods  */
-	gboolean       (* has_document_links) (EvDocumentLinks *document_links);
-	GtkTreeModel  *(* get_links_model)    (EvDocumentLinks *document_links);
-	EvMappingList *(* get_links)          (EvDocumentLinks *document_links,
-					       EvPage          *page);
-	EvLinkDest    *(* find_link_dest)     (EvDocumentLinks *document_links,
-					       const gchar     *link_name);
-	gint           (* find_link_page)     (EvDocumentLinks *document_links,
-					       const gchar     *link_name);
+  /* Methods  */
+  gboolean (*has_document_links)(EvDocumentLinks *document_links);
+  GtkTreeModel *(*get_links_model)(EvDocumentLinks *document_links);
+  EvMappingList *(*get_links)(EvDocumentLinks *document_links, EvPage *page);
+  EvLinkDest *(*find_link_dest)(EvDocumentLinks *document_links,
+                                const gchar *link_name);
+  gint (*find_link_page)(EvDocumentLinks *document_links,
+                         const gchar *link_name);
 };
 
-gboolean       ev_document_links_has_document_links  (EvDocumentLinks *document_links);
-GtkTreeModel  *ev_document_links_get_links_model     (EvDocumentLinks *document_links);
+gboolean ev_document_links_has_document_links(EvDocumentLinks *document_links);
+GtkTreeModel *ev_document_links_get_links_model(
+    EvDocumentLinks *document_links);
 
-EvMappingList *ev_document_links_get_links           (EvDocumentLinks *document_links,
-						      EvPage          *page);
-EvLinkDest    *ev_document_links_find_link_dest      (EvDocumentLinks *document_links,
-						      const gchar     *link_name);
-gint           ev_document_links_find_link_page      (EvDocumentLinks *document_links,
-						      const gchar     *link_name);
-gint           ev_document_links_get_dest_page       (EvDocumentLinks *document_links,
-						      EvLinkDest      *dest);
-gchar         *ev_document_links_get_dest_page_label (EvDocumentLinks *document_links,
-						      EvLinkDest      *dest);
-gint           ev_document_links_get_link_page       (EvDocumentLinks *document_links,
-						      EvLink          *link);
-gchar         *ev_document_links_get_link_page_label (EvDocumentLinks *document_links,
-						      EvLink          *link);
+EvMappingList *ev_document_links_get_links(EvDocumentLinks *document_links,
+                                           EvPage *page);
+EvLinkDest *ev_document_links_find_link_dest(EvDocumentLinks *document_links,
+                                             const gchar *link_name);
+gint ev_document_links_find_link_page(EvDocumentLinks *document_links,
+                                      const gchar *link_name);
+gint ev_document_links_get_dest_page(EvDocumentLinks *document_links,
+                                     EvLinkDest *dest);
+gchar *ev_document_links_get_dest_page_label(EvDocumentLinks *document_links,
+                                             EvLinkDest *dest);
+gint ev_document_links_get_link_page(EvDocumentLinks *document_links,
+                                     EvLink *link);
+gchar *ev_document_links_get_link_page_label(EvDocumentLinks *document_links,
+                                             EvLink *link);
 
 G_END_DECLS
 

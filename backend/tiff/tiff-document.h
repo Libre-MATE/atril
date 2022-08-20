@@ -14,7 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __TIFF_DOCUMENT_H__
@@ -24,14 +25,16 @@
 
 G_BEGIN_DECLS
 
-#define TIFF_TYPE_DOCUMENT             (tiff_document_get_type ())
-#define TIFF_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), TIFF_TYPE_DOCUMENT, TiffDocument))
-#define TIFF_IS_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TIFF_TYPE_DOCUMENT))
+#define TIFF_TYPE_DOCUMENT (tiff_document_get_type())
+#define TIFF_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), TIFF_TYPE_DOCUMENT, TiffDocument))
+#define TIFF_IS_DOCUMENT(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), TIFF_TYPE_DOCUMENT))
 
 typedef struct _TiffDocument TiffDocument;
 
-GType                 tiff_document_get_type  (void) G_GNUC_CONST;
-G_MODULE_EXPORT GType register_atril_backend (GTypeModule *module);
+GType tiff_document_get_type(void) G_GNUC_CONST;
+G_MODULE_EXPORT GType register_atril_backend(GTypeModule *module);
 
 G_END_DECLS
 

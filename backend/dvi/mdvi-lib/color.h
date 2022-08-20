@@ -13,16 +13,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef _COLOR_H_
 #define _COLOR_H_
 
+#include "mdvi.h"
 #include "common.h"
 
-extern Ulong	*get_color_table(DviDevice *dev,
-				 int nlevels, Ulong fg, Ulong bg, double gamma, int density);
+extern Ulong *get_color_table(DviDevice *dev, int nlevels, Ulong fg, Ulong bg,
+                              double gamma, int density);
 
 extern void mdvi_set_color __PROTO((DviContext *, Ulong, Ulong));
 extern void mdvi_push_color __PROTO((DviContext *, Ulong, Ulong));
@@ -30,4 +32,3 @@ extern void mdvi_pop_color __PROTO((DviContext *));
 extern void mdvi_reset_color __PROTO((DviContext *));
 
 #endif /* _COLOR_H_ */
-

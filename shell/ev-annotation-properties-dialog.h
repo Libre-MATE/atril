@@ -21,33 +21,47 @@
 #ifndef __EV_ANNOTATION_PROPERTIES_DIALOG_H__
 #define __EV_ANNOTATION_PROPERTIES_DIALOG_H__
 
-#include <gtk/gtk.h>
-#include <glib-object.h>
-
 #include <atril-document.h>
+#include <glib-object.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_ANNOTATION_PROPERTIES_DIALOG         (ev_annotation_properties_dialog_get_type())
-#define EV_ANNOTATION_PROPERTIES_DIALOG(o)           (G_TYPE_CHECK_INSTANCE_CAST((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, EvAnnotationPropertiesDialog))
-#define EV_ANNOTATION_PROPERTIES_DIALOG_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, EvAnnotationPropertiesDialogClass))
-#define EV_IS_ANNOTATION_PROPERTIES_DIALOG(o)        (G_TYPE_CHECK_INSTANCE_TYPE((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG))
-#define EV_IS_ANNOTATION_PROPERTIES_DIALOG_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE((k), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG))
-#define EV_ANNOTATION_PROPERTIES_DIALOG_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, EvAnnotationPropertiesDialogClass))
+#define EV_TYPE_ANNOTATION_PROPERTIES_DIALOG \
+  (ev_annotation_properties_dialog_get_type())
+#define EV_ANNOTATION_PROPERTIES_DIALOG(o)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, \
+                              EvAnnotationPropertiesDialog))
+#define EV_ANNOTATION_PROPERTIES_DIALOG_CLASS(k)                      \
+  (G_TYPE_CHECK_CLASS_CAST((k), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, \
+                           EvAnnotationPropertiesDialogClass))
+#define EV_IS_ANNOTATION_PROPERTIES_DIALOG(o) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG))
+#define EV_IS_ANNOTATION_PROPERTIES_DIALOG_CLASS(k) \
+  (G_TYPE_CHECK_CLASS_TYPE((k), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG))
+#define EV_ANNOTATION_PROPERTIES_DIALOG_GET_CLASS(o)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((o), EV_TYPE_ANNOTATION_PROPERTIES_DIALOG, \
+                             EvAnnotationPropertiesDialogClass))
 
-typedef struct _EvAnnotationPropertiesDialog      EvAnnotationPropertiesDialog;
-typedef struct _EvAnnotationPropertiesDialogClass EvAnnotationPropertiesDialogClass;
+typedef struct _EvAnnotationPropertiesDialog EvAnnotationPropertiesDialog;
+typedef struct _EvAnnotationPropertiesDialogClass
+    EvAnnotationPropertiesDialogClass;
 
-GType                ev_annotation_properties_dialog_get_type            (void) G_GNUC_CONST;
-GtkWidget           *ev_annotation_properties_dialog_new                 (EvAnnotationType              annot_type);
-GtkWidget           *ev_annotation_properties_dialog_new_with_annotation (EvAnnotation                 *annot);
+GType ev_annotation_properties_dialog_get_type(void) G_GNUC_CONST;
+GtkWidget *ev_annotation_properties_dialog_new(EvAnnotationType annot_type);
+GtkWidget *ev_annotation_properties_dialog_new_with_annotation(
+    EvAnnotation *annot);
 
-const gchar         *ev_annotation_properties_dialog_get_author          (EvAnnotationPropertiesDialog *dialog);
-void                 ev_annotation_properties_dialog_get_rgba            (EvAnnotationPropertiesDialog *dialog,
-									  GdkRGBA                      *rgba);
-gdouble              ev_annotation_properties_dialog_get_opacity         (EvAnnotationPropertiesDialog *dialog);
-gboolean             ev_annotation_properties_dialog_get_popup_is_open   (EvAnnotationPropertiesDialog *dialog);
-EvAnnotationTextIcon ev_annotation_properties_dialog_get_text_icon       (EvAnnotationPropertiesDialog *dialog);
+const gchar *ev_annotation_properties_dialog_get_author(
+    EvAnnotationPropertiesDialog *dialog);
+void ev_annotation_properties_dialog_get_rgba(
+    EvAnnotationPropertiesDialog *dialog, GdkRGBA *rgba);
+gdouble ev_annotation_properties_dialog_get_opacity(
+    EvAnnotationPropertiesDialog *dialog);
+gboolean ev_annotation_properties_dialog_get_popup_is_open(
+    EvAnnotationPropertiesDialog *dialog);
+EvAnnotationTextIcon ev_annotation_properties_dialog_get_text_icon(
+    EvAnnotationPropertiesDialog *dialog);
 
 G_END_DECLS
 

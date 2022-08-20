@@ -14,7 +14,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  *  $Id$
  */
@@ -26,42 +27,42 @@
 
 G_BEGIN_DECLS
 
-#define EPHY_TYPE_ZOOM_ACTION            (ephy_zoom_action_get_type ())
-#define EPHY_ZOOM_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), EPHY_TYPE_ZOOM_ACTION, EphyZoomAction))
-#define EPHY_ZOOM_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), EPHY_TYPE_ZOOM_ACTION, EphyZoomActionClass))
-#define EPHY_IS_ZOOM_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EPHY_TYPE_ZOOM_ACTION))
-#define EPHY_IS_ZOOM_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), EPHY_TYPE_ZOOM_ACTION))
-#define EPHY_ZOOM_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), EPHY_TYPE_ZOOM_ACTION, EphyZoomActionClass))
+#define EPHY_TYPE_ZOOM_ACTION (ephy_zoom_action_get_type())
+#define EPHY_ZOOM_ACTION(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EPHY_TYPE_ZOOM_ACTION, EphyZoomAction))
+#define EPHY_ZOOM_ACTION_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EPHY_TYPE_ZOOM_ACTION, EphyZoomActionClass))
+#define EPHY_IS_ZOOM_ACTION(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EPHY_TYPE_ZOOM_ACTION))
+#define EPHY_IS_ZOOM_ACTION_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), EPHY_TYPE_ZOOM_ACTION))
+#define EPHY_ZOOM_ACTION_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EPHY_TYPE_ZOOM_ACTION, EphyZoomActionClass))
 
-typedef struct _EphyZoomAction		EphyZoomAction;
-typedef struct _EphyZoomActionClass	EphyZoomActionClass;
-typedef struct _EphyZoomActionPrivate	EphyZoomActionPrivate;
+typedef struct _EphyZoomAction EphyZoomAction;
+typedef struct _EphyZoomActionClass EphyZoomActionClass;
+typedef struct _EphyZoomActionPrivate EphyZoomActionPrivate;
 
-struct _EphyZoomAction
-{
-	GtkAction parent;
+struct _EphyZoomAction {
+  GtkAction parent;
 
-	/*< private >*/
-	EphyZoomActionPrivate *priv;
+  /*< private >*/
+  EphyZoomActionPrivate *priv;
 };
 
-struct _EphyZoomActionClass
-{
-	GtkActionClass parent_class;
+struct _EphyZoomActionClass {
+  GtkActionClass parent_class;
 
-	void (* zoom_to_level)	(EphyZoomAction *action, float level);
+  void (*zoom_to_level)(EphyZoomAction *action, float level);
 };
 
-GType	ephy_zoom_action_get_type	    (void) G_GNUC_CONST;
+GType ephy_zoom_action_get_type(void) G_GNUC_CONST;
 
-void	ephy_zoom_action_set_zoom_level	    (EphyZoomAction *action,
-					     float           zoom);
-float	ephy_zoom_action_get_zoom_level	    (EphyZoomAction *action);
+void ephy_zoom_action_set_zoom_level(EphyZoomAction *action, float zoom);
+float ephy_zoom_action_get_zoom_level(EphyZoomAction *action);
 
-void    ephy_zoom_action_set_min_zoom_level (EphyZoomAction *action,
-					     float           zoom);
-void    ephy_zoom_action_set_max_zoom_level (EphyZoomAction *action,
-					     float           zoom);
+void ephy_zoom_action_set_min_zoom_level(EphyZoomAction *action, float zoom);
+void ephy_zoom_action_set_max_zoom_level(EphyZoomAction *action, float zoom);
 
 G_END_DECLS
 

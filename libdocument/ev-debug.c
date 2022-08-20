@@ -46,132 +46,107 @@ static EvProfileSection ev_profile = EV_NO_PROFILE;
 
 static GHashTable *timers = NULL;
 
-static void
-debug_init ()
-{
-	if (g_getenv ("EV_DEBUG") != NULL) {
-		/* enable all debugging */
-		ev_debug = ~EV_NO_DEBUG;
-		return;
-	}
+static void debug_init() {
+  if (g_getenv("EV_DEBUG") != NULL) {
+    /* enable all debugging */
+    ev_debug = ~EV_NO_DEBUG;
+    return;
+  }
 
-	if (g_getenv ("EV_DEBUG_JOBS") != NULL)
-		ev_debug |= EV_DEBUG_JOBS;
+  if (g_getenv("EV_DEBUG_JOBS") != NULL) ev_debug |= EV_DEBUG_JOBS;
 }
 
-static void
-profile_init ()
-{
-	if (g_getenv ("EV_PROFILE") != NULL) {
-		/* enable all profiling */
-		ev_profile = ~EV_NO_PROFILE;
-	} else {
-		if (g_getenv ("EV_PROFILE_JOBS") != NULL)
-			ev_profile |= EV_PROFILE_JOBS;
-	}
+static void profile_init() {
+  if (g_getenv("EV_PROFILE") != NULL) {
+    /* enable all profiling */
+    ev_profile = ~EV_NO_PROFILE;
+  } else {
+    if (g_getenv("EV_PROFILE_JOBS") != NULL) ev_profile |= EV_PROFILE_JOBS;
+  }
 
-	if (ev_profile) {
-		timers = g_hash_table_new_full (g_str_hash,
-						g_str_equal,
-						(GDestroyNotify) g_free,
-						(GDestroyNotify) g_timer_destroy);
-	}
+  if (ev_profile) {
+    timers =
+        g_hash_table_new_full(g_str_hash, g_str_equal, (GDestroyNotify)g_free,
+                              (GDestroyNotify)g_timer_destroy);
+  }
 }
 
-void
-_ev_debug_init ()
-{
-	debug_init ();
-	profile_init ();
+void _ev_debug_init() {
+  debug_init();
+  profile_init();
 }
 
-void
-_ev_debug_shutdown ()
-{
-	if (timers) {
-		g_hash_table_destroy (timers);
-		timers = NULL;
-	}
+void _ev_debug_shutdown() {
+  if (timers) {
+    g_hash_table_destroy(timers);
+    timers = NULL;
+  }
 }
 
-void
-ev_debug_message (EvDebugSection  section,
-		  const gchar    *file,
-		  gint            line,
-		  const gchar    *function,
-		  const gchar    *format, ...)
-{
-	if (G_UNLIKELY (ev_debug & section)) {
-		gchar *msg = NULL;
+void ev_debug_message(EvDebugSection section, const gchar *file, gint line,
+                      const gchar *function, const gchar *format, ...) {
+  if (G_UNLIKELY(ev_debug & section)) {
+    gchar *msg = NULL;
 
-		if (format) {
-			va_list args;
+    if (format) {
+      va_list args;
 
-			va_start (args, format);
-			msg = g_strdup_vprintf (format, args);
-			va_end (args);
-		}
+      va_start(args, format);
+      msg = g_strdup_vprintf(format, args);
+      va_end(args);
+    }
 
-		g_print ("%s:%d (%s) %s\n", file, line, function, msg ? msg : "");
+    g_print("%s:%d (%s) %s\n", file, line, function, msg ? msg : "");
 
-		fflush (stdout);
+    fflush(stdout);
 
-		g_free (msg);
-	}
+    g_free(msg);
+  }
 }
 
-void
-ev_profiler_start (EvProfileSection section,
-		   const gchar     *format, ...)
-{
-	if (G_UNLIKELY (ev_profile & section)) {
-		GTimer *timer;
-		gchar  *name;
-		va_list args;
+void ev_profiler_start(EvProfileSection section, const gchar *format, ...) {
+  if (G_UNLIKELY(ev_profile & section)) {
+    GTimer *timer;
+    gchar *name;
+    va_list args;
 
-		if (!format)
-			return;
+    if (!format) return;
 
-		va_start (args, format);
-		name = g_strdup_vprintf (format, args);
-		va_end (args);
+    va_start(args, format);
+    name = g_strdup_vprintf(format, args);
+    va_end(args);
 
-		timer = g_hash_table_lookup (timers, name);
-		if (!timer) {
-			timer = g_timer_new ();
-			g_hash_table_insert (timers, g_strdup (name), timer);
-		} else {
-			g_timer_start (timer);
-		}
-	}
+    timer = g_hash_table_lookup(timers, name);
+    if (!timer) {
+      timer = g_timer_new();
+      g_hash_table_insert(timers, g_strdup(name), timer);
+    } else {
+      g_timer_start(timer);
+    }
+  }
 }
 
-void
-ev_profiler_stop (EvProfileSection section,
-		  const gchar     *format, ...)
-{
-	if (G_UNLIKELY (ev_profile & section)) {
-		GTimer *timer;
-		gchar  *name;
-		va_list args;
-		gdouble seconds;
+void ev_profiler_stop(EvProfileSection section, const gchar *format, ...) {
+  if (G_UNLIKELY(ev_profile & section)) {
+    GTimer *timer;
+    gchar *name;
+    va_list args;
+    gdouble seconds;
 
-		if (!format)
-			return;
+    if (!format) return;
 
-		va_start (args, format);
-		name = g_strdup_vprintf (format, args);
-		va_end (args);
+    va_start(args, format);
+    name = g_strdup_vprintf(format, args);
+    va_end(args);
 
-		timer = g_hash_table_lookup (timers, name);
-		if (!timer)
-			return;
+    timer = g_hash_table_lookup(timers, name);
+    if (!timer) return;
 
-		g_timer_stop (timer);
-		seconds = g_timer_elapsed (timer, NULL);
-		g_print ("[ %s ] %f s elapsed\n", name, seconds);
-		fflush (stdout);
-	}
+    g_timer_stop(timer);
+    seconds = g_timer_elapsed(timer, NULL);
+    g_print("[ %s ] %f s elapsed\n", name, seconds);
+    fflush(stdout);
+  }
 }
 
 #endif /* EV_ENABLE_DEBUG */

@@ -15,7 +15,8 @@
  *
  * You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  * The Ev project hereby grant permission for non-gpl compatible GStreamer
  * plugins to be used and distributed together with GStreamer and Ev. This
@@ -27,133 +28,109 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
-
-#include <string.h>
-
-#include <glib/gi18n-lib.h>
-#include <gtk/gtk.h>
-
-#include <libcaja-extension/caja-extension-types.h>
-#include <libcaja-extension/caja-property-page-provider.h>
+#endif
 
 #include <atril-document.h>
+#include <glib/gi18n-lib.h>
+#include <gtk/gtk.h>
+#include <libcaja-extension/caja-extension-types.h>
+#include <libcaja-extension/caja-property-page-provider.h>
+#include <string.h>
+
 #include "ev-properties-view.h"
 
 static GType epp_type = 0;
-static void property_page_provider_iface_init
-	(CajaPropertyPageProviderIface *iface);
-static GList *ev_properties_get_pages
-	(CajaPropertyPageProvider *provider, GList *files);
+static void property_page_provider_iface_init(
+    CajaPropertyPageProviderIface *iface);
+static GList *ev_properties_get_pages(CajaPropertyPageProvider *provider,
+                                      GList *files);
 
-static void
-ev_properties_plugin_register_type (GTypeModule *module)
-{
-	const GTypeInfo info = {
-		sizeof (GObjectClass),
-		(GBaseInitFunc) NULL,
-		(GBaseFinalizeFunc) NULL,
-		(GClassInitFunc) NULL,
-		NULL,
-		NULL,
-		sizeof (GObject),
-		0,
-		(GInstanceInitFunc) NULL
-	};
-	const GInterfaceInfo property_page_provider_iface_info = {
-		(GInterfaceInitFunc)property_page_provider_iface_init,
-		NULL,
-		NULL
-	};
+static void ev_properties_plugin_register_type(GTypeModule *module) {
+  const GTypeInfo info = {sizeof(GObjectClass),
+                          (GBaseInitFunc)NULL,
+                          (GBaseFinalizeFunc)NULL,
+                          (GClassInitFunc)NULL,
+                          NULL,
+                          NULL,
+                          sizeof(GObject),
+                          0,
+                          (GInstanceInitFunc)NULL};
+  const GInterfaceInfo property_page_provider_iface_info = {
+      (GInterfaceInitFunc)property_page_provider_iface_init, NULL, NULL};
 
-	epp_type = g_type_module_register_type (module, G_TYPE_OBJECT,
-			"EvPropertiesPlugin",
-			&info, 0);
-	g_type_module_add_interface (module,
-			epp_type,
-			CAJA_TYPE_PROPERTY_PAGE_PROVIDER,
-			&property_page_provider_iface_info);
+  epp_type = g_type_module_register_type(module, G_TYPE_OBJECT,
+                                         "EvPropertiesPlugin", &info, 0);
+  g_type_module_add_interface(module, epp_type,
+                              CAJA_TYPE_PROPERTY_PAGE_PROVIDER,
+                              &property_page_provider_iface_info);
 }
 
-static void
-property_page_provider_iface_init (CajaPropertyPageProviderIface *iface)
-{
-	iface->get_pages = ev_properties_get_pages;
+static void property_page_provider_iface_init(
+    CajaPropertyPageProviderIface *iface) {
+  iface->get_pages = ev_properties_get_pages;
 }
 
-static GList *
-ev_properties_get_pages (CajaPropertyPageProvider *provider,
-			 GList *files)
-{
-	GError *error = NULL;
-	EvDocument *document;
-	GList *pages = NULL;
-	CajaFileInfo *file;
-	gchar *uri = NULL;
-	gchar *mime_type = NULL;
-	GtkWidget *page, *label;
-	CajaPropertyPage *property_page;
+static GList *ev_properties_get_pages(CajaPropertyPageProvider *provider,
+                                      GList *files) {
+  GError *error = NULL;
+  EvDocument *document;
+  GList *pages = NULL;
+  CajaFileInfo *file;
+  gchar *uri = NULL;
+  gchar *mime_type = NULL;
+  GtkWidget *page, *label;
+  CajaPropertyPage *property_page;
 
-	/* only add properties page if a single file is selected */
-	if (files == NULL || files->next != NULL)
-		goto end;
-	file = files->data;
+  /* only add properties page if a single file is selected */
+  if (files == NULL || files->next != NULL) goto end;
+  file = files->data;
 
-	/* okay, make the page */
-	uri = caja_file_info_get_uri (file);
-	mime_type = caja_file_info_get_mime_type (file);
+  /* okay, make the page */
+  uri = caja_file_info_get_uri(file);
+  mime_type = caja_file_info_get_mime_type(file);
 
-	document = ev_backends_manager_get_document (mime_type);
-	if (!document)
-		goto end;
+  document = ev_backends_manager_get_document(mime_type);
+  if (!document) goto end;
 
-	ev_document_load (document, uri, &error);
-	if (error) {
-		g_error_free (error);
-		goto end;
-	}
+  ev_document_load(document, uri, &error);
+  if (error) {
+    g_error_free(error);
+    goto end;
+  }
 
-	label = gtk_label_new (_("Document"));
-	page = ev_properties_view_new (uri);
-	ev_properties_view_set_info (EV_PROPERTIES_VIEW (page),
-				     ev_document_get_info (document));
-	gtk_widget_show (page);
-	property_page = caja_property_page_new ("document-properties",
-			label, page);
-	g_object_unref (document);
+  label = gtk_label_new(_("Document"));
+  page = ev_properties_view_new(uri);
+  ev_properties_view_set_info(EV_PROPERTIES_VIEW(page),
+                              ev_document_get_info(document));
+  gtk_widget_show(page);
+  property_page = caja_property_page_new("document-properties", label, page);
+  g_object_unref(document);
 
-	pages = g_list_prepend (pages, property_page);
+  pages = g_list_prepend(pages, property_page);
 
 end:
-	g_free (uri);
-	g_free (mime_type);
+  g_free(uri);
+  g_free(mime_type);
 
-	return pages;
+  return pages;
 }
 
 /* --- extension interface --- */
-void
-caja_module_initialize (GTypeModule *module)
-{
-	ev_properties_plugin_register_type (module);
-	ev_properties_view_register_type (module);
+void caja_module_initialize(GTypeModule *module) {
+  ev_properties_plugin_register_type(module);
+  ev_properties_view_register_type(module);
 
-        ev_init ();
+  ev_init();
 }
 
-void
-caja_module_shutdown (void)
-{
-        ev_shutdown ();
-}
+void caja_module_shutdown(void) { ev_shutdown(); }
 
-void
-caja_module_list_types (const GType **types,
-                            int          *num_types)
-{
-	static GType type_list[1];
+void caja_module_list_types(const GType **types, int *num_types) {
+  static GType type_list[1];
 
-	type_list[0] = epp_type;
-	*types = type_list;
-	*num_types = G_N_ELEMENTS (type_list);
+  type_list[0] = epp_type;
+  *types = type_list;
+  *num_types = G_N_ELEMENTS(type_list);
 }

@@ -13,47 +13,44 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __DJVU_TEXT_PAGE_H__
 #define __DJVU_TEXT_PAGE_H__
 
-#include "ev-document.h"
-
-#include <string.h>
 #include <glib.h>
 #include <libdjvu/miniexp.h>
+#include <string.h>
+
+#include "ev-document.h"
 
 typedef struct _DjvuTextPage DjvuTextPage;
 typedef struct _DjvuTextLink DjvuTextLink;
 
 struct _DjvuTextPage {
-	char *text;
-	GArray *links;
-	GList *results;
-	miniexp_t char_symbol;
-	miniexp_t word_symbol;
-	EvRectangle *bounding_box;
-	miniexp_t text_structure;
-	miniexp_t start;
-	miniexp_t end;
+  char *text;
+  GArray *links;
+  GList *results;
+  miniexp_t char_symbol;
+  miniexp_t word_symbol;
+  EvRectangle *bounding_box;
+  miniexp_t text_structure;
+  miniexp_t start;
+  miniexp_t end;
 };
 
 struct _DjvuTextLink {
-	int position;
-	miniexp_t pair;
+  int position;
+  miniexp_t pair;
 };
 
-char *			djvu_text_page_copy 		(DjvuTextPage *page,
-		    					 EvRectangle  *rectangle);
-void			djvu_text_page_prepare_search	(DjvuTextPage *page,
-	       		    				 gboolean      case_sensitive);
-void 			djvu_text_page_search 		(DjvuTextPage *page,
-		    					 const char    *text,
-							 gboolean       case_sensitive);
-DjvuTextPage*		djvu_text_page_new 		(miniexp_t     text);
-void 			djvu_text_page_free 		(DjvuTextPage *page);
+char *djvu_text_page_copy(DjvuTextPage *page, EvRectangle *rectangle);
+void djvu_text_page_prepare_search(DjvuTextPage *page, gboolean case_sensitive);
+void djvu_text_page_search(DjvuTextPage *page, const char *text,
+                           gboolean case_sensitive);
+DjvuTextPage *djvu_text_page_new(miniexp_t text);
+void djvu_text_page_free(DjvuTextPage *page);
 
 #endif /* __DJVU_TEXT_PAGE_H__ */
-

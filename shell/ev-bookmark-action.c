@@ -15,95 +15,78 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-bookmark-action.h"
 
-enum {
-        PROP_0,
-        PROP_PAGE
-};
+enum { PROP_0, PROP_PAGE };
 
 struct _EvBookmarkAction {
-        GtkAction base;
+  GtkAction base;
 
-        guint     page;
+  guint page;
 };
 
 struct _EvBookmarkActionClass {
-        GtkActionClass base_class;
+  GtkActionClass base_class;
 };
 
 G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-G_DEFINE_TYPE (EvBookmarkAction, ev_bookmark_action, GTK_TYPE_ACTION)
+G_DEFINE_TYPE(EvBookmarkAction, ev_bookmark_action, GTK_TYPE_ACTION)
 G_GNUC_END_IGNORE_DEPRECATIONS;
 
-static void
-ev_bookmark_action_init (EvBookmarkAction *action)
-{
+static void ev_bookmark_action_init(EvBookmarkAction *action) {}
+
+static void ev_bookmark_action_set_property(GObject *object, guint prop_id,
+                                            const GValue *value,
+                                            GParamSpec *pspec) {
+  EvBookmarkAction *action = EV_BOOKMARK_ACTION(object);
+
+  switch (prop_id) {
+    case PROP_PAGE:
+      action->page = g_value_get_uint(value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+  }
 }
 
-static void
-ev_bookmark_action_set_property (GObject      *object,
-                                 guint         prop_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
-{
-        EvBookmarkAction *action = EV_BOOKMARK_ACTION (object);
+static void ev_bookmark_action_class_init(EvBookmarkActionClass *klass) {
+  GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-        switch (prop_id) {
-        case PROP_PAGE:
-                action->page = g_value_get_uint (value);
-                break;
-        default:
-                G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-        }
+  gobject_class->set_property = ev_bookmark_action_set_property;
+
+  g_object_class_install_property(
+      gobject_class, PROP_PAGE,
+      g_param_spec_uint("page", "Page", "The bookmark page", 0, G_MAXUINT, 0,
+                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
 }
 
-static void
-ev_bookmark_action_class_init (EvBookmarkActionClass *klass)
-{
-        GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+GtkAction *ev_bookmark_action_new(EvBookmark *bookmark) {
+  GtkAction *action;
+  gchar *name;
 
-        gobject_class->set_property = ev_bookmark_action_set_property;
+  g_return_val_if_fail(bookmark->title != NULL, NULL);
 
-        g_object_class_install_property (gobject_class,
-                                         PROP_PAGE,
-                                         g_param_spec_uint ("page",
-                                                            "Page",
-                                                            "The bookmark page",
-                                                            0, G_MAXUINT, 0,
-                                                            G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE));
+  name = g_strdup_printf("EvBookmark%u", bookmark->page);
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
+  action =
+      GTK_ACTION(g_object_new(EV_TYPE_BOOKMARK_ACTION, "name", name, "label",
+                              bookmark->title, "page", bookmark->page, NULL));
+  G_GNUC_END_IGNORE_DEPRECATIONS;
+  g_free(name);
+
+  return action;
 }
 
-GtkAction *
-ev_bookmark_action_new (EvBookmark *bookmark)
-{
-        GtkAction *action;
-        gchar *name;
+guint ev_bookmark_action_get_page(EvBookmarkAction *action) {
+  g_return_val_if_fail(EV_IS_BOOKMARK_ACTION(action), 0);
 
-        g_return_val_if_fail (bookmark->title != NULL, NULL);
-
-        name = g_strdup_printf ("EvBookmark%u", bookmark->page);
-        G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-        action = GTK_ACTION (g_object_new (EV_TYPE_BOOKMARK_ACTION,
-                                           "name", name,
-                                           "label", bookmark->title,
-                                           "page", bookmark->page,
-                                           NULL));
-        G_GNUC_END_IGNORE_DEPRECATIONS;
-        g_free (name);
-
-        return action;
-}
-
-guint
-ev_bookmark_action_get_page (EvBookmarkAction *action)
-{
-        g_return_val_if_fail (EV_IS_BOOKMARK_ACTION (action), 0);
-
-        return action->page;
+  return action->page;
 }

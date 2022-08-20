@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /*
  *  Copyright (C) 2004 Red Hat, Inc.
  *
@@ -14,20 +15,20 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-document-find.h"
 
-G_DEFINE_INTERFACE (EvDocumentFind, ev_document_find, 0)
+G_DEFINE_INTERFACE(EvDocumentFind, ev_document_find, 0)
 
-static void
-ev_document_find_default_init (EvDocumentFindInterface *klass)
-{
-}
+static void ev_document_find_default_init(EvDocumentFindInterface *klass) {}
 
 /**
  * ev_document_find_find_text:
@@ -38,23 +39,16 @@ ev_document_find_default_init (EvDocumentFindInterface *klass)
  *
  * Returns: (transfer full) (element-type EvRectangle): a list of results
  */
-GList *
-ev_document_find_find_text (EvDocumentFind *document_find,
-			    EvPage         *page,
-			    const gchar    *text,
-			    gboolean        case_sensitive)
-{
-	EvDocumentFindInterface *iface = EV_DOCUMENT_FIND_GET_IFACE (document_find);
+GList *ev_document_find_find_text(EvDocumentFind *document_find, EvPage *page,
+                                  const gchar *text, gboolean case_sensitive) {
+  EvDocumentFindInterface *iface = EV_DOCUMENT_FIND_GET_IFACE(document_find);
 
-	return iface->find_text (document_find, page, text, case_sensitive);
+  return iface->find_text(document_find, page, text, case_sensitive);
 }
 
-guint
-ev_document_find_check_for_hits(EvDocumentFind *document_find,
-                                EvPage         *page,
-                                const gchar    *text,
-                                gboolean        case_sensitive)
-{
-	EvDocumentFindInterface *iface = EV_DOCUMENT_FIND_GET_IFACE (document_find);
-	return iface->check_for_hits (document_find, page, text, case_sensitive);
+guint ev_document_find_check_for_hits(EvDocumentFind *document_find,
+                                      EvPage *page, const gchar *text,
+                                      gboolean case_sensitive) {
+  EvDocumentFindInterface *iface = EV_DOCUMENT_FIND_GET_IFACE(document_find);
+  return iface->check_for_hits(document_find, page, text, case_sensitive);
 }

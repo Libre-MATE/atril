@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -32,23 +33,23 @@
 G_BEGIN_DECLS
 
 typedef struct _EvTypeInfo {
-	const gchar  *desc;
-	const gchar **mime_types;
+  const gchar *desc;
+  const gchar **mime_types;
 } EvTypeInfo;
 
-gboolean    _ev_backends_manager_init                     (void);
-void        _ev_backends_manager_shutdown                 (void);
+gboolean _ev_backends_manager_init(void);
+void _ev_backends_manager_shutdown(void);
 
-EvDocument  *ev_backends_manager_get_document             (const gchar *mime_type);
-
-EV_DEPRECATED
-const gchar *ev_backends_manager_get_document_module_name (EvDocument  *document);
+EvDocument *ev_backends_manager_get_document(const gchar *mime_type);
 
 EV_DEPRECATED
-EvTypeInfo  *ev_backends_manager_get_document_type_info   (EvDocument  *document);
+const gchar *ev_backends_manager_get_document_module_name(EvDocument *document);
 
-GList       *ev_backends_manager_get_all_types_info       (void);
-const gchar *ev_backends_manager_get_backends_dir         (void);
+EV_DEPRECATED
+EvTypeInfo *ev_backends_manager_get_document_type_info(EvDocument *document);
+
+GList *ev_backends_manager_get_all_types_info(void);
+const gchar *ev_backends_manager_get_backends_dir(void);
 G_END_DECLS
 
 #endif /* EV_BACKENDS_MANAGER */

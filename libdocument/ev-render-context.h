@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -33,35 +34,34 @@ G_BEGIN_DECLS
 typedef struct _EvRenderContext EvRenderContext;
 typedef struct _EvRenderContextClass EvRenderContextClass;
 
-#define EV_TYPE_RENDER_CONTEXT		(ev_render_context_get_type())
-#define EV_RENDER_CONTEXT(object)	(G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_RENDER_CONTEXT, EvRenderContext))
-#define EV_RENDER_CONTEXT_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_RENDER_CONTEXT, EvRenderContextClass))
-#define EV_IS_RENDER_CONTEXT(object)	(G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_RENDER_CONTEXT))
+#define EV_TYPE_RENDER_CONTEXT (ev_render_context_get_type())
+#define EV_RENDER_CONTEXT(object)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_RENDER_CONTEXT, \
+                              EvRenderContext))
+#define EV_RENDER_CONTEXT_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_RENDER_CONTEXT, \
+                           EvRenderContextClass))
+#define EV_IS_RENDER_CONTEXT(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_RENDER_CONTEXT))
 
-struct _EvRenderContextClass
-{
-	GObjectClass klass;
+struct _EvRenderContextClass {
+  GObjectClass klass;
 };
 
-struct _EvRenderContext
-{
-	GObject parent;
+struct _EvRenderContext {
+  GObject parent;
 
-	EvPage *page;
-	gint    rotation;
-	gdouble scale;
+  EvPage *page;
+  gint rotation;
+  gdouble scale;
 };
 
-GType            ev_render_context_get_type        (void) G_GNUC_CONST;
-EvRenderContext *ev_render_context_new             (EvPage          *page,
-						    gint             rotation,
-						    gdouble          scale);
-void             ev_render_context_set_page        (EvRenderContext *rc,
-						    EvPage          *page);
-void             ev_render_context_set_rotation    (EvRenderContext *rc,
-						    gint             rotation);
-void             ev_render_context_set_scale       (EvRenderContext *rc,
-						    gdouble          scale);
+GType ev_render_context_get_type(void) G_GNUC_CONST;
+EvRenderContext *ev_render_context_new(EvPage *page, gint rotation,
+                                       gdouble scale);
+void ev_render_context_set_page(EvRenderContext *rc, EvPage *page);
+void ev_render_context_set_rotation(EvRenderContext *rc, gint rotation);
+void ev_render_context_set_scale(EvRenderContext *rc, gdouble scale);
 
 G_END_DECLS
 

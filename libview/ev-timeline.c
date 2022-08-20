@@ -19,9 +19,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#include "ev-timeline.h"
+
 #include <glib.h>
 #include <math.h>
-#include "ev-timeline.h"
 
 #define MSECS_PER_SEC 1000
 #define FRAME_INTERVAL(nframes) (MSECS_PER_SEC / nframes)
@@ -30,411 +31,323 @@
 typedef struct EvTimelinePrivate EvTimelinePrivate;
 
 struct EvTimelinePrivate {
-	guint duration;
-	guint fps;
-	guint source_id;
+  guint duration;
+  guint fps;
+  guint source_id;
 
-	GTimer *timer;
+  GTimer *timer;
 
-	guint loop : 1;
+  guint loop : 1;
 };
 
-enum {
-	PROP_0,
-	PROP_FPS,
-	PROP_DURATION,
-	PROP_LOOP
+enum { PROP_0, PROP_FPS, PROP_DURATION, PROP_LOOP };
+
+enum { STARTED, PAUSED, FINISHED, FRAME, LAST_SIGNAL };
+
+static guint signals[LAST_SIGNAL] = {
+    0,
 };
 
-enum {
-	STARTED,
-	PAUSED,
-	FINISHED,
-	FRAME,
-	LAST_SIGNAL
-};
+G_DEFINE_TYPE_WITH_PRIVATE(EvTimeline, ev_timeline, G_TYPE_OBJECT)
 
-static guint signals [LAST_SIGNAL] = { 0, };
+static void ev_timeline_init(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-G_DEFINE_TYPE_WITH_PRIVATE (EvTimeline, ev_timeline, G_TYPE_OBJECT)
+  priv = ev_timeline_get_instance_private(timeline);
 
-static void
-ev_timeline_init (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
-
-	priv = ev_timeline_get_instance_private (timeline);
-
-	priv->fps = DEFAULT_FPS;
-	priv->duration = 0;
+  priv->fps = DEFAULT_FPS;
+  priv->duration = 0;
 }
 
-static void
-ev_timeline_set_property (GObject      *object,
-			  guint         prop_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
-{
-	EvTimeline *timeline;
+static void ev_timeline_set_property(GObject *object, guint prop_id,
+                                     const GValue *value, GParamSpec *pspec) {
+  EvTimeline *timeline;
 
-	timeline = EV_TIMELINE (object);
+  timeline = EV_TIMELINE(object);
 
-	switch (prop_id) {
-	case PROP_FPS:
-		ev_timeline_set_fps (timeline, g_value_get_uint (value));
-		break;
-	case PROP_DURATION:
-		ev_timeline_set_duration (timeline, g_value_get_uint (value));
-		break;
-	case PROP_LOOP:
-		ev_timeline_set_loop (timeline, g_value_get_boolean (value));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-	}
+  switch (prop_id) {
+    case PROP_FPS:
+      ev_timeline_set_fps(timeline, g_value_get_uint(value));
+      break;
+    case PROP_DURATION:
+      ev_timeline_set_duration(timeline, g_value_get_uint(value));
+      break;
+    case PROP_LOOP:
+      ev_timeline_set_loop(timeline, g_value_get_boolean(value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+  }
 }
 
-static void
-ev_timeline_get_property (GObject    *object,
-			  guint       prop_id,
-			  GValue     *value,
-			  GParamSpec *pspec)
-{
-	EvTimeline        *timeline;
-	EvTimelinePrivate *priv;
+static void ev_timeline_get_property(GObject *object, guint prop_id,
+                                     GValue *value, GParamSpec *pspec) {
+  EvTimeline *timeline;
+  EvTimelinePrivate *priv;
 
-	timeline = EV_TIMELINE (object);
-	priv = ev_timeline_get_instance_private (timeline);
+  timeline = EV_TIMELINE(object);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	switch (prop_id) {
-	case PROP_FPS:
-		g_value_set_uint (value, priv->fps);
-		break;
-	case PROP_DURATION:
-		g_value_set_uint (value, priv->duration);
-		break;
-	case PROP_LOOP:
-		g_value_set_boolean (value, priv->loop);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-	}
+  switch (prop_id) {
+    case PROP_FPS:
+      g_value_set_uint(value, priv->fps);
+      break;
+    case PROP_DURATION:
+      g_value_set_uint(value, priv->duration);
+      break;
+    case PROP_LOOP:
+      g_value_set_boolean(value, priv->loop);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+  }
 }
 
-static void
-ev_timeline_finalize (GObject *object)
-{
-	EvTimelinePrivate *priv;
+static void ev_timeline_finalize(GObject *object) {
+  EvTimelinePrivate *priv;
 
-	priv = ev_timeline_get_instance_private (EV_TIMELINE (object));
+  priv = ev_timeline_get_instance_private(EV_TIMELINE(object));
 
-	if (priv->source_id) {
-		g_source_remove (priv->source_id);
-		priv->source_id = 0;
-	}
+  if (priv->source_id) {
+    g_source_remove(priv->source_id);
+    priv->source_id = 0;
+  }
 
-	if (priv->timer)
-		g_timer_destroy (priv->timer);
+  if (priv->timer) g_timer_destroy(priv->timer);
 
-	G_OBJECT_CLASS (ev_timeline_parent_class)->finalize (object);
+  G_OBJECT_CLASS(ev_timeline_parent_class)->finalize(object);
 }
 
-static gboolean
-ev_timeline_run_frame (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
-	gdouble            progress;
-	guint              elapsed_time;
+static gboolean ev_timeline_run_frame(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
+  gdouble progress;
+  guint elapsed_time;
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	elapsed_time = (guint) (g_timer_elapsed (priv->timer, NULL) * 1000);
-	progress = (gdouble) elapsed_time / priv->duration;
-	progress = CLAMP (progress, 0., 1.);
+  elapsed_time = (guint)(g_timer_elapsed(priv->timer, NULL) * 1000);
+  progress = (gdouble)elapsed_time / priv->duration;
+  progress = CLAMP(progress, 0., 1.);
 
-	g_signal_emit (timeline, signals [FRAME], 0, progress);
+  g_signal_emit(timeline, signals[FRAME], 0, progress);
 
-	if (progress >= 1.0) {
-		if (!priv->loop) {
-			if (priv->source_id) {
-				g_source_remove (priv->source_id);
-				priv->source_id = 0;
-			}
+  if (progress >= 1.0) {
+    if (!priv->loop) {
+      if (priv->source_id) {
+        g_source_remove(priv->source_id);
+        priv->source_id = 0;
+      }
 
-			g_signal_emit (timeline, signals [FINISHED], 0);
-			return FALSE;
-		} else {
-			ev_timeline_rewind (timeline);
-		}
-	}
+      g_signal_emit(timeline, signals[FINISHED], 0);
+      return FALSE;
+    } else {
+      ev_timeline_rewind(timeline);
+    }
+  }
 
-	return TRUE;
+  return TRUE;
 }
 
-static void
-ev_timeline_real_start (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+static void ev_timeline_real_start(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	if (!priv->source_id) {
-		if (priv->timer)
-			g_timer_continue (priv->timer);
-		else
-			priv->timer = g_timer_new ();
+  if (!priv->source_id) {
+    if (priv->timer)
+      g_timer_continue(priv->timer);
+    else
+      priv->timer = g_timer_new();
 
-		/* sanity check */
-		g_assert (priv->fps > 0);
+    /* sanity check */
+    g_assert(priv->fps > 0);
 
-		g_signal_emit (timeline, signals [STARTED], 0);
+    g_signal_emit(timeline, signals[STARTED], 0);
 
-		priv->source_id = g_timeout_add (FRAME_INTERVAL (priv->fps),
-						 (GSourceFunc) ev_timeline_run_frame,
-						 timeline);
-	}
+    priv->source_id =
+        g_timeout_add(FRAME_INTERVAL(priv->fps),
+                      (GSourceFunc)ev_timeline_run_frame, timeline);
+  }
 }
 
-static void
-ev_timeline_class_init (EvTimelineClass *class)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (class);
+static void ev_timeline_class_init(EvTimelineClass *class) {
+  GObjectClass *object_class = G_OBJECT_CLASS(class);
 
-	object_class->set_property = ev_timeline_set_property;
-	object_class->get_property = ev_timeline_get_property;
-	object_class->finalize = ev_timeline_finalize;
+  object_class->set_property = ev_timeline_set_property;
+  object_class->get_property = ev_timeline_get_property;
+  object_class->finalize = ev_timeline_finalize;
 
-	class->start = ev_timeline_real_start;
+  class->start = ev_timeline_real_start;
 
-	g_object_class_install_property (object_class,
-					 PROP_FPS,
-					 g_param_spec_uint ("fps",
-							    "FPS",
-							    "Frames per second for the timeline",
-							    1,
-							    G_MAXUINT,
-							    DEFAULT_FPS,
-							    G_PARAM_READWRITE));
-	g_object_class_install_property (object_class,
-					 PROP_DURATION,
-					 g_param_spec_uint ("duration",
-							    "Animation Duration",
-							    "Animation Duration",
-							    0,
-							    G_MAXUINT,
-							    0,
-							    G_PARAM_READWRITE));
-	g_object_class_install_property (object_class,
-					 PROP_LOOP,
-					 g_param_spec_boolean ("loop",
-							       "Loop",
-							       "Whether the timeline loops or not",
-							       FALSE,
-							       G_PARAM_READWRITE));
-	signals[STARTED] =
-		g_signal_new ("started",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (EvTimelineClass, started),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE, 0);
+  g_object_class_install_property(
+      object_class, PROP_FPS,
+      g_param_spec_uint("fps", "FPS", "Frames per second for the timeline", 1,
+                        G_MAXUINT, DEFAULT_FPS, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      object_class, PROP_DURATION,
+      g_param_spec_uint("duration", "Animation Duration", "Animation Duration",
+                        0, G_MAXUINT, 0, G_PARAM_READWRITE));
+  g_object_class_install_property(
+      object_class, PROP_LOOP,
+      g_param_spec_boolean("loop", "Loop", "Whether the timeline loops or not",
+                           FALSE, G_PARAM_READWRITE));
+  signals[STARTED] =
+      g_signal_new("started", G_TYPE_FROM_CLASS(object_class),
+                   G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(EvTimelineClass, started),
+                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-	signals[PAUSED] =
-		g_signal_new ("paused",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (EvTimelineClass, paused),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE, 0);
+  signals[PAUSED] =
+      g_signal_new("paused", G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST,
+                   G_STRUCT_OFFSET(EvTimelineClass, paused), NULL, NULL,
+                   g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-	signals[FINISHED] =
-		g_signal_new ("finished",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (EvTimelineClass, finished),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__VOID,
-			      G_TYPE_NONE, 0);
+  signals[FINISHED] = g_signal_new(
+      "finished", G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST,
+      G_STRUCT_OFFSET(EvTimelineClass, finished), NULL, NULL,
+      g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-	signals[FRAME] =
-		g_signal_new ("frame",
-			      G_TYPE_FROM_CLASS (object_class),
-			      G_SIGNAL_RUN_LAST,
-			      G_STRUCT_OFFSET (EvTimelineClass, frame),
-			      NULL, NULL,
-			      g_cclosure_marshal_VOID__DOUBLE,
-			      G_TYPE_NONE, 1,
-			      G_TYPE_DOUBLE);
+  signals[FRAME] = g_signal_new(
+      "frame", G_TYPE_FROM_CLASS(object_class), G_SIGNAL_RUN_LAST,
+      G_STRUCT_OFFSET(EvTimelineClass, frame), NULL, NULL,
+      g_cclosure_marshal_VOID__DOUBLE, G_TYPE_NONE, 1, G_TYPE_DOUBLE);
 }
 
-EvTimeline *
-ev_timeline_new (guint duration)
-{
-	return g_object_new (EV_TYPE_TIMELINE,
-			     "duration", duration,
-			     NULL);
+EvTimeline *ev_timeline_new(guint duration) {
+  return g_object_new(EV_TYPE_TIMELINE, "duration", duration, NULL);
 }
 
-void
-ev_timeline_start (EvTimeline *timeline)
-{
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+void ev_timeline_start(EvTimeline *timeline) {
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	EV_TIMELINE_GET_CLASS (timeline)->start (timeline);
+  EV_TIMELINE_GET_CLASS(timeline)->start(timeline);
 }
 
-void
-ev_timeline_pause (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+void ev_timeline_pause(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	if (priv->source_id) {
-		g_source_remove (priv->source_id);
-		priv->source_id = 0;
-		g_timer_stop (priv->timer);
-		g_signal_emit (timeline, signals [PAUSED], 0);
-	}
+  if (priv->source_id) {
+    g_source_remove(priv->source_id);
+    priv->source_id = 0;
+    g_timer_stop(priv->timer);
+    g_signal_emit(timeline, signals[PAUSED], 0);
+  }
 }
 
-void
-ev_timeline_rewind (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+void ev_timeline_rewind(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	/* destroy and re-create timer if neccesary  */
-	if (priv->timer) {
-		g_timer_destroy (priv->timer);
+  /* destroy and re-create timer if neccesary  */
+  if (priv->timer) {
+    g_timer_destroy(priv->timer);
 
-		if (ev_timeline_is_running (timeline))
-			priv->timer = g_timer_new ();
-		else
-			priv->timer = NULL;
-	}
+    if (ev_timeline_is_running(timeline))
+      priv->timer = g_timer_new();
+    else
+      priv->timer = NULL;
+  }
 }
 
-gboolean
-ev_timeline_is_running (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+gboolean ev_timeline_is_running(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_val_if_fail (EV_IS_TIMELINE (timeline), FALSE);
+  g_return_val_if_fail(EV_IS_TIMELINE(timeline), FALSE);
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	return (priv->source_id != 0);
+  return (priv->source_id != 0);
 }
 
-guint
-ev_timeline_get_fps (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+guint ev_timeline_get_fps(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_val_if_fail (EV_IS_TIMELINE (timeline), 1);
+  g_return_val_if_fail(EV_IS_TIMELINE(timeline), 1);
 
-	priv = ev_timeline_get_instance_private (timeline);
-	return priv->fps;
+  priv = ev_timeline_get_instance_private(timeline);
+  return priv->fps;
 }
 
-void
-ev_timeline_set_fps (EvTimeline *timeline,
-		     guint       fps)
-{
-	EvTimelinePrivate *priv;
+void ev_timeline_set_fps(EvTimeline *timeline, guint fps) {
+  EvTimelinePrivate *priv;
 
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	priv->fps = fps;
+  priv->fps = fps;
 
-	if (ev_timeline_is_running (timeline)) {
-		g_source_remove (priv->source_id);
-		priv->source_id = g_timeout_add (FRAME_INTERVAL (priv->fps),
-						 (GSourceFunc) ev_timeline_run_frame,
-						 timeline);
-	}
+  if (ev_timeline_is_running(timeline)) {
+    g_source_remove(priv->source_id);
+    priv->source_id =
+        g_timeout_add(FRAME_INTERVAL(priv->fps),
+                      (GSourceFunc)ev_timeline_run_frame, timeline);
+  }
 
-	g_object_notify (G_OBJECT (timeline), "fps");
+  g_object_notify(G_OBJECT(timeline), "fps");
 }
 
-gboolean
-ev_timeline_get_loop (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+gboolean ev_timeline_get_loop(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_val_if_fail (EV_IS_TIMELINE (timeline), FALSE);
+  g_return_val_if_fail(EV_IS_TIMELINE(timeline), FALSE);
 
-	priv = ev_timeline_get_instance_private (timeline);
-	return priv->loop;
+  priv = ev_timeline_get_instance_private(timeline);
+  return priv->loop;
 }
 
-void
-ev_timeline_set_loop (EvTimeline *timeline,
-		      gboolean    loop)
-{
-	EvTimelinePrivate *priv;
+void ev_timeline_set_loop(EvTimeline *timeline, gboolean loop) {
+  EvTimelinePrivate *priv;
 
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	priv = ev_timeline_get_instance_private (timeline);
-	priv->loop = (loop != FALSE);
+  priv = ev_timeline_get_instance_private(timeline);
+  priv->loop = (loop != FALSE);
 
-	g_object_notify (G_OBJECT (timeline), "loop");
+  g_object_notify(G_OBJECT(timeline), "loop");
 }
 
-void
-ev_timeline_set_duration (EvTimeline *timeline,
-			  guint       duration)
-{
-	EvTimelinePrivate *priv;
+void ev_timeline_set_duration(EvTimeline *timeline, guint duration) {
+  EvTimelinePrivate *priv;
 
-	g_return_if_fail (EV_IS_TIMELINE (timeline));
+  g_return_if_fail(EV_IS_TIMELINE(timeline));
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	priv->duration = duration;
+  priv->duration = duration;
 
-	g_object_notify (G_OBJECT (timeline), "duration");
+  g_object_notify(G_OBJECT(timeline), "duration");
 }
 
-guint
-ev_timeline_get_duration (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
+guint ev_timeline_get_duration(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
 
-	g_return_val_if_fail (EV_IS_TIMELINE (timeline), 0);
+  g_return_val_if_fail(EV_IS_TIMELINE(timeline), 0);
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	return priv->duration;
+  return priv->duration;
 }
 
-gdouble
-ev_timeline_get_progress (EvTimeline *timeline)
-{
-	EvTimelinePrivate *priv;
-	gdouble            progress;
-	guint              elapsed_time;
+gdouble ev_timeline_get_progress(EvTimeline *timeline) {
+  EvTimelinePrivate *priv;
+  gdouble progress;
+  guint elapsed_time;
 
-	g_return_val_if_fail (EV_IS_TIMELINE (timeline), 0.0);
+  g_return_val_if_fail(EV_IS_TIMELINE(timeline), 0.0);
 
-	priv = ev_timeline_get_instance_private (timeline);
+  priv = ev_timeline_get_instance_private(timeline);
 
-	if (!priv->timer)
-		return 0.;
+  if (!priv->timer) return 0.;
 
-	elapsed_time = (guint) (g_timer_elapsed (priv->timer, NULL) * 1000);
-	progress = (gdouble) elapsed_time / priv->duration;
+  elapsed_time = (guint)(g_timer_elapsed(priv->timer, NULL) * 1000);
+  progress = (gdouble)elapsed_time / priv->duration;
 
-	return CLAMP (progress, 0., 1.);
+  return CLAMP(progress, 0., 1.);
 }

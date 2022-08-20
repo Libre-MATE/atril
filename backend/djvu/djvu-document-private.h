@@ -15,34 +15,33 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __DJVU_DOCUMENT_INTERNAL_H__
 #define __DJVU_DOCUMENT_INTERNAL_H__
 
-#include "djvu-document.h"
-
 #include <libdjvu/ddjvuapi.h>
 
+#include "djvu-document.h"
+
 struct _DjvuDocument {
-	EvDocument        parent_instance;
+  EvDocument parent_instance;
 
-	ddjvu_context_t  *d_context;
-	ddjvu_document_t *d_document;
-	ddjvu_format_t   *d_format;
-	ddjvu_format_t   *thumbs_format;
+  ddjvu_context_t *d_context;
+  ddjvu_document_t *d_document;
+  ddjvu_format_t *d_format;
+  ddjvu_format_t *thumbs_format;
 
-	gchar            *uri;
+  gchar *uri;
 
-        /* PS exporter */
-        gchar		 *ps_filename;
-        GString 	 *opts;
+  /* PS exporter */
+  gchar *ps_filename;
+  GString *opts;
 };
 
-int  djvu_document_get_n_pages (EvDocument   *document);
-void djvu_handle_events        (DjvuDocument *djvu_document,
-			        int           wait,
-				GError      **error);
+int djvu_document_get_n_pages(EvDocument *document);
+void djvu_handle_events(DjvuDocument *djvu_document, int wait, GError **error);
 
 #endif /* __DJVU_DOCUMENT_INTERNAL_H__ */

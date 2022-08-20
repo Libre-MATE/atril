@@ -15,26 +15,26 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
 #include "ev-document-images.h"
 
-G_DEFINE_INTERFACE (EvDocumentImages, ev_document_images, 0)
+G_DEFINE_INTERFACE(EvDocumentImages, ev_document_images, 0)
 
-static void
-ev_document_images_default_init (EvDocumentImagesInterface *klass)
-{
-}
+static void ev_document_images_default_init(EvDocumentImagesInterface *klass) {}
 
-EvMappingList *
-ev_document_images_get_image_mapping (EvDocumentImages *document_images,
-				      EvPage           *page)
-{
-	EvDocumentImagesInterface *iface = EV_DOCUMENT_IMAGES_GET_IFACE (document_images);
+EvMappingList *ev_document_images_get_image_mapping(
+    EvDocumentImages *document_images, EvPage *page) {
+  EvDocumentImagesInterface *iface =
+      EV_DOCUMENT_IMAGES_GET_IFACE(document_images);
 
-	return iface->get_image_mapping (document_images, page);
+  return iface->get_image_mapping(document_images, page);
 }
 
 /**
@@ -44,11 +44,10 @@ ev_document_images_get_image_mapping (EvDocumentImages *document_images,
  *
  * Returns: (transfer full): a #GdkPixbuf
  */
-GdkPixbuf *
-ev_document_images_get_image (EvDocumentImages *document_images,
-			      EvImage          *image)
-{
-	EvDocumentImagesInterface *iface = EV_DOCUMENT_IMAGES_GET_IFACE (document_images);
+GdkPixbuf *ev_document_images_get_image(EvDocumentImages *document_images,
+                                        EvImage *image) {
+  EvDocumentImagesInterface *iface =
+      EV_DOCUMENT_IMAGES_GET_IFACE(document_images);
 
-	return iface->get_image (document_images, image);
+  return iface->get_image(document_images, image);
 }

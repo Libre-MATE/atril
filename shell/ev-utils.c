@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /*
  *  Copyright (C) 2004 Anders Carlsson <andersca@gnome.org>
  *
@@ -14,96 +15,96 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
 
 #include "ev-utils.h"
+
+#include <glib/gi18n.h>
+#include <string.h>
+
 #include "ev-file-helpers.h"
 
-#include <string.h>
-#include <glib/gi18n.h>
+void file_chooser_dialog_add_writable_pixbuf_formats(GtkFileChooser *chooser) {
+  GSList *pixbuf_formats = NULL;
+  GSList *iter;
+  GtkFileFilter *filter;
+  int i;
 
-void
-file_chooser_dialog_add_writable_pixbuf_formats (GtkFileChooser *chooser)
-{
-	GSList *pixbuf_formats = NULL;
-	GSList *iter;
-	GtkFileFilter *filter;
-	int i;
+  filter = gtk_file_filter_new();
+  gtk_file_filter_set_name(filter, _("By extension"));
+  g_object_set_data(G_OBJECT(filter), "pixbuf-format", NULL);
+  gtk_file_chooser_add_filter(chooser, filter);
 
-	filter = gtk_file_filter_new();
-	gtk_file_filter_set_name (filter, _("By extension"));
-	g_object_set_data (G_OBJECT(filter), "pixbuf-format", NULL);
-	gtk_file_chooser_add_filter (chooser, filter);
+  pixbuf_formats = gdk_pixbuf_get_formats();
 
-	pixbuf_formats = gdk_pixbuf_get_formats ();
+  for (iter = pixbuf_formats; iter; iter = iter->next) {
+    GdkPixbufFormat *format = iter->data;
 
-	for (iter = pixbuf_formats; iter; iter = iter->next) {
-		GdkPixbufFormat *format = iter->data;
+    gchar *description, *name, *extensions;
+    gchar **extension_list, **mime_types;
 
-	        gchar *description, *name, *extensions;
-		gchar **extension_list, **mime_types;
+    if (gdk_pixbuf_format_is_disabled(format) ||
+        !gdk_pixbuf_format_is_writable(format))
+      continue;
 
-		if (gdk_pixbuf_format_is_disabled (format) ||
-	    	    !gdk_pixbuf_format_is_writable (format))
-		            continue;
+    name = gdk_pixbuf_format_get_description(format);
+    extension_list = gdk_pixbuf_format_get_extensions(format);
+    extensions = g_strjoinv(", ", extension_list);
+    g_strfreev(extension_list);
+    description = g_strdup_printf("%s (%s)", name, extensions);
 
-	        name = gdk_pixbuf_format_get_description (format);
-	        extension_list = gdk_pixbuf_format_get_extensions (format);
-	        extensions = g_strjoinv (", ", extension_list);
-		g_strfreev (extension_list);
-		description = g_strdup_printf ("%s (%s)", name, extensions);
+    filter = gtk_file_filter_new();
+    gtk_file_filter_set_name(filter, description);
+    g_object_set_data(G_OBJECT(filter), "pixbuf-format", format);
+    gtk_file_chooser_add_filter(chooser, filter);
 
-		filter = gtk_file_filter_new ();
-		gtk_file_filter_set_name (filter, description);
-		g_object_set_data (G_OBJECT (filter), "pixbuf-format", format);
-		gtk_file_chooser_add_filter (chooser, filter);
+    g_free(description);
+    g_free(extensions);
+    g_free(name);
 
-		g_free (description);
-		g_free (extensions);
-		g_free (name);
+    mime_types = gdk_pixbuf_format_get_mime_types(format);
+    for (i = 0; mime_types[i] != 0; i++)
+      gtk_file_filter_add_mime_type(filter, mime_types[i]);
+    g_strfreev(mime_types);
+  }
 
-		mime_types = gdk_pixbuf_format_get_mime_types (format);
-		for (i = 0; mime_types[i] != 0; i++)
-			gtk_file_filter_add_mime_type (filter, mime_types[i]);
-		g_strfreev (mime_types);
-	}
-
-	g_slist_free (pixbuf_formats);
+  g_slist_free(pixbuf_formats);
 }
 
-GdkPixbufFormat*
-get_gdk_pixbuf_format_by_extension (gchar *uri)
-{
-	GSList *pixbuf_formats = NULL;
-	GSList *iter;
-	int i;
+GdkPixbufFormat *get_gdk_pixbuf_format_by_extension(gchar *uri) {
+  GSList *pixbuf_formats = NULL;
+  GSList *iter;
+  int i;
 
-	pixbuf_formats = gdk_pixbuf_get_formats ();
+  pixbuf_formats = gdk_pixbuf_get_formats();
 
-	for (iter = pixbuf_formats; iter; iter = iter->next) {
-		gchar **extension_list;
-		GdkPixbufFormat *format = iter->data;
+  for (iter = pixbuf_formats; iter; iter = iter->next) {
+    gchar **extension_list;
+    GdkPixbufFormat *format = iter->data;
 
-		if (gdk_pixbuf_format_is_disabled (format) ||
-	    	    !gdk_pixbuf_format_is_writable (format))
-		            continue;
+    if (gdk_pixbuf_format_is_disabled(format) ||
+        !gdk_pixbuf_format_is_writable(format))
+      continue;
 
-	        extension_list = gdk_pixbuf_format_get_extensions (format);
+    extension_list = gdk_pixbuf_format_get_extensions(format);
 
-		for (i = 0; extension_list[i] != 0; i++) {
-			if (g_str_has_suffix (uri, extension_list[i])) {
-			    	g_slist_free (pixbuf_formats);
-				g_strfreev (extension_list);
-				return format;
-			}
-		}
-		g_strfreev (extension_list);
-	}
+    for (i = 0; extension_list[i] != 0; i++) {
+      if (g_str_has_suffix(uri, extension_list[i])) {
+        g_slist_free(pixbuf_formats);
+        g_strfreev(extension_list);
+        return format;
+      }
+    }
+    g_strfreev(extension_list);
+  }
 
-	g_slist_free (pixbuf_formats);
-	return NULL;
+  g_slist_free(pixbuf_formats);
+  return NULL;
 }

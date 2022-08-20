@@ -16,78 +16,75 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #include "ev-document-annotations.h"
 
-G_DEFINE_INTERFACE (EvDocumentAnnotations, ev_document_annotations, 0)
+G_DEFINE_INTERFACE(EvDocumentAnnotations, ev_document_annotations, 0)
 
-static void
-ev_document_annotations_default_init (EvDocumentAnnotationsInterface *klass)
-{
+static void ev_document_annotations_default_init(
+    EvDocumentAnnotationsInterface *klass) {}
+
+EvMappingList *ev_document_annotations_get_annotations(
+    EvDocumentAnnotations *document_annots, EvPage *page) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
+
+  return iface->get_annotations(document_annots, page);
 }
 
-EvMappingList *
-ev_document_annotations_get_annotations (EvDocumentAnnotations *document_annots,
-					 EvPage                *page)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+gboolean ev_document_annotations_document_is_modified(
+    EvDocumentAnnotations *document_annots) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	return iface->get_annotations (document_annots, page);
+  return (iface->document_is_modified)
+             ? iface->document_is_modified(document_annots)
+             : FALSE;
 }
 
-gboolean
-ev_document_annotations_document_is_modified (EvDocumentAnnotations *document_annots)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+void ev_document_annotations_save_annotation(
+    EvDocumentAnnotations *document_annots, EvAnnotation *annot,
+    EvAnnotationsSaveMask mask) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	return (iface->document_is_modified) ? iface->document_is_modified (document_annots) : FALSE;
+  iface->save_annotation(document_annots, annot, mask);
 }
 
-void
-ev_document_annotations_save_annotation (EvDocumentAnnotations *document_annots,
-					 EvAnnotation          *annot,
-					 EvAnnotationsSaveMask  mask)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+void ev_document_annotations_add_annotation(
+    EvDocumentAnnotations *document_annots, EvAnnotation *annot,
+    EvRectangle *rect) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	iface->save_annotation (document_annots, annot, mask);
+  if (iface->add_annotation)
+    iface->add_annotation(document_annots, annot, rect);
 }
 
-void
-ev_document_annotations_add_annotation (EvDocumentAnnotations *document_annots,
-					EvAnnotation          *annot,
-					EvRectangle           *rect)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+gboolean ev_document_annotations_can_add_annotation(
+    EvDocumentAnnotations *document_annots) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	if (iface->add_annotation)
-		iface->add_annotation (document_annots, annot, rect);
+  return iface->add_annotation != NULL;
 }
 
-gboolean
-ev_document_annotations_can_add_annotation (EvDocumentAnnotations *document_annots)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+void ev_document_annotations_remove_annotation(
+    EvDocumentAnnotations *document_annots, EvAnnotation *annot) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	return iface->add_annotation != NULL;
+  if (iface->remove_annotation)
+    iface->remove_annotation(document_annots, annot);
 }
 
-void
-ev_document_annotations_remove_annotation (EvDocumentAnnotations *document_annots,
-                                           EvAnnotation          *annot)
-{
-	EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
+gboolean ev_document_annotations_can_remove_annotation(
+    EvDocumentAnnotations *document_annots) {
+  EvDocumentAnnotationsInterface *iface =
+      EV_DOCUMENT_ANNOTATIONS_GET_IFACE(document_annots);
 
-	if (iface->remove_annotation)
-		iface->remove_annotation (document_annots, annot);
-}
-
-gboolean
-ev_document_annotations_can_remove_annotation (EvDocumentAnnotations *document_annots)
-{
-        EvDocumentAnnotationsInterface *iface = EV_DOCUMENT_ANNOTATIONS_GET_IFACE (document_annots);
-
-	return iface->remove_annotation != NULL;
+  return iface->remove_annotation != NULL;
 }

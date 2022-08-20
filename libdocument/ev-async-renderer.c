@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /*
  *  Copyright (C) 2004 Marco Pesenti Gritti
  *
@@ -14,52 +15,39 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-async-renderer.h"
 #include "ev-document.h"
 
-enum
-{
-	RENDER_FINISHED,
-	LAST_SIGNAL
-};
+enum { RENDER_FINISHED, LAST_SIGNAL };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static guint signals[LAST_SIGNAL] = {0};
 
-G_DEFINE_INTERFACE (EvAsyncRenderer, ev_async_renderer, 0)
+G_DEFINE_INTERFACE(EvAsyncRenderer, ev_async_renderer, 0)
 
-static void
-ev_async_renderer_default_init (EvAsyncRendererInterface *klass)
-{
-	static gboolean initialized = FALSE;
+static void ev_async_renderer_default_init(EvAsyncRendererInterface *klass) {
+  static gboolean initialized = FALSE;
 
-	if (!initialized) {
-		signals[RENDER_FINISHED] =
-			g_signal_new ("render_finished",
-				      EV_TYPE_ASYNC_RENDERER,
-				      G_SIGNAL_RUN_LAST,
-				      G_STRUCT_OFFSET (EvAsyncRendererInterface, render_finished),
-				      NULL, NULL,
-				      g_cclosure_marshal_VOID__OBJECT,
-				      G_TYPE_NONE,
-				      1,
-				      GDK_TYPE_PIXBUF);
-		initialized = TRUE;
-	}
+  if (!initialized) {
+    signals[RENDER_FINISHED] = g_signal_new(
+        "render_finished", EV_TYPE_ASYNC_RENDERER, G_SIGNAL_RUN_LAST,
+        G_STRUCT_OFFSET(EvAsyncRendererInterface, render_finished), NULL, NULL,
+        g_cclosure_marshal_VOID__OBJECT, G_TYPE_NONE, 1, GDK_TYPE_PIXBUF);
+    initialized = TRUE;
+  }
 }
 
-void
-ev_async_renderer_render_pixbuf (EvAsyncRenderer *async_renderer,
-			         int              page,
-			         double           scale,
-				 int              rotation)
-{
-	EvAsyncRendererInterface *iface = EV_ASYNC_RENDERER_GET_IFACE (async_renderer);
+void ev_async_renderer_render_pixbuf(EvAsyncRenderer *async_renderer, int page,
+                                     double scale, int rotation) {
+  EvAsyncRendererInterface *iface = EV_ASYNC_RENDERER_GET_IFACE(async_renderer);
 
-	iface->render_pixbuf (async_renderer, page, scale, rotation);
+  iface->render_pixbuf(async_renderer, page, scale, rotation);
 }

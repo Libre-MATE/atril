@@ -13,7 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 #ifndef _MDVI_PRIVATE_H
 
@@ -24,36 +25,44 @@
 #define HAVE_PROTOTYPES 1
 
 #if STDC_HEADERS
-#  /* kpathsea's headers (wrongly!) redefine strchr() and strrchr() to
+#/* kpathsea's headers (wrongly!) redefine strchr() and strrchr() to
 #     non ANSI C functions if HAVE_STRCHR and HAVE_STRRCHR are not defined.
 #   */
-#  ifndef HAVE_STRCHR
-#     define HAVE_STRCHR
-#   endif
-#  ifndef HAVE_STRRCHR
-#    define HAVE_STRRCHR
-#  endif
+#ifndef HAVE_STRCHR
+#define HAVE_STRCHR
+#endif
+#ifndef HAVE_STRRCHR
+#define HAVE_STRRCHR
+#endif
 #endif
 
-#include <kpathsea/debug.h>
-#include <kpathsea/tex-file.h>
-#include <kpathsea/tex-glyph.h>
 #include <kpathsea/cnf.h>
+#include <kpathsea/debug.h>
+#include <kpathsea/lib.h>
 #include <kpathsea/proginit.h>
 #include <kpathsea/progname.h>
+#include <kpathsea/tex-file.h>
+#include <kpathsea/tex-glyph.h>
 #include <kpathsea/tex-make.h>
-#include <kpathsea/lib.h>
 
-#define ISSP(p)		(*(p) == ' ' || *(p) == '\t')
-#define SKIPSP(p)	while(ISSP(p)) p++
-#define SKIPNSP(p)	while(*(p) && !ISSP(p)) p++
+#define ISSP(p) (*(p) == ' ' || *(p) == '\t')
+#define SKIPSP(p) \
+  while (ISSP(p)) p++
+#define SKIPNSP(p) \
+  while (*(p) && !ISSP(p)) p++
 
-#if defined (__i386__) && defined (__GNUC__) && __GNUC__ >= 2
-#define	_BREAKPOINT()		do { __asm__ __volatile__ ("int $03"); } while(0)
-#elif defined (__alpha__) && defined (__GNUC__) && __GNUC__ >= 2
-#define	_BREAKPOINT()		do { __asm__ __volatile__ ("bpt"); } while(0)
-#else	/* !__i386__ && !__alpha__ */
-#define	_BREAKPOINT()
-#endif	/* __i386__ */
+#if defined(__i386__) && defined(__GNUC__) && __GNUC__ >= 2
+#define _BREAKPOINT()                \
+  do {                               \
+    __asm__ __volatile__("int $03"); \
+  } while (0)
+#elif defined(__alpha__) && defined(__GNUC__) && __GNUC__ >= 2
+#define _BREAKPOINT()            \
+  do {                           \
+    __asm__ __volatile__("bpt"); \
+  } while (0)
+#else /* !__i386__ && !__alpha__ */
+#define _BREAKPOINT()
+#endif /* __i386__ */
 
 #endif /* _MDVI_PRIVATE_H */

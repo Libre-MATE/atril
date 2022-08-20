@@ -14,10 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -28,32 +29,36 @@
 
 G_BEGIN_DECLS
 
-typedef struct _EvLayer        EvLayer;
-typedef struct _EvLayerClass   EvLayerClass;
+typedef struct _EvLayer EvLayer;
+typedef struct _EvLayerClass EvLayerClass;
 typedef struct _EvLayerPrivate EvLayerPrivate;
 
-#define EV_TYPE_LAYER              (ev_layer_get_type())
-#define EV_LAYER(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LAYER, EvLayer))
-#define EV_LAYER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LAYER, EvLayerClass))
-#define EV_IS_LAYER(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LAYER))
-#define EV_IS_LAYER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LAYER))
-#define EV_LAYER_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LAYER, EvLayerClass))
+#define EV_TYPE_LAYER (ev_layer_get_type())
+#define EV_LAYER(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_LAYER, EvLayer))
+#define EV_LAYER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_LAYER, EvLayerClass))
+#define EV_IS_LAYER(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_LAYER))
+#define EV_IS_LAYER_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_LAYER))
+#define EV_LAYER_GET_CLASS(object) \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_LAYER, EvLayerClass))
 
 struct _EvLayer {
-	GObject base_instance;
+  GObject base_instance;
 
-	EvLayerPrivate *priv;
+  EvLayerPrivate *priv;
 };
 
 struct _EvLayerClass {
-	GObjectClass base_class;
+  GObjectClass base_class;
 };
 
-GType     ev_layer_get_type     (void) G_GNUC_CONST;
-EvLayer  *ev_layer_new          (gboolean is_parent,
-				 gint     rb_group);
-gboolean  ev_layer_is_parent    (EvLayer *layer);
-gint      ev_layer_get_rb_group (EvLayer *layer);
+GType ev_layer_get_type(void) G_GNUC_CONST;
+EvLayer *ev_layer_new(gboolean is_parent, gint rb_group);
+gboolean ev_layer_is_parent(EvLayer *layer);
+gint ev_layer_get_rb_group(EvLayer *layer);
 
 G_END_DECLS
 

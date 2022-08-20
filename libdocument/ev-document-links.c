@@ -18,29 +18,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-document-links.h"
 
-G_DEFINE_INTERFACE (EvDocumentLinks, ev_document_links, 0)
+G_DEFINE_INTERFACE(EvDocumentLinks, ev_document_links, 0)
 
-static void
-ev_document_links_default_init (EvDocumentLinksInterface *klass)
-{
-}
+static void ev_document_links_default_init(EvDocumentLinksInterface *klass) {}
 
-gboolean
-ev_document_links_has_document_links (EvDocumentLinks *document_links)
-{
-	EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE (document_links);
-	gboolean retval;
+gboolean ev_document_links_has_document_links(EvDocumentLinks *document_links) {
+  EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE(document_links);
+  gboolean retval;
 
-	retval = iface->has_document_links (document_links);
+  retval = iface->has_document_links(document_links);
 
-	return retval;
+  return retval;
 }
 
 /**
@@ -49,24 +47,21 @@ ev_document_links_has_document_links (EvDocumentLinks *document_links)
  *
  * Returns: (transfer full): a #GtkTreeModel
  */
-GtkTreeModel *
-ev_document_links_get_links_model (EvDocumentLinks *document_links)
-{
-	EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE (document_links);
-	GtkTreeModel *retval;
+GtkTreeModel *ev_document_links_get_links_model(
+    EvDocumentLinks *document_links) {
+  EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE(document_links);
+  GtkTreeModel *retval;
 
-	retval = iface->get_links_model (document_links);
+  retval = iface->get_links_model(document_links);
 
-	return retval;
+  return retval;
 }
 
-EvMappingList *
-ev_document_links_get_links (EvDocumentLinks *document_links,
-			     EvPage          *page)
-{
-	EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE (document_links);
+EvMappingList *ev_document_links_get_links(EvDocumentLinks *document_links,
+                                           EvPage *page) {
+  EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE(document_links);
 
-	return iface->get_links (document_links, page);
+  return iface->get_links(document_links, page);
 }
 
 /**
@@ -76,113 +71,95 @@ ev_document_links_get_links (EvDocumentLinks *document_links,
  *
  * Returns: (transfer full): an #EvLinkDest
  */
-EvLinkDest *
-ev_document_links_find_link_dest (EvDocumentLinks *document_links,
-				  const gchar     *link_name)
-{
-	EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE (document_links);
-	EvLinkDest *retval;
+EvLinkDest *ev_document_links_find_link_dest(EvDocumentLinks *document_links,
+                                             const gchar *link_name) {
+  EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE(document_links);
+  EvLinkDest *retval;
 
-	ev_document_doc_mutex_lock ();
-	retval = iface->find_link_dest (document_links, link_name);
-	ev_document_doc_mutex_unlock ();
+  ev_document_doc_mutex_lock();
+  retval = iface->find_link_dest(document_links, link_name);
+  ev_document_doc_mutex_unlock();
 
-	return retval;
+  return retval;
 }
 
-gint
-ev_document_links_find_link_page (EvDocumentLinks *document_links,
-				  const gchar     *link_name)
-{
-	EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE (document_links);
-	gint retval;
+gint ev_document_links_find_link_page(EvDocumentLinks *document_links,
+                                      const gchar *link_name) {
+  EvDocumentLinksInterface *iface = EV_DOCUMENT_LINKS_GET_IFACE(document_links);
+  gint retval;
 
-	ev_document_doc_mutex_lock ();
-	retval = iface->find_link_page (document_links, link_name);
-	ev_document_doc_mutex_unlock ();
+  ev_document_doc_mutex_lock();
+  retval = iface->find_link_page(document_links, link_name);
+  ev_document_doc_mutex_unlock();
 
-	return retval;
+  return retval;
 }
 
 /* Helper functions */
-gint
-ev_document_links_get_dest_page (EvDocumentLinks *document_links,
-				 EvLinkDest      *dest)
-{
-	gint page = -1;
+gint ev_document_links_get_dest_page(EvDocumentLinks *document_links,
+                                     EvLinkDest *dest) {
+  gint page = -1;
 
-	switch (ev_link_dest_get_dest_type (dest)) {
-	case EV_LINK_DEST_TYPE_NAMED: {
-		page = ev_document_links_find_link_page (document_links,
-							 ev_link_dest_get_named_dest (dest));
-	}
-		break;
-	case EV_LINK_DEST_TYPE_PAGE_LABEL:
-		ev_document_find_page_by_label (EV_DOCUMENT (document_links),
-						ev_link_dest_get_page_label (dest),
-						&page);
-		break;
-	default:
-		page = ev_link_dest_get_page (dest);
-	}
+  switch (ev_link_dest_get_dest_type(dest)) {
+    case EV_LINK_DEST_TYPE_NAMED: {
+      page = ev_document_links_find_link_page(
+          document_links, ev_link_dest_get_named_dest(dest));
+    } break;
+    case EV_LINK_DEST_TYPE_PAGE_LABEL:
+      ev_document_find_page_by_label(EV_DOCUMENT(document_links),
+                                     ev_link_dest_get_page_label(dest), &page);
+      break;
+    default:
+      page = ev_link_dest_get_page(dest);
+  }
 
-	return page;
+  return page;
 }
 
-gchar *
-ev_document_links_get_dest_page_label (EvDocumentLinks *document_links,
-				       EvLinkDest      *dest)
-{
-	gchar *label = NULL;
+gchar *ev_document_links_get_dest_page_label(EvDocumentLinks *document_links,
+                                             EvLinkDest *dest) {
+  gchar *label = NULL;
 
-	if (ev_link_dest_get_dest_type (dest) == EV_LINK_DEST_TYPE_PAGE_LABEL) {
-		label = g_strdup (ev_link_dest_get_page_label (dest));
-	} else {
-		gint page;
+  if (ev_link_dest_get_dest_type(dest) == EV_LINK_DEST_TYPE_PAGE_LABEL) {
+    label = g_strdup(ev_link_dest_get_page_label(dest));
+  } else {
+    gint page;
 
-		page = ev_document_links_get_dest_page (document_links, dest);
-		if (page != -1)
-			label = ev_document_get_page_label (EV_DOCUMENT (document_links),
-							    page);
-	}
+    page = ev_document_links_get_dest_page(document_links, dest);
+    if (page != -1)
+      label = ev_document_get_page_label(EV_DOCUMENT(document_links), page);
+  }
 
-	return label;
+  return label;
 }
 
-static EvLinkDest *
-get_link_dest (EvLink *link)
-{
-	EvLinkAction *action;
+static EvLinkDest *get_link_dest(EvLink *link) {
+  EvLinkAction *action;
 
-	action = ev_link_get_action (link);
-	if (!action)
-		return NULL;
+  action = ev_link_get_action(link);
+  if (!action) return NULL;
 
-	if (ev_link_action_get_action_type (action) !=
-	    EV_LINK_ACTION_TYPE_GOTO_DEST)
-		return NULL;
+  if (ev_link_action_get_action_type(action) != EV_LINK_ACTION_TYPE_GOTO_DEST)
+    return NULL;
 
-	return ev_link_action_get_dest (action);
+  return ev_link_action_get_dest(action);
 }
 
-gint
-ev_document_links_get_link_page (EvDocumentLinks *document_links,
-				 EvLink          *link)
-{
-	EvLinkDest *dest;
+gint ev_document_links_get_link_page(EvDocumentLinks *document_links,
+                                     EvLink *link) {
+  EvLinkDest *dest;
 
-	dest = get_link_dest (link);
+  dest = get_link_dest(link);
 
-	return dest ? ev_document_links_get_dest_page (document_links, dest) : -1;
+  return dest ? ev_document_links_get_dest_page(document_links, dest) : -1;
 }
 
-gchar *
-ev_document_links_get_link_page_label (EvDocumentLinks *document_links,
-				       EvLink          *link)
-{
-	EvLinkDest *dest;
+gchar *ev_document_links_get_link_page_label(EvDocumentLinks *document_links,
+                                             EvLink *link) {
+  EvLinkDest *dest;
 
-	dest = get_link_dest (link);
+  dest = get_link_dest(link);
 
-	return dest ? ev_document_links_get_dest_page_label (document_links, dest) : NULL;
+  return dest ? ev_document_links_get_dest_page_label(document_links, dest)
+              : NULL;
 }

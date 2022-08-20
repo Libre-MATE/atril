@@ -15,7 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef EV_FILE_MONITOR_H
@@ -25,32 +26,38 @@
 
 G_BEGIN_DECLS
 
-typedef struct _EvFileMonitor        EvFileMonitor;
-typedef struct _EvFileMonitorClass   EvFileMonitorClass;
+typedef struct _EvFileMonitor EvFileMonitor;
+typedef struct _EvFileMonitorClass EvFileMonitorClass;
 typedef struct _EvFileMonitorPrivate EvFileMonitorPrivate;
 
-#define EV_TYPE_FILE_MONITOR              (ev_file_monitor_get_type())
-#define EV_FILE_MONITOR(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_FILE_MONITOR, EvFileMonitor))
-#define EV_FILE_MONITOR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_FILE_MONITOR, EvFileMonitorClass))
-#define EV_IS_FILE_MONITOR(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_FILE_MONITOR))
-#define EV_IS_FILE_MONITOR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_FILE_MONITOR))
-#define EV_FILE_MONITOR_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_FILE_MONITOR, EvFileMonitorClass))
+#define EV_TYPE_FILE_MONITOR (ev_file_monitor_get_type())
+#define EV_FILE_MONITOR(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_FILE_MONITOR, EvFileMonitor))
+#define EV_FILE_MONITOR_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_FILE_MONITOR, EvFileMonitorClass))
+#define EV_IS_FILE_MONITOR(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_FILE_MONITOR))
+#define EV_IS_FILE_MONITOR_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_FILE_MONITOR))
+#define EV_FILE_MONITOR_GET_CLASS(object)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_FILE_MONITOR, \
+                             EvFileMonitorClass))
 
 struct _EvFileMonitor {
-	GObject base_instance;
+  GObject base_instance;
 
-	EvFileMonitorPrivate *priv;
+  EvFileMonitorPrivate *priv;
 };
 
 struct _EvFileMonitorClass {
-	GObjectClass base_class;
+  GObjectClass base_class;
 
-	/* Signals */
-	void (*changed) (EvFileMonitor *ev_monitor);
+  /* Signals */
+  void (*changed)(EvFileMonitor *ev_monitor);
 };
 
-GType          ev_file_monitor_get_type (void) G_GNUC_CONST;
-EvFileMonitor *ev_file_monitor_new      (const gchar *uri);
+GType ev_file_monitor_get_type(void) G_GNUC_CONST;
+EvFileMonitor *ev_file_monitor_new(const gchar *uri);
 
 G_END_DECLS
 

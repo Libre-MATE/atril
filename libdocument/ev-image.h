@@ -14,53 +14,57 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
 #ifndef __EV_IMAGE_H__
 #define __EV_IMAGE_H__
 
-#include <glib-object.h>
 #include <gdk/gdk.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-typedef struct _EvImage        EvImage;
-typedef struct _EvImageClass   EvImageClass;
+typedef struct _EvImage EvImage;
+typedef struct _EvImageClass EvImageClass;
 typedef struct _EvImagePrivate EvImagePrivate;
 
-#define EV_TYPE_IMAGE              (ev_image_get_type())
-#define EV_IMAGE(object)           (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_IMAGE, EvImage))
-#define EV_IMAGE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_IMAGE, EvImageClass))
-#define EV_IS_IMAGE(object)        (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_IMAGE))
-#define EV_IS_IMAGE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_IMAGE))
-#define EV_IMAGE_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_IMAGE, EvImageClass))
+#define EV_TYPE_IMAGE (ev_image_get_type())
+#define EV_IMAGE(object) \
+  (G_TYPE_CHECK_INSTANCE_CAST((object), EV_TYPE_IMAGE, EvImage))
+#define EV_IMAGE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_IMAGE, EvImageClass))
+#define EV_IS_IMAGE(object) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((object), EV_TYPE_IMAGE))
+#define EV_IS_IMAGE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_IMAGE))
+#define EV_IMAGE_GET_CLASS(object) \
+  (G_TYPE_INSTANCE_GET_CLASS((object), EV_TYPE_IMAGE, EvImageClass))
 
 struct _EvImage {
-	GObject base_instance;
+  GObject base_instance;
 
-	EvImagePrivate *priv;
+  EvImagePrivate *priv;
 };
 
 struct _EvImageClass {
-	GObjectClass base_class;
+  GObjectClass base_class;
 };
 
-GType        ev_image_get_type         (void) G_GNUC_CONST;
-EvImage     *ev_image_new              (gint             page,
-					gint             img_id);
-EvImage     *ev_image_new_from_pixbuf  (GdkPixbuf       *pixbuf);
+GType ev_image_get_type(void) G_GNUC_CONST;
+EvImage *ev_image_new(gint page, gint img_id);
+EvImage *ev_image_new_from_pixbuf(GdkPixbuf *pixbuf);
 
-gint         ev_image_get_id           (EvImage         *image);
-gint         ev_image_get_page         (EvImage         *image);
-GdkPixbuf   *ev_image_get_pixbuf       (EvImage         *image);
-const gchar *ev_image_save_tmp         (EvImage         *image,
-					GdkPixbuf       *pixbuf);
-const gchar *ev_image_get_tmp_uri      (EvImage         *image);
+gint ev_image_get_id(EvImage *image);
+gint ev_image_get_page(EvImage *image);
+GdkPixbuf *ev_image_get_pixbuf(EvImage *image);
+const gchar *ev_image_save_tmp(EvImage *image, GdkPixbuf *pixbuf);
+const gchar *ev_image_get_tmp_uri(EvImage *image);
 
 G_END_DECLS
 

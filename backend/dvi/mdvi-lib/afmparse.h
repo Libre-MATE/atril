@@ -77,33 +77,33 @@
 #ifndef _MDVI_PARSEAFM_H
 #define _MDVI_PARSEAFM_H 1
 
-#include "sysdeps.h"
-
 #include <stdio.h>
+
+#include "sysdeps.h"
 
 /* your basic constants */
 #define TRUE 1
 #define FALSE 0
-#define EOL '\n'                /* end-of-line indicator */
-#define MAX_NAME 4096           /* max length for identifiers */
+#define EOL '\n'      /* end-of-line indicator */
+#define MAX_NAME 4096 /* max length for identifiers */
 #define BOOL int
 #define FLAGS int
 
 /* Flags that can be AND'ed together to specify exactly what
  * information from the AFM file should be saved. */
-#define P_G	0x01	/* 0000 0001 */   /* Global Font Info      */
-#define P_W	0x02	/* 0000 0010 */   /* Character Widths ONLY */
-#define P_M	0x06	/* 0000 0110 */   /* All Char Metric Info  */
-#define P_P	0x08	/* 0000 1000 */   /* Pair Kerning Info     */
-#define P_T	0x10	/* 0001 0000 */   /* Track Kerning Info    */
-#define P_C	0x20	/* 0010 0000 */   /* Composite Char Info   */
+#define P_G 0x01 /* 0000 0001 */ /* Global Font Info      */
+#define P_W 0x02 /* 0000 0010 */ /* Character Widths ONLY */
+#define P_M 0x06 /* 0000 0110 */ /* All Char Metric Info  */
+#define P_P 0x08 /* 0000 1000 */ /* Pair Kerning Info     */
+#define P_T 0x10 /* 0001 0000 */ /* Track Kerning Info    */
+#define P_C 0x20 /* 0010 0000 */ /* Composite Char Info   */
 
 /* Commonly used flags */
-#define P_GW	(P_G | P_W)
-#define P_GM	(P_G | P_M)
-#define P_GMP	(P_G | P_M | P_P)
-#define P_GMK	(P_G | P_M | P_P | P_T)
-#define P_ALL	(P_G | P_M | P_P | P_T | P_C)
+#define P_GW (P_G | P_W)
+#define P_GM (P_G | P_M)
+#define P_GMP (P_G | P_M | P_P)
+#define P_GMK (P_G | P_M | P_P | P_T)
+#define P_ALL (P_G | P_M | P_P | P_T | P_C)
 
 /* Possible return codes from the parseFile procedure.
  *
@@ -135,12 +135,11 @@
 /* Bounding box definition. Used for the Font BBox as well as the
  * Character BBox.
  */
-typedef struct
-{
-   int llx;	/* lower left x-position  */
-   int lly;	/* lower left y-position  */
-   int urx;	/* upper right x-position */
-   int ury;	/* upper right y-position */
+typedef struct {
+  int llx; /* lower left x-position  */
+  int lly; /* lower left y-position  */
+  int urx; /* upper right x-position */
+  int ury; /* upper right y-position */
 } BBox;
 
 /* Global Font information.
@@ -148,34 +147,32 @@ typedef struct
  * explanation about each key and its value please refer to the AFM
  * documentation (full title & version given above).
  */
-typedef struct
-{
-   char *afmVersion;		/* key: StartFontMetrics */
-   char *fontName;		/* key: FontName */
-   char *fullName;		/* key: FullName */
-   char *familyName;		/* key: FamilyName */
-   char *weight;		/* key: Weight */
-   float italicAngle;		/* key: ItalicAngle */
-   BOOL isFixedPitch;		/* key: IsFixedPitch */
-   BBox fontBBox;		/* key: FontBBox */
-   int underlinePosition;  	/* key: UnderlinePosition */
-   int underlineThickness; 	/* key: UnderlineThickness */
-   char *version;		/* key: Version */
-   char *notice;		/* key: Notice */
-   char *encodingScheme;	/* key: EncodingScheme */
-   int capHeight;		/* key: CapHeight */
-   int xHeight;			/* key: XHeight */
-   int ascender;		/* key: Ascender */
-   int descender;		/* key: Descender */
+typedef struct {
+  char *afmVersion;       /* key: StartFontMetrics */
+  char *fontName;         /* key: FontName */
+  char *fullName;         /* key: FullName */
+  char *familyName;       /* key: FamilyName */
+  char *weight;           /* key: Weight */
+  float italicAngle;      /* key: ItalicAngle */
+  BOOL isFixedPitch;      /* key: IsFixedPitch */
+  BBox fontBBox;          /* key: FontBBox */
+  int underlinePosition;  /* key: UnderlinePosition */
+  int underlineThickness; /* key: UnderlineThickness */
+  char *version;          /* key: Version */
+  char *notice;           /* key: Notice */
+  char *encodingScheme;   /* key: EncodingScheme */
+  int capHeight;          /* key: CapHeight */
+  int xHeight;            /* key: XHeight */
+  int ascender;           /* key: Ascender */
+  int descender;          /* key: Descender */
 } GlobalFontInfo;
 
 /* Ligature definition is a linked list since any character can have
  * any number of ligatures.
  */
-typedef struct _t_ligature
-{
-    char *succ, *lig;
-    struct _t_ligature *next;
+typedef struct _t_ligature {
+  char *succ, *lig;
+  struct _t_ligature *next;
 } Ligature;
 
 /* Character Metric Information. This structure is used only if ALL
@@ -188,14 +185,13 @@ typedef struct _t_ligature
  * Character Metrics section of the AFM documentation (full title
  * & version given above).
  */
-typedef struct
-{
-    int code, 		/* key: C */
-        wx,		/* key: WX */
-        wy;		/* together wx and wy are associated with key: W */
-    char *name; 	/* key: N */
-    BBox charBBox;	/* key: B */
-    Ligature *ligs;	/* key: L (linked list; not a fixed number of Ls */
+typedef struct {
+  int code,       /* key: C */
+      wx,         /* key: WX */
+      wy;         /* together wx and wy are associated with key: W */
+  char *name;     /* key: N */
+  BBox charBBox;  /* key: B */
+  Ligature *ligs; /* key: L (linked list; not a fixed number of Ls */
 } CharMetricInfo;
 
 /* Track kerning data structure.
@@ -206,13 +202,9 @@ typedef struct
  * Track Kerning section of the AFM documentation (full title
  * & version given above).
  */
-typedef struct
-{
-    int degree;
-    float minPtSize,
-          minKernAmt,
-          maxPtSize,
-          maxKernAmt;
+typedef struct {
+  int degree;
+  float minPtSize, minKernAmt, maxPtSize, maxKernAmt;
 } TrackKernData;
 
 /* Pair Kerning data structure.
@@ -223,12 +215,10 @@ typedef struct
  * Pair Kerning section of the AFM documentation (full title
  * & version given above).
  */
-typedef struct
-{
-    char *name1;
-    char *name2;
-    int xamt,
-        yamt;
+typedef struct {
+  char *name1;
+  char *name2;
+  int xamt, yamt;
 } PairKernData;
 
 /* PCC is a piece of a composite character. This is a sub structure of a
@@ -239,11 +229,9 @@ typedef struct
  * Composite Character section of the AFM documentation (full title
  * & version given above).
  */
-typedef struct
-{
-    char *pccName;
-    int deltax,
-        deltay;
+typedef struct {
+  char *pccName;
+  int deltax, deltay;
 } Pcc;
 
 /* Composite Character Information data structure.
@@ -256,11 +244,10 @@ typedef struct
  * Composite Character section of the AFM documentation (full title
  * & version given above).
  */
-typedef struct
-{
-    char *ccName;
-    int numOfPieces;
-    Pcc *pieces;
+typedef struct {
+  char *ccName;
+  int numOfPieces;
+  Pcc *pieces;
 } CompCharData;
 
 /*  FontInfo
@@ -269,18 +256,17 @@ typedef struct
  *  A a record of this type is filled with data by the
  *  parseFile function.
  */
-typedef struct
-{
-    GlobalFontInfo *gfi;	/* ptr to a GlobalFontInfo record */
-    int *cwi;			/* ptr to 256 element array of just char widths */
-    int numOfChars;		/* number of entries in char metrics array */
-    CharMetricInfo *cmi;	/* ptr to char metrics array */
-    int numOfTracks;		/* number to entries in track kerning array */
-    TrackKernData *tkd;		/* ptr to track kerning array */
-    int numOfPairs;		/* number to entries in pair kerning array */
-    PairKernData *pkd;		/* ptr to pair kerning array */
-    int numOfComps;		/* number to entries in comp char array */
-    CompCharData *ccd;		/* ptr to comp char array */
+typedef struct {
+  GlobalFontInfo *gfi; /* ptr to a GlobalFontInfo record */
+  int *cwi;            /* ptr to 256 element array of just char widths */
+  int numOfChars;      /* number of entries in char metrics array */
+  CharMetricInfo *cmi; /* ptr to char metrics array */
+  int numOfTracks;     /* number to entries in track kerning array */
+  TrackKernData *tkd;  /* ptr to track kerning array */
+  int numOfPairs;      /* number to entries in pair kerning array */
+  PairKernData *pkd;   /* ptr to pair kerning array */
+  int numOfComps;      /* number to entries in comp char array */
+  CompCharData *ccd;   /* ptr to comp char array */
 } FontInfo;
 
 /************************* PROCEDURES ****************************/

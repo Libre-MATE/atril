@@ -14,26 +14,26 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
+#include "ev-init.h"
 
 #include <glib.h>
 #include <glib/gi18n-lib.h>
 
-#include "ev-init.h"
 #include "ev-backends-manager.h"
 #include "ev-debug.h"
 #include "ev-file-helpers.h"
 
 static int ev_init_count;
 
-const gchar *
-ev_get_locale_dir (void)
-{
-	return MATELOCALEDIR;
-}
+const gchar* ev_get_locale_dir(void) { return MATELOCALEDIR; }
 
 /**
  * ev_init:
@@ -45,19 +45,16 @@ ev_get_locale_dir (void)
  *
  * Returns: %TRUE if any backends were found; %FALSE otherwise
  */
-gboolean
-ev_init (void)
-{
-        static gboolean have_backends;
+gboolean ev_init(void) {
+  static gboolean have_backends;
 
-        if (ev_init_count++ > 0)
-                return have_backends;
+  if (ev_init_count++ > 0) return have_backends;
 
-        _ev_debug_init ();
-        _ev_file_helpers_init ();
-        have_backends = _ev_backends_manager_init ();
+  _ev_debug_init();
+  _ev_file_helpers_init();
+  have_backends = _ev_backends_manager_init();
 
-        return have_backends;
+  return have_backends;
 }
 
 /**
@@ -65,17 +62,14 @@ ev_init (void)
  *
  * Shuts the atril document library down.
  */
-void
-ev_shutdown (void)
-{
-        g_assert (_ev_is_initialized ());
+void ev_shutdown(void) {
+  g_assert(_ev_is_initialized());
 
-        if (--ev_init_count > 0)
-                return;
+  if (--ev_init_count > 0) return;
 
-        _ev_backends_manager_shutdown ();
-        _ev_file_helpers_shutdown ();
-        _ev_debug_shutdown ();
+  _ev_backends_manager_shutdown();
+  _ev_file_helpers_shutdown();
+  _ev_debug_shutdown();
 }
 
 /*
@@ -83,8 +77,4 @@ ev_shutdown (void)
  *
  * Returns: %TRUE if the atril document library has been initialized
  */
-gboolean
-_ev_is_initialized (void)
-{
-        return ev_init_count > 0;
-}
+gboolean _ev_is_initialized(void) { return ev_init_count > 0; }

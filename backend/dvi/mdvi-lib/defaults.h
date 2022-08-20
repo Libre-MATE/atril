@@ -13,59 +13,60 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 #ifndef _MDVI_DEFAULTS_H
 #define _MDVI_DEFAULTS_H 1
 
 /* resolution */
-#define	MDVI_DPI	600
-#define MDVI_VDPI	MDVI_DPI
+#define MDVI_DPI 600
+#define MDVI_VDPI MDVI_DPI
 
 /* horizontal margins */
-#define MDVI_HMARGIN	"1in"
+#define MDVI_HMARGIN "1in"
 
 /* vertical margins */
-#define MDVI_VMARGIN	"1in"
+#define MDVI_VMARGIN "1in"
 
 /* rulers */
-#define MDVI_HRUNITS	"1in"
-#define MDVI_VRUNITS	"1in"
+#define MDVI_HRUNITS "1in"
+#define MDVI_VRUNITS "1in"
 
 /* paper */
-#define MDVI_PAPERNAME	"letter"
+#define MDVI_PAPERNAME "letter"
 
 /* magnification */
 #define MDVI_MAGNIFICATION 1.0
 
 /* fallback font */
-#define MDVI_FALLBACK_FONT	"cmr10"
+#define MDVI_FALLBACK_FONT "cmr10"
 
 /* metafont mode */
-#define MDVI_MFMODE	NULL
+#define MDVI_MFMODE NULL
 
 /* default shrinking factor */
-#define MDVI_DEFAULT_SHRINKING	-1 /* based on resolution */
+#define MDVI_DEFAULT_SHRINKING -1 /* based on resolution */
 
 /* default pixel density */
-#define MDVI_DEFAULT_DENSITY	50
+#define MDVI_DEFAULT_DENSITY 50
 
 /* default gamma correction */
-#define MDVI_DEFAULT_GAMMA	1.0
+#define MDVI_DEFAULT_GAMMA 1.0
 
 /* default window geometry */
-#define MDVI_GEOMETRY	NULL
+#define MDVI_GEOMETRY NULL
 
 /* default orientation */
-#define MDVI_ORIENTATION	"tblr"
+#define MDVI_ORIENTATION "tblr"
 
 /* colors */
-#define MDVI_FOREGROUND		"black"
-#define MDVI_BACKGROUND		"white"
+#define MDVI_FOREGROUND "black"
+#define MDVI_BACKGROUND "white"
 
 /* flags */
-#define MDVI_DEFAULT_FLAGS	MDVI_ANTIALIASED
+#define MDVI_DEFAULT_FLAGS MDVI_ANTIALIASED
 
-#define MDVI_DEFAULT_CONFIG	"mdvi.conf"
+#define MDVI_DEFAULT_CONFIG "mdvi.conf"
 
 #endif /* _MDVI_DEAFAULTS_H */

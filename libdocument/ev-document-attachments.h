@@ -15,10 +15,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined (ATRIL_COMPILATION)
+#if !defined(__EV_ATRIL_DOCUMENT_H_INSIDE__) && !defined(ATRIL_COMPILATION)
 #error "Only <atril-document.h> can be included directly."
 #endif
 
@@ -30,21 +31,22 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_DOCUMENT_ATTACHMENTS (ev_document_attachments_get_type ())
-G_DECLARE_INTERFACE (EvDocumentAttachments, ev_document_attachments,
-                     EV, DOCUMENT_ATTACHMENTS, GObject);
+#define EV_TYPE_DOCUMENT_ATTACHMENTS (ev_document_attachments_get_type())
+G_DECLARE_INTERFACE(EvDocumentAttachments, ev_document_attachments, EV,
+                    DOCUMENT_ATTACHMENTS, GObject);
 
-struct _EvDocumentAttachmentsInterface
-{
-	GTypeInterface base_iface;
+struct _EvDocumentAttachmentsInterface {
+  GTypeInterface base_iface;
 
-	/* Methods  */
-	gboolean  (* has_attachments) (EvDocumentAttachments *document_attachments);
-	GList    *(* get_attachments) (EvDocumentAttachments *document_attachments);
+  /* Methods  */
+  gboolean (*has_attachments)(EvDocumentAttachments *document_attachments);
+  GList *(*get_attachments)(EvDocumentAttachments *document_attachments);
 };
 
-gboolean  ev_document_attachments_has_attachments (EvDocumentAttachments *document_attachments);
-GList    *ev_document_attachments_get_attachments (EvDocumentAttachments *document_attachments);
+gboolean ev_document_attachments_has_attachments(
+    EvDocumentAttachments *document_attachments);
+GList *ev_document_attachments_get_attachments(
+    EvDocumentAttachments *document_attachments);
 
 G_END_DECLS
 

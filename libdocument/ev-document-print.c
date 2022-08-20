@@ -15,27 +15,24 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
-#include "ev-document.h"
 #include "ev-document-print.h"
+#include "ev-document.h"
 
-G_DEFINE_INTERFACE (EvDocumentPrint, ev_document_print, 0)
+G_DEFINE_INTERFACE(EvDocumentPrint, ev_document_print, 0)
 
-static void
-ev_document_print_default_init (EvDocumentPrintInterface *klass)
-{
-}
+static void ev_document_print_default_init(EvDocumentPrintInterface *klass) {}
 
-void
-ev_document_print_print_page (EvDocumentPrint *document_print,
-			      EvPage          *page,
-			      cairo_t         *cr)
-{
-	EvDocumentPrintInterface *iface = EV_DOCUMENT_PRINT_GET_IFACE (document_print);
+void ev_document_print_print_page(EvDocumentPrint *document_print, EvPage *page,
+                                  cairo_t *cr) {
+  EvDocumentPrintInterface *iface = EV_DOCUMENT_PRINT_GET_IFACE(document_print);
 
-	iface->print_page (document_print, page, cr);
+  iface->print_page(document_print, page, cr);
 }

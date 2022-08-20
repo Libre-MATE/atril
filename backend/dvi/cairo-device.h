@@ -13,28 +13,27 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef MDVI_CAIRO_DEVICE
 #define MDVI_CAIRO_DEVICE
 
-#include <glib.h>
 #include <cairo.h>
+#include <glib.h>
 
 #include "mdvi.h"
 
 G_BEGIN_DECLS
 
-void             mdvi_cairo_device_init        (DviDevice *device);
-void             mdvi_cairo_device_free        (DviDevice *device);
-cairo_surface_t *mdvi_cairo_device_get_surface (DviDevice *device);
-void             mdvi_cairo_device_render      (DviContext* dvi);
-void             mdvi_cairo_device_set_margins (DviDevice *device,
-						gint       xmargin,
-						gint       ymargin);
-void             mdvi_cairo_device_set_scale   (DviDevice *device,
-						gdouble    scale);
+void mdvi_cairo_device_init(DviDevice *device);
+void mdvi_cairo_device_free(DviDevice *device);
+cairo_surface_t *mdvi_cairo_device_get_surface(DviDevice *device);
+void mdvi_cairo_device_render(DviContext *dvi);
+void mdvi_cairo_device_set_margins(DviDevice *device, gint xmargin,
+                                   gint ymargin);
+void mdvi_cairo_device_set_scale(DviDevice *device, gdouble scale);
 
 G_END_DECLS
 

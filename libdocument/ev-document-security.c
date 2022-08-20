@@ -18,31 +18,31 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-document-security.h"
 
-G_DEFINE_INTERFACE (EvDocumentSecurity, ev_document_security, 0)
+G_DEFINE_INTERFACE(EvDocumentSecurity, ev_document_security, 0)
 
-static void
-ev_document_security_default_init (EvDocumentSecurityInterface *klass)
-{
+static void ev_document_security_default_init(
+    EvDocumentSecurityInterface *klass) {}
+
+gboolean ev_document_security_has_document_security(
+    EvDocumentSecurity *document_security) {
+  EvDocumentSecurityInterface *iface =
+      EV_DOCUMENT_SECURITY_GET_IFACE(document_security);
+  return iface->has_document_security(document_security);
 }
 
-gboolean
-ev_document_security_has_document_security (EvDocumentSecurity *document_security)
-{
-	EvDocumentSecurityInterface *iface = EV_DOCUMENT_SECURITY_GET_IFACE (document_security);
-	return iface->has_document_security (document_security);
-}
-
-void
-ev_document_security_set_password (EvDocumentSecurity *document_security,
-				   const char         *password)
-{
-	EvDocumentSecurityInterface *iface = EV_DOCUMENT_SECURITY_GET_IFACE (document_security);
-	iface->set_password (document_security, password);
+void ev_document_security_set_password(EvDocumentSecurity *document_security,
+                                       const char *password) {
+  EvDocumentSecurityInterface *iface =
+      EV_DOCUMENT_SECURITY_GET_IFACE(document_security);
+  iface->set_password(document_security, password);
 }

@@ -13,57 +13,54 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  *  $Id$
  */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ephy-zoom.h"
 
 #include <math.h>
 
-guint
-ephy_zoom_get_zoom_level_index (float level)
-{
-	guint i;
-	float previous, current, mean;
+guint ephy_zoom_get_zoom_level_index(float level) {
+  guint i;
+  float previous, current, mean;
 
-	/* Handle our options at the beginning of the list. */
-	if (level == EPHY_ZOOM_FIT_PAGE) {
-	  return 0;
-	} else if (level == EPHY_ZOOM_FIT_WIDTH) {
-	  return 1;
-	} else if (level == EPHY_ZOOM_EXPAND_WINDOW_TO_FIT) {
-	  return 2;
-	}
+  /* Handle our options at the beginning of the list. */
+  if (level == EPHY_ZOOM_FIT_PAGE) {
+    return 0;
+  } else if (level == EPHY_ZOOM_FIT_WIDTH) {
+    return 1;
+  } else if (level == EPHY_ZOOM_EXPAND_WINDOW_TO_FIT) {
+    return 2;
+  }
 
-	previous = zoom_levels[4].level;
+  previous = zoom_levels[4].level;
 
-	for (i = 5; i < n_zoom_levels; i++)
-	{
-		current = zoom_levels[i].level;
-		mean = sqrt (previous * current);
+  for (i = 5; i < n_zoom_levels; i++) {
+    current = zoom_levels[i].level;
+    mean = sqrt(previous * current);
 
-		if (level <= mean) return i - 1;
+    if (level <= mean) return i - 1;
 
-		previous = current;
-	}
+    previous = current;
+  }
 
-	return n_zoom_levels - 1;
+  return n_zoom_levels - 1;
 }
 
-float
-ephy_zoom_get_changed_zoom_level (float level, gint steps)
-{
-	guint index;
+float ephy_zoom_get_changed_zoom_level(float level, gint steps) {
+  guint index;
 
-	index = ephy_zoom_get_zoom_level_index (level);
-	return zoom_levels[CLAMP(index + steps, 3, n_zoom_levels - 1)].level;
+  index = ephy_zoom_get_zoom_level_index(level);
+  return zoom_levels[CLAMP(index + steps, 3, n_zoom_levels - 1)].level;
 }
 
-float	ephy_zoom_get_nearest_zoom_level (float level)
-{
-	return ephy_zoom_get_changed_zoom_level (level, 0);
+float ephy_zoom_get_nearest_zoom_level(float level) {
+  return ephy_zoom_get_changed_zoom_level(level, 0);
 }

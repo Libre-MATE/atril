@@ -19,7 +19,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#if !defined (ATRIL_COMPILATION)
+#if !defined(ATRIL_COMPILATION)
 #error "This is a private header."
 #endif
 
@@ -30,58 +30,59 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_TIMELINE                 (ev_timeline_get_type ())
-#define EV_TIMELINE(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_TIMELINE, EvTimeline))
-#define EV_TIMELINE_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass),  EV_TYPE_TIMELINE, EvTimelineClass))
-#define EV_IS_TIMELINE(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_TIMELINE))
-#define EV_IS_TIMELINE_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass),  EV_TYPE_TIMELINE))
-#define EV_TIMELINE_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj),  EV_TYPE_TIMELINE, EvTimelineClass))
+#define EV_TYPE_TIMELINE (ev_timeline_get_type())
+#define EV_TIMELINE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_TIMELINE, EvTimeline))
+#define EV_TIMELINE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_TIMELINE, EvTimelineClass))
+#define EV_IS_TIMELINE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_TIMELINE))
+#define EV_IS_TIMELINE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((klass), EV_TYPE_TIMELINE))
+#define EV_TIMELINE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_TIMELINE, EvTimelineClass))
 
-typedef struct EvTimeline      EvTimeline;
+typedef struct EvTimeline EvTimeline;
 typedef struct EvTimelineClass EvTimelineClass;
 
 struct EvTimeline {
-	GObject parent_instance;
+  GObject parent_instance;
 };
 
 struct EvTimelineClass {
-	GObjectClass parent_class;
+  GObjectClass parent_class;
 
-	/* vmethods */
-	void (* start)             (EvTimeline *timeline);
+  /* vmethods */
+  void (*start)(EvTimeline *timeline);
 
-	/* signals */
-	void (* started)           (EvTimeline *timeline);
-	void (* finished)          (EvTimeline *timeline);
-	void (* paused)            (EvTimeline *timeline);
+  /* signals */
+  void (*started)(EvTimeline *timeline);
+  void (*finished)(EvTimeline *timeline);
+  void (*paused)(EvTimeline *timeline);
 
-	void (* frame)             (EvTimeline *timeline,
-				    gdouble     progress);
+  void (*frame)(EvTimeline *timeline, gdouble progress);
 };
 
-GType                 ev_timeline_get_type           (void) G_GNUC_CONST;
+GType ev_timeline_get_type(void) G_GNUC_CONST;
 
-EvTimeline           *ev_timeline_new                (guint                    duration);
+EvTimeline *ev_timeline_new(guint duration);
 
-void                  ev_timeline_start              (EvTimeline             *timeline);
-void                  ev_timeline_pause              (EvTimeline             *timeline);
-void                  ev_timeline_rewind             (EvTimeline             *timeline);
+void ev_timeline_start(EvTimeline *timeline);
+void ev_timeline_pause(EvTimeline *timeline);
+void ev_timeline_rewind(EvTimeline *timeline);
 
-gboolean              ev_timeline_is_running         (EvTimeline             *timeline);
+gboolean ev_timeline_is_running(EvTimeline *timeline);
 
-guint                 ev_timeline_get_fps            (EvTimeline             *timeline);
-void                  ev_timeline_set_fps            (EvTimeline             *timeline,
-						      guint                   fps);
+guint ev_timeline_get_fps(EvTimeline *timeline);
+void ev_timeline_set_fps(EvTimeline *timeline, guint fps);
 
-gboolean              ev_timeline_get_loop           (EvTimeline             *timeline);
-void                  ev_timeline_set_loop           (EvTimeline             *timeline,
-						      gboolean                loop);
+gboolean ev_timeline_get_loop(EvTimeline *timeline);
+void ev_timeline_set_loop(EvTimeline *timeline, gboolean loop);
 
-guint                 ev_timeline_get_duration       (EvTimeline             *timeline);
-void                  ev_timeline_set_duration       (EvTimeline             *timeline,
-						      guint                   duration);
+guint ev_timeline_get_duration(EvTimeline *timeline);
+void ev_timeline_set_duration(EvTimeline *timeline, guint duration);
 
-gdouble               ev_timeline_get_progress       (EvTimeline             *timeline);
+gdouble ev_timeline_get_progress(EvTimeline *timeline);
 
 G_END_DECLS
 

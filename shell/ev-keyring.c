@@ -15,86 +15,75 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#include "config.h"
-
-#include <glib/gi18n.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-keyring.h"
+
+#include <glib/gi18n.h>
 
 #ifdef WITH_KEYRING
 #include <libsecret/secret.h>
 
 static const SecretSchema doc_password_schema = {
-	"org.mate.Atril.Document",
-	SECRET_SCHEMA_DONT_MATCH_NAME,
-	{
-		{ "type", SECRET_SCHEMA_ATTRIBUTE_STRING },
-		{ "uri", SECRET_SCHEMA_ATTRIBUTE_STRING },
-		{ NULL, 0 }
-	}
-};
+    "org.mate.Atril.Document",
+    SECRET_SCHEMA_DONT_MATCH_NAME,
+    {{"type", SECRET_SCHEMA_ATTRIBUTE_STRING},
+     {"uri", SECRET_SCHEMA_ATTRIBUTE_STRING},
+     {NULL, 0}}};
 const SecretSchema *EV_DOCUMENT_PASSWORD_SCHEMA = &doc_password_schema;
 #endif /* WITH_KEYRING */
 
-gboolean
-ev_keyring_is_available (void)
-{
+gboolean ev_keyring_is_available(void) {
 #ifdef WITH_KEYRING
-	return TRUE;
+  return TRUE;
 #else
-	return FALSE;
+  return FALSE;
 #endif
 }
 
-gchar *
-ev_keyring_lookup_password (const gchar *uri)
-{
+gchar *ev_keyring_lookup_password(const gchar *uri) {
 #ifdef WITH_KEYRING
-	g_return_val_if_fail (uri != NULL, NULL);
+  g_return_val_if_fail(uri != NULL, NULL);
 
-	return secret_password_lookup_sync (EV_DOCUMENT_PASSWORD_SCHEMA,
-					    NULL, NULL,
-					    "type", "document_password",
-					    "uri", uri,
-					    NULL);
+  return secret_password_lookup_sync(EV_DOCUMENT_PASSWORD_SCHEMA, NULL, NULL,
+                                     "type", "document_password", "uri", uri,
+                                     NULL);
 #else
-	return NULL;
+  return NULL;
 #endif /* WITH_KEYRING */
 }
 
-gboolean
-ev_keyring_save_password (const gchar  *uri,
-			  const gchar  *password,
-			  GPasswordSave flags)
-{
+gboolean ev_keyring_save_password(const gchar *uri, const gchar *password,
+                                  GPasswordSave flags) {
 #ifdef WITH_KEYRING
-	const gchar *keyring;
-	gchar *name;
-	gchar *unescaped_uri;
-	gboolean retval;
+  const gchar *keyring;
+  gchar *name;
+  gchar *unescaped_uri;
+  gboolean retval;
 
-	g_return_val_if_fail (uri != NULL, FALSE);
+  g_return_val_if_fail(uri != NULL, FALSE);
 
-	if (flags == G_PASSWORD_SAVE_NEVER)
-		return FALSE;
+  if (flags == G_PASSWORD_SAVE_NEVER) return FALSE;
 
-	keyring = (flags == G_PASSWORD_SAVE_FOR_SESSION) ? SECRET_COLLECTION_SESSION : NULL;
-	unescaped_uri = g_uri_unescape_string (uri, NULL);
-	name = g_strdup_printf (_("Password for document %s"), unescaped_uri);
-	g_free (unescaped_uri);
+  keyring =
+      (flags == G_PASSWORD_SAVE_FOR_SESSION) ? SECRET_COLLECTION_SESSION : NULL;
+  unescaped_uri = g_uri_unescape_string(uri, NULL);
+  name = g_strdup_printf(_("Password for document %s"), unescaped_uri);
+  g_free(unescaped_uri);
 
-	retval = secret_password_store_sync (EV_DOCUMENT_PASSWORD_SCHEMA, keyring,
-					     name, password, NULL, NULL,
-					     "type", "document_password",
-					     "uri", uri,
-					     NULL);
-	g_free (name);
+  retval = secret_password_store_sync(EV_DOCUMENT_PASSWORD_SCHEMA, keyring,
+                                      name, password, NULL, NULL, "type",
+                                      "document_password", "uri", uri, NULL);
+  g_free(name);
 
-	return retval;
+  return retval;
 #else
-	return FALSE;
+  return FALSE;
 #endif /* WITH_KEYRING */
 }

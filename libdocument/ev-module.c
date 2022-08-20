@@ -38,7 +38,9 @@
 
 /* Modified by atril team */
 
-#include "config.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "ev-module.h"
 
@@ -47,147 +49,125 @@
 typedef struct _EvModuleClass EvModuleClass;
 
 struct _EvModuleClass {
-        GTypeModuleClass parent_class;
+  GTypeModuleClass parent_class;
 };
 
 struct _EvModule {
-        GTypeModule parent_instance;
+  GTypeModule parent_instance;
 
-        GModule *library;
-	gboolean resident;
+  GModule *library;
+  gboolean resident;
 
-        gchar *path;
-        GType type;
+  gchar *path;
+  GType type;
 };
 
-typedef GType (*EvModuleRegisterFunc) (GTypeModule *);
+typedef GType (*EvModuleRegisterFunc)(GTypeModule *);
 
-G_DEFINE_TYPE (EvModule, ev_module, G_TYPE_TYPE_MODULE)
+G_DEFINE_TYPE(EvModule, ev_module, G_TYPE_TYPE_MODULE)
 
-static gboolean
-ev_module_load (GTypeModule *gmodule)
-{
-        EvModule *module = EV_MODULE (gmodule);
-        EvModuleRegisterFunc register_func;
+static gboolean ev_module_load(GTypeModule *gmodule) {
+  EvModule *module = EV_MODULE(gmodule);
+  EvModuleRegisterFunc register_func;
 
-        module->library = g_module_open (module->path, 0);
+  module->library = g_module_open(module->path, 0);
 
-        if (!module->library) {
-                g_warning ("%s", g_module_error ());
+  if (!module->library) {
+    g_warning("%s", g_module_error());
 
-                return FALSE;
-        }
+    return FALSE;
+  }
 
-        /* extract symbols from the lib */
-        if (!g_module_symbol (module->library, "register_atril_backend",
-                              (void *) &register_func)) {
-                g_warning ("%s", g_module_error ());
-                g_module_close (module->library);
+  /* extract symbols from the lib */
+  if (!g_module_symbol(module->library, "register_atril_backend",
+                       (void *)&register_func)) {
+    g_warning("%s", g_module_error());
+    g_module_close(module->library);
 
-                return FALSE;
-        }
+    return FALSE;
+  }
 
-        /* symbol can still be NULL even though g_module_symbol
-         * returned TRUE */
-        if (!register_func) {
-                g_warning ("Symbol 'register_atril_backend' should not be NULL");
-                g_module_close (module->library);
+  /* symbol can still be NULL even though g_module_symbol
+   * returned TRUE */
+  if (!register_func) {
+    g_warning("Symbol 'register_atril_backend' should not be NULL");
+    g_module_close(module->library);
 
-                return FALSE;
-        }
+    return FALSE;
+  }
 
-        module->type = register_func (gmodule);
+  module->type = register_func(gmodule);
 
-        if (module->type == 0) {
-                g_warning ("Invalid atril backend contained by module %s", module->path);
+  if (module->type == 0) {
+    g_warning("Invalid atril backend contained by module %s", module->path);
 
-                return FALSE;
-        }
+    return FALSE;
+  }
 
-	if (module->resident)
-		g_module_make_resident (module->library);
+  if (module->resident) g_module_make_resident(module->library);
 
-        return TRUE;
+  return TRUE;
 }
 
-static void
-ev_module_unload (GTypeModule *gmodule)
-{
-        EvModule *module = EV_MODULE (gmodule);
+static void ev_module_unload(GTypeModule *gmodule) {
+  EvModule *module = EV_MODULE(gmodule);
 
-        g_module_close (module->library);
+  g_module_close(module->library);
 
-        module->library = NULL;
-        module->type = 0;
+  module->library = NULL;
+  module->type = 0;
 }
 
-const gchar *
-ev_module_get_path (EvModule *module)
-{
-        g_return_val_if_fail (EV_IS_MODULE (module), NULL);
+const gchar *ev_module_get_path(EvModule *module) {
+  g_return_val_if_fail(EV_IS_MODULE(module), NULL);
 
-        return module->path;
+  return module->path;
 }
 
-GObject *
-ev_module_new_object (EvModule *module)
-{
-	g_return_val_if_fail (EV_IS_MODULE (module), NULL);
+GObject *ev_module_new_object(EvModule *module) {
+  g_return_val_if_fail(EV_IS_MODULE(module), NULL);
 
-        if (module->type == 0)
-                return NULL;
+  if (module->type == 0) return NULL;
 
-        return g_object_new (module->type, NULL);
+  return g_object_new(module->type, NULL);
 }
 
-GType
-ev_module_get_object_type (EvModule *module)
-{
-	g_return_val_if_fail (EV_IS_MODULE (module), 0);
+GType ev_module_get_object_type(EvModule *module) {
+  g_return_val_if_fail(EV_IS_MODULE(module), 0);
 
-	return module->type;
+  return module->type;
 }
 
-static void
-ev_module_init (EvModule *module)
-{
+static void ev_module_init(EvModule *module) {}
+
+static void ev_module_finalize(GObject *object) {
+  EvModule *module = EV_MODULE(object);
+
+  g_free(module->path);
+
+  G_OBJECT_CLASS(ev_module_parent_class)->finalize(object);
 }
 
-static void
-ev_module_finalize (GObject *object)
-{
-        EvModule *module = EV_MODULE (object);
+static void ev_module_class_init(EvModuleClass *class) {
+  GObjectClass *object_class = G_OBJECT_CLASS(class);
+  GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS(class);
 
-        g_free (module->path);
+  object_class->finalize = ev_module_finalize;
 
-        G_OBJECT_CLASS (ev_module_parent_class)->finalize (object);
+  module_class->load = ev_module_load;
+  module_class->unload = ev_module_unload;
 }
 
-static void
-ev_module_class_init (EvModuleClass *class)
-{
-        GObjectClass *object_class = G_OBJECT_CLASS (class);
-        GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
+EvModule *ev_module_new(const gchar *path, gboolean resident) {
+  EvModule *result;
 
-        object_class->finalize = ev_module_finalize;
+  g_return_val_if_fail(path != NULL && path[0] != '\0', NULL);
 
-        module_class->load = ev_module_load;
-        module_class->unload = ev_module_unload;
-}
+  result = g_object_new(EV_TYPE_MODULE, NULL);
 
-EvModule *
-ev_module_new (const gchar *path,
-	       gboolean     resident)
-{
-        EvModule *result;
+  g_type_module_set_name(G_TYPE_MODULE(result), path);
+  result->path = g_strdup(path);
+  result->resident = resident;
 
-	g_return_val_if_fail (path != NULL && path[0] != '\0', NULL);
-
-        result = g_object_new (EV_TYPE_MODULE, NULL);
-
-        g_type_module_set_name (G_TYPE_MODULE (result), path);
-        result->path = g_strdup (path);
-	result->resident = resident;
-
-        return result;
+  return result;
 }

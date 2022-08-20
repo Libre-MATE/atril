@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /* this file is part of atril, a mate document viewer
  *
  * Copyright (C) 2014 Igalia
@@ -16,10 +17,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (ATRIL_COMPILATION)
+#if !defined(ATRIL_COMPILATION)
 #error "This is a private header."
 #endif
 
@@ -27,29 +29,32 @@
 #define __EV_IMAGE_ACCESSIBLE_H__
 
 #include <gtk/gtk-a11y.h>
-#include "ev-page-accessible.h"
+
 #include "ev-image.h"
+#include "ev-page-accessible.h"
 
-#define EV_TYPE_IMAGE_ACCESSIBLE      (ev_image_accessible_get_type ())
-#define EV_IMAGE_ACCESSIBLE(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_IMAGE_ACCESSIBLE, EvImageAccessible))
-#define EV_IS_IMAGE_ACCESSIBLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_IMAGE_ACCESSIBLE))
+#define EV_TYPE_IMAGE_ACCESSIBLE (ev_image_accessible_get_type())
+#define EV_IMAGE_ACCESSIBLE(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_IMAGE_ACCESSIBLE, \
+                              EvImageAccessible))
+#define EV_IS_IMAGE_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_IMAGE_ACCESSIBLE))
 
-typedef struct _EvImageAccessible        EvImageAccessible;
-typedef struct _EvImageAccessibleClass   EvImageAccessibleClass;
+typedef struct _EvImageAccessible EvImageAccessible;
+typedef struct _EvImageAccessibleClass EvImageAccessibleClass;
 typedef struct _EvImageAccessiblePrivate EvImageAccessiblePrivate;
 
 struct _EvImageAccessible {
-        AtkObject parent;
-        EvImageAccessiblePrivate *priv;
+  AtkObject parent;
+  EvImageAccessiblePrivate *priv;
 };
 
 struct _EvImageAccessibleClass {
-        AtkObjectClass parent_class;
+  AtkObjectClass parent_class;
 };
 
-GType ev_image_accessible_get_type (void);
-EvImageAccessible *ev_image_accessible_new (EvPageAccessible *page,
-					    EvImage          *image,
-					    EvRectangle      *area);
+GType ev_image_accessible_get_type(void);
+EvImageAccessible *ev_image_accessible_new(EvPageAccessible *page,
+                                           EvImage *image, EvRectangle *area);
 
-#endif  /* __EV_IMAGE_ACCESSIBLE_H__ */
+#endif /* __EV_IMAGE_ACCESSIBLE_H__ */

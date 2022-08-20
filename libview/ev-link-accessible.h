@@ -1,4 +1,5 @@
-/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8; c-indent-level: 8 -*- */
+/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8;
+ * c-indent-level: 8 -*- */
 /* this file is part of atril, a mate document viewer
  *
  *  Copyright (C) 2013 Carlos Garcia Campos <carlosgc@gnome.org>
@@ -15,10 +16,11 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
-#if !defined (ATRIL_COMPILATION)
+#if !defined(ATRIL_COMPILATION)
 #error "This is a private header."
 #endif
 
@@ -26,31 +28,32 @@
 #define __EV_LINK_ACCESSIBLE_H__
 
 #include <gtk/gtk-a11y.h>
-#include "ev-page-accessible.h"
+
 #include "ev-link.h"
+#include "ev-page-accessible.h"
 
-#define EV_TYPE_LINK_ACCESSIBLE      (ev_link_accessible_get_type ())
-#define EV_LINK_ACCESSIBLE(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_LINK_ACCESSIBLE, EvLinkAccessible))
-#define EV_IS_LINK_ACCESSIBLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_LINK_ACCESSIBLE))
+#define EV_TYPE_LINK_ACCESSIBLE (ev_link_accessible_get_type())
+#define EV_LINK_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_LINK_ACCESSIBLE, EvLinkAccessible))
+#define EV_IS_LINK_ACCESSIBLE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_LINK_ACCESSIBLE))
 
-typedef struct _EvLinkAccessible        EvLinkAccessible;
-typedef struct _EvLinkAccessibleClass   EvLinkAccessibleClass;
+typedef struct _EvLinkAccessible EvLinkAccessible;
+typedef struct _EvLinkAccessibleClass EvLinkAccessibleClass;
 typedef struct _EvLinkAccessiblePrivate EvLinkAccessiblePrivate;
 
 struct _EvLinkAccessible {
-        AtkObject parent;
+  AtkObject parent;
 
-        EvLinkAccessiblePrivate *priv;
+  EvLinkAccessiblePrivate *priv;
 };
 
 struct _EvLinkAccessibleClass {
-        AtkObjectClass parent_class;
+  AtkObjectClass parent_class;
 };
 
-GType             ev_link_accessible_get_type (void);
-EvLinkAccessible *ev_link_accessible_new      (EvPageAccessible *page,
-                                               EvLink           *link,
-                                               EvRectangle      *area);
+GType ev_link_accessible_get_type(void);
+EvLinkAccessible *ev_link_accessible_new(EvPageAccessible *page, EvLink *link,
+                                         EvRectangle *area);
 
-#endif  /* __EV_LINK_ACCESSIBLE_H__ */
-
+#endif /* __EV_LINK_ACCESSIBLE_H__ */

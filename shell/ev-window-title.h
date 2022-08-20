@@ -14,33 +14,32 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  */
 
 #ifndef __EV_WINDOW_TITLE_H__
 #define __EV_WINDOW_TITLE_H__
 
-#include "ev-window.h"
 #include "ev-document.h"
+#include "ev-window.h"
 
 G_BEGIN_DECLS
 
 typedef struct _EvWindowTitle EvWindowTitle;
 
-typedef enum
-{
-	EV_WINDOW_TITLE_DOCUMENT,
-	EV_WINDOW_TITLE_PASSWORD
+typedef enum {
+  EV_WINDOW_TITLE_DOCUMENT,
+  EV_WINDOW_TITLE_PASSWORD
 } EvWindowTitleType;
 
-EvWindowTitle *ev_window_title_new	    (EvWindow *window);
-void	       ev_window_title_set_type     (EvWindowTitle     *window_title,
-					     EvWindowTitleType  type);
-void           ev_window_title_set_document (EvWindowTitle     *window_title,
-					     EvDocument        *document);
-void	       ev_window_title_set_uri      (EvWindowTitle     *window_title,
-			 		     const char        *uri);
-void	       ev_window_title_free         (EvWindowTitle     *window_title);
+EvWindowTitle *ev_window_title_new(EvWindow *window);
+void ev_window_title_set_type(EvWindowTitle *window_title,
+                              EvWindowTitleType type);
+void ev_window_title_set_document(EvWindowTitle *window_title,
+                                  EvDocument *document);
+void ev_window_title_set_uri(EvWindowTitle *window_title, const char *uri);
+void ev_window_title_free(EvWindowTitle *window_title);
 
 G_END_DECLS
 

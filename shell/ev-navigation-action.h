@@ -14,7 +14,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
  *
  */
 
@@ -28,36 +29,41 @@
 
 G_BEGIN_DECLS
 
-#define EV_TYPE_NAVIGATION_ACTION            (ev_navigation_action_get_type ())
-#define EV_NAVIGATION_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), EV_TYPE_NAVIGATION_ACTION, EvNavigationAction))
-#define EV_NAVIGATION_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), EV_TYPE_NAVIGATION_ACTION, EvNavigationActionClass))
-#define EV_IS_NAVIGATION_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EV_TYPE_NAVIGATION_ACTION))
-#define EV_IS_NAVIGATION_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), EV_TYPE_NAVIGATION_ACTION))
-#define EV_NAVIGATION_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_NAVIGATION_ACTION, EvNavigationActionClass))
+#define EV_TYPE_NAVIGATION_ACTION (ev_navigation_action_get_type())
+#define EV_NAVIGATION_ACTION(obj)                               \
+  (G_TYPE_CHECK_INSTANCE_CAST((obj), EV_TYPE_NAVIGATION_ACTION, \
+                              EvNavigationAction))
+#define EV_NAVIGATION_ACTION_CLASS(klass)                      \
+  (G_TYPE_CHECK_CLASS_CAST((klass), EV_TYPE_NAVIGATION_ACTION, \
+                           EvNavigationActionClass))
+#define EV_IS_NAVIGATION_ACTION(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE((obj), EV_TYPE_NAVIGATION_ACTION))
+#define EV_IS_NAVIGATION_ACTION_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE((obj), EV_TYPE_NAVIGATION_ACTION))
+#define EV_NAVIGATION_ACTION_GET_CLASS(obj)                    \
+  (G_TYPE_INSTANCE_GET_CLASS((obj), EV_TYPE_NAVIGATION_ACTION, \
+                             EvNavigationActionClass))
 
-typedef struct _EvNavigationAction		EvNavigationAction;
-typedef struct _EvNavigationActionPrivate	EvNavigationActionPrivate;
-typedef struct _EvNavigationActionClass		EvNavigationActionClass;
+typedef struct _EvNavigationAction EvNavigationAction;
+typedef struct _EvNavigationActionPrivate EvNavigationActionPrivate;
+typedef struct _EvNavigationActionClass EvNavigationActionClass;
 
-struct _EvNavigationAction
-{
-	GtkAction parent;
+struct _EvNavigationAction {
+  GtkAction parent;
 
-	/*< private >*/
-	EvNavigationActionPrivate *priv;
+  /*< private >*/
+  EvNavigationActionPrivate *priv;
 };
 
-struct _EvNavigationActionClass
-{
-	GtkActionClass parent_class;
+struct _EvNavigationActionClass {
+  GtkActionClass parent_class;
 
-	void (* activate_link) (EvNavigationAction *action,
-			        EvLink             *link);
+  void (*activate_link)(EvNavigationAction *action, EvLink *link);
 };
 
-GType	ev_navigation_action_get_type		(void);
-void	ev_navigation_action_set_history	(EvNavigationAction *action,
-						 EvHistory	    *history);
+GType ev_navigation_action_get_type(void);
+void ev_navigation_action_set_history(EvNavigationAction *action,
+                                      EvHistory *history);
 
 G_END_DECLS
 

@@ -11,8 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
  * General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
@@ -30,17 +30,17 @@
 #include <libdocument/ev-document-find.h>
 #include <libdocument/ev-document-fonts.h>
 #include <libdocument/ev-document-forms.h>
-#include <libdocument/ev-document.h>
 #include <libdocument/ev-document-images.h>
 #include <libdocument/ev-document-info.h>
 #include <libdocument/ev-document-layers.h>
-#include <libdocument/ev-document-print.h>
 #include <libdocument/ev-document-links.h>
 #include <libdocument/ev-document-misc.h>
+#include <libdocument/ev-document-print.h>
 #include <libdocument/ev-document-security.h>
 #include <libdocument/ev-document-thumbnails.h>
 #include <libdocument/ev-document-transition.h>
 #include <libdocument/ev-document-type-builtins.h>
+#include <libdocument/ev-document.h>
 #include <libdocument/ev-file-exporter.h>
 #include <libdocument/ev-file-helpers.h>
 #include <libdocument/ev-form-field.h>
@@ -50,13 +50,13 @@
 #include <libdocument/ev-link-action.h>
 #include <libdocument/ev-link-dest.h>
 #include <libdocument/ev-link.h>
+#include <libdocument/ev-macros.h>
 #include <libdocument/ev-mapping-list.h>
 #include <libdocument/ev-page.h>
 #include <libdocument/ev-render-context.h>
 #include <libdocument/ev-selection.h>
 #include <libdocument/ev-transition-effect.h>
 #include <libdocument/ev-version.h>
-#include <libdocument/ev-macros.h>
 
 #undef __EV_ATRIL_DOCUMENT_H_INSIDE__
 
