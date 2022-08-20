@@ -252,7 +252,9 @@ void font_transform_glyph(DviOrientation orient, DviGlyph *g) {
 }
 
 static int load_one_glyph(DviContext *dvi, DviFont *font, int code) {
+#ifndef NODEBUG
   BITMAP *map;
+#endif /* ! NODEBUG */
   DviFontChar *ch;
   int status;
 
@@ -260,7 +262,7 @@ static int load_one_glyph(DviContext *dvi, DviFont *font, int code) {
   ch = FONTCHAR(font, code);
   DEBUG((DBG_GLYPHS, "loading glyph code %d in %s (at %u)\n", code,
          font->fontname, ch->offset));
-#endif
+#endif /* ! NODEBUG */
   if (font->finfo->getglyph == NULL) {
     /* font type does not need to load glyphs (e.g. vf) */
     return 0;
@@ -280,7 +282,7 @@ static int load_one_glyph(DviContext *dvi, DviFont *font, int code) {
     else
       bitmap_print(stderr, map);
   }
-#endif
+#endif /* ! NODEBUG */
   /* check if we have to scale it */
   if (!font->finfo->scalable && font->hdpi != font->vdpi) {
     int hs, vs, d;

@@ -226,7 +226,6 @@ error:
 }
 
 static int gf_load_font(DviParams *unused, DviFont *font) {
-  int i;
   int n;
   int loc;
   int hic;
@@ -236,6 +235,7 @@ static int gf_load_font(DviParams *unused, DviFont *font) {
   long alpha, beta, z;
 #ifndef NODEBUG
   char s[256];
+  int i;
 #endif
 
   p = font->in;

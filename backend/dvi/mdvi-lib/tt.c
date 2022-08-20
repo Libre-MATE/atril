@@ -112,17 +112,13 @@ static void tt_encode_font(DviFont *font, FTInfo *info) {
 }
 
 static int tt_really_load_font(DviParams *params, DviFont *font, FTInfo *info) {
-  DviFontChar *ch;
-  TFMChar *ptr;
-  Int32 z, alpha, beta;
-  int i;
-  FTInfo *old;
+  static int warned = 0;
   TT_Error status;
   double point_size;
-  static int warned = 0;
   TT_CharMap cmap;
   TT_Face_Properties props;
   int map_found;
+  int i;
 
   DEBUG((DBG_TT, "(tt) really_load_font(%s)\n", info->fontname));
 
@@ -322,7 +318,6 @@ static int tt_get_bitmap(DviParams *params, DviFont *font, int code,
   TT_Outline outline;
   TT_Raster_Map raster;
   TT_BBox bbox;
-  TT_Glyph_Metrics metrics;
   TT_Matrix mat;
   FTInfo *info;
   int error;
@@ -379,7 +374,6 @@ static int tt_font_get_glyph(DviParams *params, DviFont *font, int code) {
   FTInfo *info = (FTInfo *)font->private;
   DviFontChar *ch;
   int error;
-  double xs, ys;
   int dpi;
 
   ASSERT(info != NULL);
@@ -432,19 +426,21 @@ static void tt_reset_font(DviFont *font) {
 }
 
 static void tt_font_remove(FTInfo *info) {
-  FTInfo *old;
-
   if (info->loaded) {
     /* all fonts in the hash table have called TT_Open_Face */
     TT_Done_Instance(info->instance);
     TT_Close_Face(info->face);
   }
+
   listh_remove(&ttfonts, LIST(info));
+
   /* release our encodings */
   if (info->encoding) mdvi_release_encoding(info->encoding, 1);
+
   /* and destroy the font */
   if (info->tfminfo) free_font_metrics(info->tfminfo);
   if (info->fmfname) mdvi_free(info->fmfname);
+
   mdvi_free(info);
 }
 
