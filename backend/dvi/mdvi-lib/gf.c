@@ -314,7 +314,6 @@ static int gf_load_font(DviParams *unused, DviFont *font) {
     ch->tfmwidth = fuget4(p);
     ch->tfmwidth = TFMSCALE(ch->tfmwidth, z, alpha, beta);
     ch->offset = fuget4(p);
-    if (ch->offset == -1) ch->offset = 0;
     /* initialize the rest of the glyph information */
     ch->x = 0;
     ch->y = 0;
