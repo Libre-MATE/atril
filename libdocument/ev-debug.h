@@ -40,6 +40,7 @@
 #define __EV_DEBUG_H__
 
 #include <glib-object.h>
+#include <glib.h>
 
 #define EV_GET_TYPE_NAME(instance) g_type_name_from_instance((gpointer)instance)
 

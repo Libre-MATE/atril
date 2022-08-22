@@ -20,6 +20,9 @@
 #ifndef __DJVU_DOCUMENT_H__
 #define __DJVU_DOCUMENT_H__
 
+#include <glib-object.h>
+#include <glib.h>
+
 #include "ev-document.h"
 
 G_BEGIN_DECLS

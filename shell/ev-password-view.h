@@ -22,6 +22,8 @@
 #define __EV_PASSWORD_VIEW_H__
 
 #include <gio/gio.h>
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

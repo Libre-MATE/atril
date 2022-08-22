@@ -26,6 +26,9 @@
 #ifndef EV_MAPPING_LIST_H
 #define EV_MAPPING_LIST_H
 
+#include <glib-object.h>
+#include <glib.h>
+
 #include "ev-document.h"
 
 G_BEGIN_DECLS

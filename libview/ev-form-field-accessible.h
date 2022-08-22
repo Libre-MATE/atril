@@ -28,6 +28,7 @@
 #ifndef __EV_FORM_FIELD_ACCESSIBLE_H__
 #define __EV_FORM_FIELD_ACCESSIBLE_H__
 
+#include <glib-object.h>
 #include <gtk/gtk-a11y.h>
 
 #include "ev-form-field.h"

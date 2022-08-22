@@ -19,6 +19,7 @@
  *
  */
 
+#include <glib-object.h>
 #include <gtk/gtk.h>
 
 #define EV_TYPE_NAVIGATION_ACTION_WIDGET \

@@ -30,6 +30,7 @@
 #define __EV_STOCK_ICONS_H__
 
 #include <gdk/gdk.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

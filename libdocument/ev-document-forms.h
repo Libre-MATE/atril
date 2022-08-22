@@ -27,6 +27,7 @@
 #define EV_DOCUMENT_FORMS_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-document.h"
 #include "ev-form-field.h"

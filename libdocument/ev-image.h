@@ -25,8 +25,9 @@
 #ifndef __EV_IMAGE_H__
 #define __EV_IMAGE_H__
 
-#include <gdk/gdk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

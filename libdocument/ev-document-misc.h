@@ -30,6 +30,7 @@
 
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-macros.h"

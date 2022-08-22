@@ -21,6 +21,8 @@
 #ifndef __EV_WINDOW_TITLE_H__
 #define __EV_WINDOW_TITLE_H__
 
+#include <glib.h>
+
 #include "ev-document.h"
 #include "ev-window.h"
 

@@ -21,6 +21,8 @@
 #ifndef EV_OPEN_RECENT_ACTION_H
 #define EV_OPEN_RECENT_ACTION_H
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

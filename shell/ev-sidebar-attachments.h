@@ -25,6 +25,10 @@
 #ifndef __EV_SIDEBAR_ATTACHMENTS_H__
 #define __EV_SIDEBAR_ATTACHMENTS_H__
 
+#include <glib-object.h>
+#include <glib.h>
+#include <gtk/gtk.h>
+
 #include "ev-attachment.h"
 #include "ev-document.h"
 

@@ -22,7 +22,9 @@
 #define __EV_ANNOTATION_PROPERTIES_DIALOG_H__
 
 #include <atril-document.h>
+#include <gdk/gdk.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

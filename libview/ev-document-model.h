@@ -27,6 +27,7 @@
 
 #include <atril-document.h>
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

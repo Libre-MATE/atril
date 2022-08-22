@@ -27,6 +27,7 @@
 #ifndef EV_DOCUMENT_FACTORY_H
 #define EV_DOCUMENT_FACTORY_H
 
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-document.h"

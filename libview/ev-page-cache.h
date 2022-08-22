@@ -29,6 +29,7 @@
 #include <atril-view.h>
 #include <gdk/gdk.h>
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

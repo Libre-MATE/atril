@@ -27,7 +27,7 @@
 #ifndef EV_ASYNC_RENDERER_H
 #define EV_ASYNC_RENDERER_H
 
-#include <gdk/gdk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <glib-object.h>
 #include <glib.h>
 

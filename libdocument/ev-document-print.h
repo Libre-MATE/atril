@@ -24,6 +24,7 @@
 
 #include <cairo.h>
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-page.h"
 

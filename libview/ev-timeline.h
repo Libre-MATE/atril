@@ -27,6 +27,7 @@
 #define __EV_TIMELINE_H__
 
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

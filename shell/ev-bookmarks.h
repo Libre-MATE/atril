@@ -23,6 +23,7 @@
 #define EV_BOOKMARKS_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-metadata.h"
 

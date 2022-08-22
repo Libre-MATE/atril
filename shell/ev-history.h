@@ -22,6 +22,7 @@
 #define EV_HISTORY_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-link.h"
 

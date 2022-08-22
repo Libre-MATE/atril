@@ -26,6 +26,7 @@
 #define EV_RENDER_CONTEXT_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-page.h"
 

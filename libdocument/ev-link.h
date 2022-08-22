@@ -26,6 +26,7 @@
 #define EV_LINK_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-document.h"
 #include "ev-link-action.h"

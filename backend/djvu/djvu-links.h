@@ -21,6 +21,7 @@
 #define __DJVU_LINK_H__
 
 #include <glib.h>
+#include <gtk/gtk.h>
 
 #include "djvu-document.h"
 #include "ev-document-links.h"

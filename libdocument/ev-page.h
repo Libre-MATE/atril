@@ -26,6 +26,7 @@
 #define EV_PAGE_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

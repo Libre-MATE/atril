@@ -27,6 +27,7 @@
 #ifndef __EV_LINK_ACCESSIBLE_H__
 #define __EV_LINK_ACCESSIBLE_H__
 
+#include <glib-object.h>
 #include <gtk/gtk-a11y.h>
 
 #include "ev-link.h"

@@ -25,9 +25,11 @@
 #define EV_APPLICATION_H
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
+#include <gdk/gdk.h>
+#include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 

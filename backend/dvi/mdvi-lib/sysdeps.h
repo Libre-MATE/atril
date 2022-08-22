@@ -25,7 +25,7 @@
  * types of various sizes, and safe pointer<->integer conversion.
  */
 
-#include "config.h"
+#include <config.h>
 
 #ifdef WORDS_BIGENDIAN
 #define WORD_BIG_ENDIAN 1

@@ -24,6 +24,7 @@
 #ifndef EV_WINDOW_H
 #define EV_WINDOW_H
 
+#include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 

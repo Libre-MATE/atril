@@ -27,7 +27,10 @@
 #ifndef __EV_VIEW_ACCESSIBLE_H__
 #define __EV_VIEW_ACCESSIBLE_H__
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk-a11y.h>
+#include <gtk/gtk.h>
 
 #include "ev-document-model.h"
 

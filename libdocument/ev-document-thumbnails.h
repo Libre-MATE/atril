@@ -28,6 +28,8 @@
 #define EV_DOCUMENT_THUMBNAILS_H
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include "ev-render-context.h"
 

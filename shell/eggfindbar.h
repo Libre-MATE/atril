@@ -20,6 +20,8 @@
 #ifndef __EGG_FIND_BAR_H__
 #define __EGG_FIND_BAR_H__
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

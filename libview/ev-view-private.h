@@ -27,6 +27,10 @@
 #ifndef __EV_VIEW_PRIVATE_H__
 #define __EV_VIEW_PRIVATE_H__
 
+#include <gdk/gdk.h>
+#include <glib.h>
+#include <gtk/gtk.h>
+
 #include "ev-document-model.h"
 #include "ev-form-field.h"
 #include "ev-image.h"

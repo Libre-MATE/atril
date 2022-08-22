@@ -27,6 +27,8 @@
 #define __EV_VIEW_PRESENTATION_H__
 
 #include <atril-document.h>
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS

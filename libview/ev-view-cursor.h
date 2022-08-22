@@ -25,7 +25,8 @@
 #ifndef __EV_VIEW_CURSOR_H__
 #define __EV_VIEW_CURSOR_H__
 
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

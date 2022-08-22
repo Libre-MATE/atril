@@ -23,6 +23,8 @@
 #ifndef EV_ANNOTATION_WINDOW_H
 #define EV_ANNOTATION_WINDOW_H
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-annotation.h"

@@ -22,6 +22,8 @@
 #ifndef EV_NAVIGATION_ACTION_H
 #define EV_NAVIGATION_ACTION_H
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-history.h"

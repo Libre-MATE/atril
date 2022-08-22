@@ -27,6 +27,9 @@
 #define __EV_TRANSITION_ANIMATION_H__
 
 #include <atril-document.h>
+#include <gdk/gdk.h>
+#include <glib-object.h>
+#include <glib.h>
 
 #include "ev-timeline.h"
 #include "ev-transition-effect.h"

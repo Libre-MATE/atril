@@ -29,6 +29,7 @@
 #define EV_FILE_EXPORTER_H
 
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-render-context.h"
 

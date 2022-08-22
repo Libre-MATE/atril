@@ -23,17 +23,20 @@
 #error "Only <atril-view.h> can be included directly."
 #endif
 
-#include "config.h"
+#include <config.h>
+
 #if ENABLE_EPUB
 #ifndef __EV_WEB_VIEW_H__
 #define __EV_WEB_VIEW_H__
 
 #include <atril-document.h>
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-document-model.h"
 #include "ev-jobs.h"
+
 G_BEGIN_DECLS
 
 typedef struct _EvWebView EvWebView;

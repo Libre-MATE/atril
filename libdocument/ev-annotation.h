@@ -29,6 +29,7 @@
 
 #include <gdk/gdk.h>
 #include <glib-object.h>
+#include <glib.h>
 
 #include "ev-attachment.h"
 #include "ev-document.h"

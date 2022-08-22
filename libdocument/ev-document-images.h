@@ -26,6 +26,7 @@
 #ifndef EV_DOCUMENT_IMAGES_H
 #define EV_DOCUMENT_IMAGES_H
 
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <glib-object.h>
 #include <glib.h>
 

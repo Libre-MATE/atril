@@ -2,6 +2,10 @@
 #define __EPUB_DOCUMENT_H__
 
 #define _GNU_SOURCE
+
+#include <glib-object.h>
+#include <glib.h>
+
 #include "ev-document.h"
 
 G_BEGIN_DECLS

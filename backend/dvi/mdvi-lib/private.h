@@ -19,7 +19,6 @@
 #ifndef _MDVI_PRIVATE_H
 
 #include <config.h>
-#include <glib/gi18n-lib.h>
 
 #define _MDVI_PRIVATE_H 1
 #define HAVE_PROTOTYPES 1

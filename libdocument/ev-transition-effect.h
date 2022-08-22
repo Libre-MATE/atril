@@ -27,6 +27,7 @@
 #define __EV_TRANSITION_EFFECT_H__
 
 #include <glib-object.h>
+#include <glib.h>
 
 G_BEGIN_DECLS
 

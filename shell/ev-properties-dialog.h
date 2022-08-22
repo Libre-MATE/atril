@@ -23,6 +23,10 @@
 #ifndef __EV_PROPERTIES_DIALOG_H__
 #define __EV_PROPERTIES_DIALOG_H__
 
+#include <glib-object.h>
+#include <glib.h>
+#include <gtk/gtk.h>
+
 #include "ev-document.h"
 
 G_BEGIN_DECLS

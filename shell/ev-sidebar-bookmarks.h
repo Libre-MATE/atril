@@ -22,6 +22,7 @@
 #define __EV_SIDEBAR_BOOKMARKS_H__
 
 #include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "ev-bookmarks.h"

@@ -20,6 +20,8 @@
 #ifndef EGG_TOOLBAR_EDITOR_H
 #define EGG_TOOLBAR_EDITOR_H
 
+#include <glib-object.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "egg-toolbars-model.h"

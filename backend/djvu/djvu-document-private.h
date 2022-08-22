@@ -22,6 +22,7 @@
 #ifndef __DJVU_DOCUMENT_INTERNAL_H__
 #define __DJVU_DOCUMENT_INTERNAL_H__
 
+#include <glib.h>
 #include <libdjvu/ddjvuapi.h>
 
 #include "djvu-document.h"
