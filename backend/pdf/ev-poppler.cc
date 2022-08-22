@@ -2836,14 +2836,15 @@ static void pdf_document_document_annotations_iface_init(
 /* Attachments */
 struct SaveToBufferData {
   gchar *buffer;
-  gsize len, max;
+  gsize len;
+  gsize max;
 };
 
 static gboolean attachment_save_to_buffer_callback(const gchar *buf,
                                                    gsize count,
                                                    gpointer user_data,
                                                    GError **error) {
-  struct SaveToBufferData *sdata = (SaveToBufferData *)user_data;
+  struct SaveToBufferData *sdata = static_cast<SaveToBufferData *>(user_data);
   gchar *new_buffer;
   gsize new_max;
 
