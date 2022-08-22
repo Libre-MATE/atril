@@ -711,8 +711,7 @@ static void update_sizing_buttons(EvWindow *window) {
     ephy_zoom_action_set_zoom_level(EPHY_ZOOM_ACTION(action),
                                     EPHY_ZOOM_FIT_PAGE);
   } else if (fit_width) {
-    if (!window->priv->document ||
-        (window->priv->document && !window->priv->document->iswebdocument)) {
+    if (!window->priv->document || !window->priv->document->iswebdocument) {
       ephy_zoom_action_set_zoom_level(EPHY_ZOOM_ACTION(action),
                                       EPHY_ZOOM_FIT_WIDTH);
     }
