@@ -54,9 +54,9 @@ m4_define([ev_binary_version], [ev_document_lt_current])
 
 AC_INIT([atril],
         [ev_version],
-        [https://github.com/mate-desktop/atril/issues],
+        [https://github.com/Libre-MATE/atril],
         [atril],
-        [https://mate-desktop.org])
+        [https://github.com/Libre-MATE/atril])
 AC_PREREQ([2.60])
 AC_COPYRIGHT([Copyright (C) 2022 Libre MATE])
 AM_INIT_AUTOMAKE([1.11 foreign tar-ustar dist-xz no-dist-gzip check-news])
